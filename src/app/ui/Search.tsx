@@ -38,11 +38,11 @@ const SearchButton = styled.button`
 
 export default function Search() {
   return (
-    <SearchBar className="">
-      <label htmlFor="search" className="">
+    <SearchBar>
+      <label htmlFor="search">
         <MagnifyingGlassIcon className="h-[18px] w-[18px] text-gray-500 peer-focus:text-gray-900" />
       </label>
-      <SearchInput className="" placeholder="Who to search for" />
+      <SearchInput placeholder="Who to search for" />
       <SearchButton>Search</SearchButton>
     </SearchBar>
   );

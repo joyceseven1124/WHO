@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ButtonCva from './ButtonCva';
 import Search from './Search';
-// const buttonStyles = 'mr-1 border rounded border-neutral-900 p-2';
 
 export function Navigation() {
   return (
