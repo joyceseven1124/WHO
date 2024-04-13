@@ -14,6 +14,10 @@ export function getRadianAngle(degreeValue: number): number {
 /**
  * Returns the new bounding area of a rotated rectangle.
  */
+export interface CroppedImageResult {
+  file: Blob;
+  url: string;
+}
 export function rotateSize(
   width: number,
   height: number,
@@ -42,7 +46,7 @@ export default async function getCroppedImg(
   },
   rotation = 0,
   flip = { horizontal: false, vertical: false }
-): Promise<string | null> {
+) {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -102,13 +106,13 @@ export default async function getCroppedImg(
   // return croppedCanvas.toDataURL('image/jpeg');
 
   // As a blob
-  return new Promise<string | null>((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     croppedCanvas.toBlob((file) => {
       if (file) {
-        resolve(URL.createObjectURL(file));
+        resolve({ file: file, url: URL.createObjectURL(file) });
       } else {
         reject(new Error('Failed to create blob.'));
       }
-    }, undefined);
+    }, 'image/*');
   });
 }

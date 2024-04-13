@@ -1,7 +1,7 @@
 'use client';
 import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
 import { useAppDispatch } from '@/src/lib/hooks';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 import { ChildKeyContext, NodeKeyContext } from '../../../../lib/context';
@@ -80,6 +80,7 @@ export default function DropzoneComponent({
       'image/*': [],
     },
     maxFiles: 1,
+    maxSize: 5242880,
   });
 
   return (
