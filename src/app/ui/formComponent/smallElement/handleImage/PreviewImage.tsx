@@ -2,8 +2,8 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import styled from 'styled-components';
-import DeleteButton from '../button/DeleteButton';
-import EditButton from '../button/EditPictureButton';
+import DeleteButton from '../../button/DeleteButton';
+import EditButton from '../../button/EditPictureButton';
 import CropImageComponent from './CropImageComponent';
 
 const ThumbStyle = styled.div<{ $styleHeight?: string }>`

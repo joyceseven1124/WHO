@@ -27,17 +27,25 @@ interface FormPayload {
   elements?: FormElement;
 }
 
-interface ChangePositionPayload {
-  nodeKey: string;
-  children: { [key: string]: FormElement };
-}
-
 export interface FormInitPayload {
   nodeKey: string;
   componentType: string;
   children: { [key: string]: FormElement };
 }
 
+interface ChangePositionChildPayload {
+  nodeKey: string;
+  children: { [key: string]: FormElement };
+}
+
+export interface ChangePositionPayload {
+  elementKeyArray: {
+    [key: string]: {
+      componentType: string;
+      children: { [key: string]: FormElement };
+    };
+  };
+}
 interface RemovePayload {
   nodeKey: string;
   childKey?: string;
@@ -64,6 +72,14 @@ export const formEditSlice = createSlice({
     removeFormElement: (state, action: PayloadAction<RemovePayload>) => {
       const nodeKey = action.payload.nodeKey;
       delete state.formData[nodeKey];
+    },
+
+    changeFormElement: (
+      state,
+      action: PayloadAction<ChangePositionPayload>
+    ) => {
+      const { elementKeyArray } = action.payload;
+      state.formData = { ...elementKeyArray };
     },
 
     removeFormChildElement: (state, action: PayloadAction<RemovePayload>) => {
@@ -96,7 +112,7 @@ export const formEditSlice = createSlice({
 
     changeFormChildElement: (
       state,
-      action: PayloadAction<ChangePositionPayload>
+      action: PayloadAction<ChangePositionChildPayload>
     ) => {
       const { nodeKey, children } = action.payload;
       if (state.formData[nodeKey]) {
@@ -114,12 +130,13 @@ export const formEditSlice = createSlice({
 });
 
 export const {
-  addFormElement,
   removeFormElement,
   removeFormChildElement,
   editFormChildElement,
   addFormChildElement,
+  addFormElement,
   changeFormChildElement,
+  changeFormElement,
 } = formEditSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

@@ -27,7 +27,7 @@ export default function PortfolioEditCard({ childKey }: { childKey: string }) {
         </div>
         <div className="mb-4">
           <TextInput
-            placeholderText="請簡短介紹 例如：購物網站"
+            placeholderText="請簡短介紹，字元限制120 例如：購物網站"
             textCount={120}
           ></TextInput>
         </div>

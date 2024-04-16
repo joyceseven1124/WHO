@@ -2,8 +2,8 @@
 import { useAppSelector } from '@/src/lib/hooks';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { ChildKeyContext, NodeKeyContext } from '../../../../lib/context';
-import DropzoneComponent from './DropzoneComponent';
-import Thumb from './PreviewImage';
+import DropzoneComponent from './handleImage/DropzoneComponent';
+import Thumb from './handleImage/PreviewImage';
 
 export default function ImageComponent() {
   const [imageStatus, setImageStatus] = useState(false);

@@ -4,7 +4,11 @@ import {
   FormElement,
   changeFormChildElement,
 } from '@/src/lib/feature/formDataSlice';
-import { useAppDispatch, useAppSelector, useAppStore } from '@/src/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/src/lib/hooks';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import ListItemButton from '@mui/material/ListItemButton';
 import { useEffect, useRef, useState } from 'react';
 import Sortable from 'sortablejs';
 import styled, { ThemeProvider } from 'styled-components';
@@ -12,6 +16,9 @@ import { NodeKeyContext } from '../../../../lib/context';
 import { Theme } from '../../../theme';
 import DeleteButton from '../button/DeleteButton';
 import PortfolioEditCard from '../card/PortfolioEditCard';
+import TextInput from '../smallElement/TextInput';
+// import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 const ListWrapper = styled.div`
   display: grid;
@@ -40,8 +47,9 @@ export default function PortfolioEditCardList({
   const dispatch = useAppDispatch();
   const gridRef = useRef<HTMLDivElement | null>(null);
   const sortableJsRef = useRef<Sortable | null>(null);
-
   const formList = useAppSelector((state) => state.FormData.formData);
+  const [openList, setOpenList] = useState(true);
+
   const currentComponentChild = formList[nodeKey]['children'];
   let cardList: React.ReactElement[] = [];
   if (currentComponentChild && Object.keys(currentComponentChild).length > 0) {
@@ -69,6 +77,10 @@ export default function PortfolioEditCardList({
     }
   };
 
+  const handleClick = () => {
+    setOpenList(!openList);
+  };
+
   useEffect(() => {
     if (gridRef.current) {
       sortableJsRef.current = new Sortable(gridRef.current, {
@@ -76,17 +88,34 @@ export default function PortfolioEditCardList({
         onEnd: onListChange,
       });
     }
-  }, []);
+  });
   return (
     <NodeKeyContext.Provider value={nodeKey}>
       <ThemeProvider theme={Theme}>
         <ListCardWrapper>
+          <div>
+            <TextInput
+              placeholderText="填寫表格的標題"
+              textCount={50}
+              styleHeight={'80px'}
+              styleFontSize={'24px'}
+            />
+            <ListItemButton onClick={handleClick} className="black">
+              {openList ? (
+                <ExpandLess className="text-black" />
+              ) : (
+                <ExpandMore className="text-black" />
+              )}
+            </ListItemButton>
+          </div>
           <div className="flex justify-end">
             <DeleteButton />
           </div>
-          <ListWrapper ref={gridRef} id="gridDemo">
-            {cardList}
-          </ListWrapper>
+          <Collapse in={openList} timeout="auto" unmountOnExit>
+            <ListWrapper ref={gridRef} id="gridDemo">
+              {cardList}
+            </ListWrapper>
+          </Collapse>
         </ListCardWrapper>
       </ThemeProvider>
     </NodeKeyContext.Provider>
