@@ -1,0 +1,29 @@
+// {
+//   "projects": {
+//     "default": "whoiam-38f06"
+//   }
+// }
+{
+  "hosting": {
+    "public": "public",
+    "rewrites": [
+      {
+        "source": "**/**",
+        "function": "nextjsServer"
+      }
+    ]
+  },
+  "functions": {
+    "runtime": "nodejs16",
+    "source": ".",
+    "ignore": [
+      ".firebase/**",
+      ".firebaserc",
+      "firebase.json",
+      "**/node_modules/**",
+      "**/public/**",
+      "**/cache/**",
+      "src/lib/__test__"
+    ]
+  }
+}

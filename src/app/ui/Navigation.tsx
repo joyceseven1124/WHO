@@ -3,12 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ButtonCva from './ButtonCva';
 import Search from './Search';
-// const buttonStyles = 'mr-1 border rounded border-neutral-900 p-2';
 
 export function Navigation() {
   return (
-    <header className="border-b border-gray-200">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-y-5 px-4 py-4 md:grid-cols-[auto_1fr_auto] md:justify-around md:gap-x-4">
+    <header className="relative z-40 border-b border-gray-200 bg-white">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-y-5 p-4 md:grid-cols-[auto_1fr_auto] md:justify-around md:gap-x-4">
         <Link href="/">
           <Image
             src="/logo.png"

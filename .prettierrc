@@ -5,5 +5,6 @@
   ],
   "tailwindFunctions": ["classNames"],
   "singleQuote": true,
-  "trailingComma": "es5"
+  "trailingComma": "es5",
+  "organizeImportsSkipDestructiveCodeActions": true
 }

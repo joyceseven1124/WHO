@@ -14,17 +14,26 @@ const buttonStyles = cva(
     'duration-300',
     'ease-in-out',
     'hover:text-white',
-    'hover:bg-gray-900',
     'focus:outline-none',
   ],
   {
     variants: {
       intent: {
         // 無背景色 ＋ 黑框 ＋ 黑字
-        primary: ['bg-transparent', 'text-black', 'border-gray-800'],
+        primary: [
+          'bg-transparent',
+          'text-black',
+          'border-gray-800',
+          'hover:bg-gray-900',
+        ],
 
         // 背景色黑 ＋ 黑框 ＋ 白字
-        secondary: ['bg-gray-950', 'text-white', 'border-gray-800'],
+        secondary: [
+          'bg-gray-950',
+          'text-white',
+          'border-gray-800',
+          'hover:bg-gray-800',
+        ],
 
         // 淺灰框 ＋ 白字＋ hover時白框
         third: [
