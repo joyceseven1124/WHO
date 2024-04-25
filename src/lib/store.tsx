@@ -1,8 +1,10 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import businessCardReducer from '@/src/lib/feature/businessCardDataSlice';
+import { combineReducers, configureStore, Store } from '@reduxjs/toolkit';
 import editFormReducer from '../lib/feature/formDataSlice';
 
 const rootReducer = combineReducers({
   FormData: editFormReducer,
+  CardData: businessCardReducer,
 });
 
 export const makeStore = (preloadedState?: any) => {

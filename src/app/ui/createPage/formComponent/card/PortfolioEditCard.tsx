@@ -1,6 +1,6 @@
 'use client';
 import styled from 'styled-components';
-import { ChildKeyContext } from '../../../../lib/context';
+import { ChildKeyContext } from '../../../../../lib/context';
 import DeleteButton from '../button/DeleteButton';
 import ImageComponent from '../smallElement/ImageComponent';
 import LinkComponent from '../smallElement/LinkComponent';

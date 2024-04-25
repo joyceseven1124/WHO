@@ -1,9 +1,10 @@
 'use client';
+import { useAppDispatch, useAppSelector, useAppStore } from '@/src/lib/RThooks';
 import {
   ChangePositionPayload,
   changeFormElement,
+  selectFormData,
 } from '@/src/lib/feature/formDataSlice';
-import { useAppDispatch, useAppSelector, useAppStore } from '@/src/lib/hooks';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { useRef } from 'react';
 import PortfolioEditCardList from './list/PortfolioEditCardList'; // @preserve
@@ -16,7 +17,7 @@ export default function CombinationForm() {
     initialized.current = true;
   }
 
-  const formList = useAppSelector((state) => state.FormData.formData);
+  const formList = useAppSelector(selectFormData);
   const onDragEnd = (event: any) => {
     const { source, destination } = event;
 

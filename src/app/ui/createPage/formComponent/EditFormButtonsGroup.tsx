@@ -1,4 +1,4 @@
-import AddNewComponentButton from '@/src/app/ui/formComponent/button/AddNewrComponentButton';
+import AddNewComponentButton from '@/src/app/ui/createPage/formComponent/button/AddNewrComponentButton';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 export default function EditFormButtonsGroup() {

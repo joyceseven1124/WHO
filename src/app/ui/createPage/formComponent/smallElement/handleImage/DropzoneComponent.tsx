@@ -1,10 +1,10 @@
 'use client';
+import { useAppDispatch } from '@/src/lib/RThooks';
 import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
-import { useAppDispatch } from '@/src/lib/hooks';
 import { useCallback, useContext } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
-import { ChildKeyContext, NodeKeyContext } from '../../../../../lib/context';
+import { ChildKeyContext, NodeKeyContext } from '../../../../../../lib/context';
 
 const getColor = (props: any) => {
   if (props.isDragAccept) {

@@ -29,7 +29,7 @@ export function Navigation() {
           <Search />
         </div>
         <div className="hidden gap-x-3 md:flex">
-          <Link href="/">
+          <Link href="/WhoForm/create">
             <ButtonCva intent={'secondary'}>My Blog</ButtonCva>
           </Link>
           <Link href="/">

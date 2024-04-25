@@ -1,0 +1,40 @@
+//CardWrapper
+.book {
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 2000px;
+  &:hover {
+    .cover {
+      -webkit-transition: all 0.5s;
+      transition: all 0.5s;
+      -webkit-transform: rotateY(-80deg);
+      -ms-transform: rotateY(-80deg);
+      transform: rotateY(-80deg);
+    }
+  }
+}
+
+//CardFrontWrapper
+.cover {
+  position: absolute;
+  top: 0;
+  transition: all 0.5s;
+  transform-origin: 0;
+  display: grid;
+  grid-row-gap: 10px;
+  .personImage {
+    width: 100%;
+    height: 250px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid darkgrey;
+    object-fit: cover;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+
+  .personDescription {
+    max-height: 50px;
+  }
+}

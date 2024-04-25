@@ -1,4 +1,4 @@
-import DropzoneComponent from '@/src/app/ui/formComponent/smallElement/handleImage/DropzoneComponent';
+import DropzoneComponent from '@/src/app/ui/createPage/formComponent/smallElement/handleImage/DropzoneComponent';
 import { ChildKeyContext, NodeKeyContext } from '@/src/lib/context';
 import '@testing-library/jest-dom';
 import { fireEvent, render } from '@testing-library/react';

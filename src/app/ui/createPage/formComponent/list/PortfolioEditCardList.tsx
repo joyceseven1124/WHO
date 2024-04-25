@@ -1,10 +1,11 @@
 'use client';
 import { MEDIA_QUERY_LG, MEDIA_QUERY_MD } from '@/src/app/style';
+import { useAppDispatch, useAppSelector } from '@/src/lib/RThooks';
 import {
   FormElement,
   changeFormChildElement,
+  selectFormData,
 } from '@/src/lib/feature/formDataSlice';
-import { useAppDispatch, useAppSelector } from '@/src/lib/hooks';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
@@ -12,13 +13,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { useEffect, useRef, useState } from 'react';
 import Sortable from 'sortablejs';
 import styled, { ThemeProvider } from 'styled-components';
-import { NodeKeyContext } from '../../../../lib/context';
-import { Theme } from '../../../theme';
+import { NodeKeyContext } from '../../../../../lib/context';
+import { Theme } from '../../../../theme';
 import DeleteButton from '../button/DeleteButton';
 import PortfolioEditCard from '../card/PortfolioEditCard';
 import TextInput from '../smallElement/TextInput';
-// import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 
 const ListWrapper = styled.div`
   display: grid;
@@ -47,7 +46,7 @@ export default function PortfolioEditCardList({
   const dispatch = useAppDispatch();
   const gridRef = useRef<HTMLDivElement | null>(null);
   const sortableJsRef = useRef<Sortable | null>(null);
-  const formList = useAppSelector((state) => state.FormData.formData);
+  const formList = useAppSelector(selectFormData);
   const [openList, setOpenList] = useState(true);
 
   const currentComponentChild = formList[nodeKey]['children'];
@@ -65,7 +64,7 @@ export default function PortfolioEditCardList({
   const onListChange = () => {
     const list: { [key: string]: FormElement } = {};
     if (gridRef.current) {
-      //  PortfolioEditCard 中設有dataset.id
+      //  PortfolioEditCard 中設有data-id
       const newData = [...gridRef.current.children]
         .map((i: any) => i.dataset.id)
         .map((id: string) => {

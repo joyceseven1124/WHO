@@ -1,6 +1,7 @@
 'use client';
 import ButtonCva from '@/src/app/ui/ButtonCva';
-import { useAppDispatch, useAppSelector } from '@/src/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/src/lib/RThooks';
+import { selectFormData } from '@/src/lib/feature/formDataSlice';
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
@@ -46,7 +47,7 @@ export default function LinkDialog({
 }: {
   setShowCardList: Dispatch<SetStateAction<boolean>>;
 }) {
-  const LinkTitle = useAppSelector((state) => state.FormData.formData);
+  const LinkTitle = useAppSelector(selectFormData);
   const dispatch = useAppDispatch();
   return (
     <EditLinkCard>

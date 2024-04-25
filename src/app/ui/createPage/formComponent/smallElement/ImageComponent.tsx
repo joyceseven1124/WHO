@@ -1,14 +1,15 @@
 'use client';
-import { useAppSelector } from '@/src/lib/hooks';
+import { useAppSelector } from '@/src/lib/RThooks';
+import { selectFormData } from '@/src/lib/feature/formDataSlice';
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { ChildKeyContext, NodeKeyContext } from '../../../../lib/context';
+import { ChildKeyContext, NodeKeyContext } from '../../../../../lib/context';
 import DropzoneComponent from './handleImage/DropzoneComponent';
 import Thumb from './handleImage/PreviewImage';
 
 export default function ImageComponent() {
   const [imageStatus, setImageStatus] = useState(false);
   const [thumb, setThumb] = useState<ReactNode>(null);
-  const fileData = useAppSelector((state) => state.FormData.formData);
+  const fileData = useAppSelector(selectFormData);
   const nodeKey = useContext(NodeKeyContext);
   const childKey = useContext(ChildKeyContext);
   const currentComponent = fileData[nodeKey]['children'];

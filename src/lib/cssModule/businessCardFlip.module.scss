@@ -1,0 +1,65 @@
+@import 'base';
+
+.flipCard {
+  background: transparent;
+  box-shadow: none;
+  position: relative;
+  .flipCardInner {
+    position: relative;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover .flipCardInner {
+    transform: rotateY(180deg);
+  }
+
+  .flipCardFront,
+  .flipCardBack {
+    box-shadow: $card-shadow;
+    position: absolute;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .flipCardFront {
+    border-radius: $card-radius;
+  }
+
+  .flipCardBack {
+    border: $card-radius;
+    transform: rotateY(180deg);
+  }
+
+  .cardBanner {
+    background-color: beige;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    object-fit: cover;
+    height: 150px;
+    border-radius: $card-radius $card-radius 0px 0px;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+
+  .personImage {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    z-index: 10;
+    border-radius: 50px;
+    border: 1px solid whitesmoke;
+    margin: auto;
+    margin-top: 80px;
+  }
+
+  .cardDescription {
+    margin-top: 10px;
+    max-height: 120px;
+    overflow: hidden;
+  }
+}
