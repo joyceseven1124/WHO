@@ -5,8 +5,8 @@ export default function StepperThree() {
     <>
       <form>
         <CombinationForm />
-        <button>Cancel</button>
-        <button>SAVE</button>
+        <button type="button">Cancel</button>
+        <button type="button">SAVE</button>
       </form>
       <EditFormButtonsGroup />
     </>

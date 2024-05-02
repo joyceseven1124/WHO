@@ -44,6 +44,13 @@ const buttonStyles = cva(
           'hover: border-white',
         ],
 
+        fourth: [
+          'bg-transparent',
+          'text-black',
+          'border-gray-600',
+          'hover:bg-gray-800',
+        ],
+
         danger: ['bg-red-500'],
         disable: ['bg-gray-500'],
       },

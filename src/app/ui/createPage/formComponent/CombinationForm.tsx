@@ -6,17 +6,22 @@ import {
   selectFormData,
 } from '@/src/lib/feature/formDataSlice';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
-import { useRef } from 'react';
+import { ComponentType, ReactElement, useRef, useState } from 'react';
+import CollapseListButton from './button/CollapseListButton';
+import ListLayout from './list/ListLayout';
+// import ListPoints from './list/ListPoints';
+import ListPointerBoard from './list/ListPointerBoard';
 import PortfolioEditCardList from './list/PortfolioEditCardList'; // @preserve
+import TimeLineEditList from './list/TimeLineEditList';
 
 export default function CombinationForm() {
   const store = useAppStore();
   const dispatch = useAppDispatch();
   const initialized = useRef(false);
+  const [collapseStatus, setCollapseStatus] = useState(false);
   if (!initialized.current) {
     initialized.current = true;
   }
-
   const formList = useAppSelector(selectFormData);
   const onDragEnd = (event: any) => {
     const { source, destination } = event;
@@ -47,21 +52,39 @@ export default function CombinationForm() {
   const formListRender = Object.keys(formList).map(
     (key: string, index: number) => {
       const CurrentElement = formList[key];
-      const ComponentToRender =
-        CurrentElement.componentType === 'PortfolioEditCardList'
-          ? PortfolioEditCardList
-          : null;
+      let ComponentToRender: any;
+      switch (CurrentElement.componentType) {
+        case 'PortfolioEditCardList':
+          ComponentToRender = PortfolioEditCardList;
+          break;
+        case 'ListPoints':
+          ComponentToRender = ListPointerBoard;
+          break;
+        case 'TimeLineEdit':
+          ComponentToRender = TimeLineEditList;
+          break;
+        default:
+          ComponentToRender = null;
+      }
+
       if (ComponentToRender) {
         return (
           <fieldset key={key} className={key}>
-            <Draggable draggableId={key} index={index} key={key}>
+            <Draggable
+              draggableId={key}
+              index={index}
+              key={key}
+              isDragDisabled={!collapseStatus}
+            >
               {(provided) => (
                 <div
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
                   ref={provided.innerRef}
                 >
-                  <ComponentToRender nodeKey={key} />
+                  <ListLayout nodeKey={key} collapseStatus={collapseStatus}>
+                    <ComponentToRender />
+                  </ListLayout>
                 </div>
               )}
             </Draggable>
@@ -74,14 +97,22 @@ export default function CombinationForm() {
   );
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="blog-form-drop-id">
-        {(provided, snapshot) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            {formListRender}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div>
+      <div className="mb-5 mt-5 flex w-full justify-end">
+        <CollapseListButton
+          collapseStatus={collapseStatus}
+          setCollapseStatus={setCollapseStatus}
+        />
+      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="blog-form-drop-id">
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {formListRender}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 }

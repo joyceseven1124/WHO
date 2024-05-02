@@ -1,23 +1,18 @@
 'use client';
 import { MEDIA_QUERY_LG, MEDIA_QUERY_MD } from '@/src/app/style';
 import { useAppDispatch, useAppSelector } from '@/src/lib/RThooks';
+import { NodeKeyContext } from '@/src/lib/context';
 import {
   FormElement,
+  addFormChildElement,
   changeFormChildElement,
   selectFormData,
 } from '@/src/lib/feature/formDataSlice';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-import ListItemButton from '@mui/material/ListItemButton';
-import { useEffect, useRef, useState } from 'react';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
+import { useContext, useEffect, useRef } from 'react';
 import Sortable from 'sortablejs';
-import styled, { ThemeProvider } from 'styled-components';
-import { NodeKeyContext } from '../../../../../lib/context';
-import { Theme } from '../../../../theme';
-import DeleteButton from '../button/DeleteButton';
+import styled from 'styled-components';
 import PortfolioEditCard from '../card/PortfolioEditCard';
-import TextInput from '../smallElement/TextInput';
 
 const ListWrapper = styled.div`
   display: grid;
@@ -33,28 +28,39 @@ const ListWrapper = styled.div`
   }
 `;
 
-const ListCardWrapper = styled.div`
-  border: ${(props) => props.theme.editLine};
-  padding: 50px 30px;
+const AddComponentButtonStyle = styled.div`
+  color: ${(props) => props.theme.gray};
+  font-size: 18px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${(props) => props.theme.gray};
+  cursor: pointer;
+  background-color: #e2e2e2;
+  &:hover {
+    color: white;
+    background-color: #8e8e8e;
+    .cardButtonIcon {
+      color: white;
+    }
+  }
 `;
 
-export default function PortfolioEditCardList({
-  nodeKey,
-}: {
-  nodeKey: string;
-}) {
+export default function PortfolioEditCardList() {
+  const nodeKey = useContext(NodeKeyContext);
   const dispatch = useAppDispatch();
   const gridRef = useRef<HTMLDivElement | null>(null);
   const sortableJsRef = useRef<Sortable | null>(null);
   const formList = useAppSelector(selectFormData);
-  const [openList, setOpenList] = useState(true);
 
   const currentComponentChild = formList[nodeKey]['children'];
   let cardList: React.ReactElement[] = [];
   if (currentComponentChild && Object.keys(currentComponentChild).length > 0) {
     const cardListKey = Object.keys(currentComponentChild);
     cardList = [];
-    cardListKey.map((key: string) => {
+    cardListKey.map((key: string, index: number) => {
       cardList.push(
         <PortfolioEditCard childKey={key} key={key}></PortfolioEditCard>
       );
@@ -62,22 +68,20 @@ export default function PortfolioEditCardList({
   }
 
   const onListChange = () => {
-    const list: { [key: string]: FormElement } = {};
+    // const list: { [key: string]: FormElement } = {};
+    const list: string[] = [];
     if (gridRef.current) {
       //  PortfolioEditCard 中設有data-id
       const newData = [...gridRef.current.children]
         .map((i: any) => i.dataset.id)
         .map((id: string) => {
-          list[id] = currentComponentChild[id];
+          if (id !== 'card-button') {
+            list.push(id);
+          }
         });
-
-      const data = { nodeKey: nodeKey, children: list };
+      const data = { nodeKey: nodeKey, childrenPositionArray: list };
       dispatch(changeFormChildElement(data));
     }
-  };
-
-  const handleClick = () => {
-    setOpenList(!openList);
   };
 
   useEffect(() => {
@@ -85,38 +89,32 @@ export default function PortfolioEditCardList({
       sortableJsRef.current = new Sortable(gridRef.current, {
         animation: 150,
         onEnd: onListChange,
+        filter: '.cardButton',
       });
     }
   });
   return (
-    <NodeKeyContext.Provider value={nodeKey}>
-      <ThemeProvider theme={Theme}>
-        <ListCardWrapper>
-          <div>
-            <TextInput
-              placeholderText="填寫表格的標題"
-              textCount={50}
-              styleHeight={'80px'}
-              styleFontSize={'24px'}
-            />
-            <ListItemButton onClick={handleClick} className="black">
-              {openList ? (
-                <ExpandLess className="text-black" />
-              ) : (
-                <ExpandMore className="text-black" />
-              )}
-            </ListItemButton>
-          </div>
-          <div className="flex justify-end">
-            <DeleteButton />
-          </div>
-          <Collapse in={openList} timeout="auto" unmountOnExit>
-            <ListWrapper ref={gridRef} id="gridDemo">
-              {cardList}
-            </ListWrapper>
-          </Collapse>
-        </ListCardWrapper>
-      </ThemeProvider>
-    </NodeKeyContext.Provider>
+    <>
+      <ListWrapper ref={gridRef} id="gridDemo">
+        {cardList}
+        {cardList.length < formList[nodeKey]['componentCount'] && (
+          <AddComponentButtonStyle
+            className="cardButton text-black"
+            data-id="card-button"
+            onClick={() => {
+              dispatch(
+                addFormChildElement({
+                  nodeKey: nodeKey,
+                  childKey: `${Date.now()}`,
+                })
+              );
+            }}
+          >
+            新增卡片
+            <PlusCircleIcon className="cardButtonIcon h-[24px] w-[24px] text-gray-500  peer-focus:text-gray-900" />
+          </AddComponentButtonStyle>
+        )}
+      </ListWrapper>
+    </>
   );
 }

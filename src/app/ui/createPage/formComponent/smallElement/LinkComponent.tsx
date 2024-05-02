@@ -1,5 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useAppSelector } from '@/src/lib/RThooks';
+import { ChildKeyContext, NodeKeyContext } from '@/src/lib/context';
+import { selectFormData } from '@/src/lib/feature/formDataSlice';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import LinkDialog from './LinkDialog';
 
@@ -11,9 +14,11 @@ const LinkComponentStyle = styled.button`
 `;
 
 export default function LinkComponent() {
-  const [linkWord, setTextWord] = useState('了解更多');
   const [showEditCard, setShowCardList] = useState(false);
-
+  const data = useAppSelector(selectFormData);
+  const nodeKey = useContext(NodeKeyContext);
+  const childKey = useContext(ChildKeyContext);
+  const childData = data[nodeKey]['children'][childKey];
   const editLink = () => {
     setShowCardList((prevState) => !prevState);
   };
@@ -26,7 +31,8 @@ export default function LinkComponent() {
           editLink();
         }}
       >
-        {linkWord}
+        {/* {linkWord} */}
+        {childData && childData.linkText ? childData.linkText : '了解更多'}
       </LinkComponentStyle>
       {showEditCard && <LinkDialog setShowCardList={setShowCardList} />}
     </>

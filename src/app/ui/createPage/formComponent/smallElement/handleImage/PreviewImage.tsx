@@ -1,6 +1,12 @@
 'use client';
+import { useAppDispatch } from '@/src/lib/RThooks';
+import { ChildKeyContext, NodeKeyContext } from '@/src/lib/context';
+import {
+  addImageCollection,
+  editFormChildElement,
+} from '@/src/lib/feature/formDataSlice';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import DeleteButton from '../../button/DeleteButton';
 import EditButton from '../../button/EditPictureButton';
@@ -73,6 +79,9 @@ export default function Thumb({
   styleHeight?: string;
 }) {
   const [openCrop, setOpenCrop] = useState(false);
+  const nodeKey = useContext(NodeKeyContext);
+  const childKey = useContext(ChildKeyContext);
+  const dispatch = useAppDispatch();
   return (
     <>
       <ThumbStyle $styleHeight={styleHeight}>
@@ -88,7 +97,23 @@ export default function Thumb({
         />
         <HoverStyle id="hoverDialog">
           <ButtonsDialog id="buttonDialog">
-            <DeleteButton iconTailwindColor="text-white"></DeleteButton>
+            <div
+              onClick={() => {
+                dispatch(
+                  editFormChildElement({
+                    nodeKey: nodeKey,
+                    childKey: childKey,
+                    elements: { imageURL: '', imageInformation: '' },
+                  })
+                );
+                dispatch(
+                  addImageCollection({ nodeKey: nodeKey, childKey: childKey })
+                );
+                URL.revokeObjectURL(imageURL);
+              }}
+            >
+              <DeleteButton iconTailwindColor="text-white"></DeleteButton>
+            </div>
             <EditButton
               iconTailwindColor="text-white"
               setCrop={setOpenCrop}

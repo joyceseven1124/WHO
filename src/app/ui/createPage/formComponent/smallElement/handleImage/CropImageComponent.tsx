@@ -1,5 +1,8 @@
 import { useAppDispatch } from '@/src/lib/RThooks';
-import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
+import {
+  addImageCollection,
+  editFormChildElement,
+} from '@/src/lib/feature/formDataSlice';
 import getCroppedImg, { CroppedImageResult } from '@/src/lib/utils/cropImage';
 import { Cancel } from '@mui/icons-material';
 import CropIcon from '@mui/icons-material/Crop';
@@ -54,6 +57,13 @@ const CropImageComponent = ({
         if (typeof result !== null) {
           const { file, url } = result as CroppedImageResult;
           const elements = { imageURL: url };
+          // dispatch(
+          //   addImageCollection({
+          //     nodeKey: nodeKey,
+          //     childKey: childKey,
+          //     imageFile: file,
+          //   })
+          // );
           dispatch(
             editFormChildElement({
               nodeKey: nodeKey,
@@ -148,7 +158,7 @@ const CropImageComponent = ({
             Cancel
           </Button>
           <Button
-            variant="contained"
+            variant="outlined"
             startIcon={<CropIcon />}
             onClick={cropImage}
           >

@@ -44,7 +44,6 @@ export async function websocketRootCard(): Promise<BusinessCardListProp[]> {
               time: data.time,
             });
           });
-          console.log('Current cities in CA: ', rootCard);
           // return rootCard;
           resolve(rootCard);
         },

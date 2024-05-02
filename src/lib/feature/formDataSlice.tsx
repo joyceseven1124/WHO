@@ -1,27 +1,45 @@
 import type { RootState } from '@/src/lib/store';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-
-// Define a type for the slice state
+import dayjs, { Dayjs } from 'dayjs';
 export interface FormElement {
-  position?: string;
+  // position?: string;
   inputText?: string;
   imageURL?: string;
   imageInformation?: string;
+  // imageFile?: File;
   linkText?: string;
   linkURL?: string;
+  startTimeLine?: string;
+  endTimeLine?: string;
+  initStartTime?: string;
+  initEndTime?: string;
+  listTextArray?: (string | undefined)[];
+  [key: string]: string | (string | undefined)[] | undefined | null[] | Dayjs;
+}
+interface ComponentStructure {
+  componentType: string;
+  componentTitle: string;
+  componentCount: number;
+  children: { [key: string]: FormElement };
+}
+
+interface ImageCollectionType {
+  childKey: string;
+  nodeKey: string;
+  imageFile?: Blob;
 }
 
 export interface FormDataList {
-  formData: {
-    [key: string]: {
-      componentType: string;
-      children: { [key: string]: FormElement };
-    };
-  };
+  formData: { [key: string]: ComponentStructure };
+  imageCollection: ImageCollectionType[];
 }
 
-interface FormPayload {
+interface editFormElement {
+  nodeKey: string;
+  componentTitle: string;
+}
+export interface FormPayload {
   nodeKey: string;
   childKey: string;
   elements?: FormElement;
@@ -30,22 +48,20 @@ interface FormPayload {
 export interface FormInitPayload {
   nodeKey: string;
   componentType: string;
+  componentCount: number;
   children: { [key: string]: FormElement };
 }
 
-interface ChangePositionChildPayload {
+export interface ChangePositionChildPayload {
   nodeKey: string;
-  children: { [key: string]: FormElement };
+  childrenPositionArray: string[] | [];
+  // children: { [key: string]: FormElement };
 }
 
 export interface ChangePositionPayload {
-  elementKeyArray: {
-    [key: string]: {
-      componentType: string;
-      children: { [key: string]: FormElement };
-    };
-  };
+  elementKeyArray: { [key: string]: ComponentStructure };
 }
+
 interface RemovePayload {
   nodeKey: string;
   childKey?: string;
@@ -54,6 +70,7 @@ interface RemovePayload {
 // Define the initial state using that type
 const initialState: FormDataList = {
   formData: {},
+  imageCollection: [],
 };
 
 export const formEditSlice = createSlice({
@@ -62,10 +79,12 @@ export const formEditSlice = createSlice({
   initialState,
   reducers: {
     addFormElement: (state, action: PayloadAction<FormInitPayload>) => {
-      const { nodeKey, componentType, children } = action.payload;
+      const { nodeKey, componentType, children, componentCount } =
+        action.payload;
       state.formData[nodeKey] = {
         ...state.formData[nodeKey],
         componentType: componentType,
+        componentCount: componentCount,
         children: children,
       };
     },
@@ -80,6 +99,11 @@ export const formEditSlice = createSlice({
     ) => {
       const { elementKeyArray } = action.payload;
       state.formData = { ...elementKeyArray };
+    },
+
+    editFormElement: (state, action: PayloadAction<editFormElement>) => {
+      const { nodeKey, componentTitle } = action.payload;
+      state.formData[nodeKey]['componentTitle'] = componentTitle;
     },
 
     removeFormChildElement: (state, action: PayloadAction<RemovePayload>) => {
@@ -114,9 +138,15 @@ export const formEditSlice = createSlice({
       state,
       action: PayloadAction<ChangePositionChildPayload>
     ) => {
-      const { nodeKey, children } = action.payload;
+      const { nodeKey, childrenPositionArray } = action.payload;
+
       if (state.formData[nodeKey]) {
-        state.formData[nodeKey]['children'] = children;
+        const newDataList: any = {};
+        const oldData = state.formData[nodeKey]['children'];
+        childrenPositionArray.map((element: string) => {
+          newDataList[element] = oldData[element];
+        });
+        state.formData[nodeKey]['children'] = newDataList;
       }
     },
 
@@ -125,6 +155,26 @@ export const formEditSlice = createSlice({
       if (state.formData[nodeKey]) {
         state.formData[nodeKey]['children'][childKey] = {};
       }
+    },
+
+    addImageCollection: (state, action: PayloadAction<ImageCollectionType>) => {
+      const { nodeKey, childKey, imageFile } = action.payload;
+      const data = {
+        nodeKey: nodeKey,
+        childKey: childKey,
+        imageFile: imageFile,
+      };
+      state.imageCollection.push(data);
+    },
+
+    removeImageCollection: (
+      state,
+      action: PayloadAction<ImageCollectionType>
+    ) => {
+      const { nodeKey, childKey } = action.payload;
+      state.imageCollection = state.imageCollection.filter((element) => {
+        return !(element.nodeKey === nodeKey && element.childKey === childKey);
+      });
     },
   },
 });
@@ -137,6 +187,9 @@ export const {
   addFormElement,
   changeFormChildElement,
   changeFormElement,
+  editFormElement,
+  addImageCollection,
+  removeImageCollection,
 } = formEditSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

@@ -10,19 +10,28 @@ import reducer, {
 
 describe('test for formDataSlice', () => {
   test('should return the initial state', () => {
-    expect(reducer(undefined, { type: '' })).toEqual({ formData: {} });
+    expect(reducer(undefined, { type: '' })).toEqual({
+      formData: {},
+      imageCollection: [],
+    });
   });
 
   test('should handle an formData add action', () => {
     const payload = {
       nodeKey: '12',
       componentType: 'PortfolioEditCard',
+      componentCount: 12,
       children: { '122': {} },
     };
     expect(reducer(undefined, addFormElement(payload))).toEqual({
       formData: {
-        '12': { componentType: 'PortfolioEditCard', children: { '122': {} } },
+        '12': {
+          componentType: 'PortfolioEditCard',
+          componentCount: 12,
+          children: { '122': {} },
+        },
       },
+      imageCollection: [],
     });
   });
 
@@ -31,14 +40,19 @@ describe('test for formDataSlice', () => {
       formData: {
         '12': {
           componentType: 'PortfolioEditCard',
+          componentTitle: 'hello',
+          componentCount: 12,
           children: { '122': {} },
         },
 
         '13': {
           componentType: 'PortfolioEditCard',
+          componentTitle: 'hello',
+          componentCount: 12,
           children: { '122': {} },
         },
       },
+      imageCollection: [],
     };
 
     const payload = {
@@ -49,9 +63,12 @@ describe('test for formDataSlice', () => {
       formData: {
         '13': {
           componentType: 'PortfolioEditCard',
+          componentTitle: 'hello',
+          componentCount: 12,
           children: { '122': {} },
         },
       },
+      imageCollection: [],
     });
   });
 
@@ -60,9 +77,12 @@ describe('test for formDataSlice', () => {
       formData: {
         '12': {
           componentType: 'PortfolioEditCard',
+          componentTitle: 'hello',
+          componentCount: 12,
           children: { '122': {} },
         },
       },
+      imageCollection: [],
     };
     const payload = {
       nodeKey: '12',
@@ -73,9 +93,12 @@ describe('test for formDataSlice', () => {
       formData: {
         '12': {
           componentType: 'PortfolioEditCard',
+          componentTitle: 'hello',
+          componentCount: 12,
           children: { '122': { position: '123' } },
         },
       },
+      imageCollection: [],
     });
   });
 
@@ -84,6 +107,8 @@ describe('test for formDataSlice', () => {
       formData: {
         '12': {
           componentType: 'PortfolioEditCard',
+          componentTitle: 'hello',
+          componentCount: 12,
           children: {
             '122': {},
             '123': {},
@@ -91,15 +116,18 @@ describe('test for formDataSlice', () => {
           },
         },
       },
+      imageCollection: [],
     };
     const payload = {
       nodeKey: '12',
-      children: { '124': {}, '123': {}, '122': {} },
+      childrenPositionArray: ['124', '123', '122'],
     };
     expect(reducer(initialState, changeFormChildElement(payload))).toEqual({
       formData: {
         '12': {
           componentType: 'PortfolioEditCard',
+          componentTitle: 'hello',
+          componentCount: 12,
           children: {
             '124': {},
             '123': {},
@@ -107,6 +135,7 @@ describe('test for formDataSlice', () => {
           },
         },
       },
+      imageCollection: [],
     });
   });
 });

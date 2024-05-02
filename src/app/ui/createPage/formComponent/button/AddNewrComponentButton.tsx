@@ -44,17 +44,19 @@ export default function AddNewComponentButton({
   children,
   componentType,
   description,
+  count = 1,
 }: Readonly<{
   children: React.ReactNode;
   componentType: string;
   description: string;
+  count?: number;
 }>) {
   const dispatch = useAppDispatch();
   const handleAddComponent = () => {
     const id = `${componentType}_${Date.now()}`;
 
-    // 用於產生預設的12個子元素
-    const randomValuesArray = new Uint8Array(12);
+    // 用於產生預設的n個子元素
+    const randomValuesArray = new Uint8Array(count);
     crypto.getRandomValues(randomValuesArray);
     const childrenList: { [key: string]: {} } = {};
     Array.from(randomValuesArray).forEach((element) => {
@@ -68,6 +70,7 @@ export default function AddNewComponentButton({
     const data = {
       nodeKey: id,
       componentType: componentType,
+      componentCount: count,
       children: childrenList,
     };
     dispatch(addFormElement(data));

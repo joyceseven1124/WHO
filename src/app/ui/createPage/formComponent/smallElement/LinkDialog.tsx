@@ -1,11 +1,15 @@
 'use client';
 import ButtonCva from '@/src/app/ui/ButtonCva';
 import { useAppDispatch, useAppSelector } from '@/src/lib/RThooks';
-import { selectFormData } from '@/src/lib/feature/formDataSlice';
-import { Dispatch, SetStateAction } from 'react';
+import { ChildKeyContext, NodeKeyContext } from '@/src/lib/context';
+import {
+  editFormChildElement,
+  selectFormData,
+} from '@/src/lib/feature/formDataSlice';
+import { Dispatch, SetStateAction, useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
-const EditLinkCard = styled.form`
+const EditLinkCard = styled.div`
   padding: 12px;
   border: 1px solid ${(props) => props.theme.gray};
   box-shadow: -5px 9px 28px -4px rgba(0, 0, 0, 0.75);
@@ -47,17 +51,42 @@ export default function LinkDialog({
 }: {
   setShowCardList: Dispatch<SetStateAction<boolean>>;
 }) {
-  const LinkTitle = useAppSelector(selectFormData);
   const dispatch = useAppDispatch();
+  const nodeKey = useContext(NodeKeyContext);
+  const childKey = useContext(ChildKeyContext);
+  const linkTitleRef = useRef<HTMLInputElement>(null);
+  const linkURLRef = useRef<HTMLInputElement>(null);
+  const data = useAppSelector(selectFormData);
+  const childData = data[nodeKey]['children'][childKey];
+  useEffect(() => {
+    if (childData && childData.linkText && childData.linkText.trim() !== '') {
+      linkTitleRef.current?.setAttribute('value', childData.linkText);
+    }
+
+    if (childData && childData.linkURL && childData.linkURL.trim() !== '') {
+      linkURLRef.current?.setAttribute('value', childData.linkURL);
+    }
+  }, [childData]);
   return (
     <EditLinkCard>
       <EditLinkInput>
         <label htmlFor="linkTitle">連結標題:</label>
-        <input type="text" id="linkTitle" placeholder="了解更多" />
+        <input
+          type="text"
+          id="linkTitle"
+          placeholder="了解更多"
+          ref={linkTitleRef}
+          maxLength={10}
+        />
       </EditLinkInput>
       <EditLinkInput>
         <label htmlFor="linkURL">連結:</label>
-        <input type="text" id="linkURL" placeholder="https://www.test.com/" />
+        <input
+          type="text"
+          id="linkURL"
+          placeholder="https://www.test.com/"
+          ref={linkURLRef}
+        />
       </EditLinkInput>
       <EditLinkButtons>
         <ButtonCva
@@ -74,6 +103,16 @@ export default function LinkDialog({
           type="button"
           intent={'secondary'}
           onClick={() => {
+            dispatch(
+              editFormChildElement({
+                nodeKey: nodeKey,
+                childKey: childKey,
+                elements: {
+                  linkText: linkTitleRef.current?.value,
+                  linkURL: linkURLRef.current?.value,
+                },
+              })
+            );
             setShowCardList(false);
           }}
         >

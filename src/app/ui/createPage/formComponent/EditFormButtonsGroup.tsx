@@ -15,6 +15,7 @@ export default function EditFormButtonsGroup() {
           <AddNewComponentButton
             componentType="PortfolioEditCardList"
             description="由圖片、敘述文字、連結組成的卡片，共12張"
+            count={12}
           >
             <Image
               src="/componentButton/cardList.png"
@@ -39,6 +40,7 @@ export default function EditFormButtonsGroup() {
           <AddNewComponentButton
             componentType="TimeLineEdit"
             description="由文字軸線所組成"
+            count={5}
           >
             <Image
               src="/componentButton/timeLine.png"
@@ -75,6 +77,7 @@ export default function EditFormButtonsGroup() {
           <AddNewComponentButton
             componentType="ListPoints"
             description="由文字列點所組成"
+            count={3}
           >
             <Image
               src="/componentButton/listPoints.png"

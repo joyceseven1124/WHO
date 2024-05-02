@@ -27,6 +27,9 @@ export default function ImageComponent() {
             styleHeight={'200px'}
           />
         );
+      } else {
+        setImageStatus(false);
+        setThumb(null);
       }
     }
   }, [childKey, currentComponent]);

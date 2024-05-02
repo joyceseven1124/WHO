@@ -9,7 +9,7 @@ export interface RootCardType {
   time: string;
   name: string;
   work: string;
-  description: string | null;
+  description: string;
   userPhoto: string;
   userPhotoAlt: string;
   bgPhoto: string | null;

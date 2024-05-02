@@ -91,26 +91,27 @@ export async function createBusinessCard(
   const id = 'test2';
   const date = getCurrentDateFormatted();
   try {
-    const userImageUrl = await saveImage(userPhoto);
-    await setDoc(doc(db, 'blogRootList', id), {
-      id: id,
-      cardType: cardType,
-      name: name,
-      work: work,
-      description: description,
-      url: userImageUrl,
-      userPhoto: {
-        url: userImageUrl,
-        size: userPhoto.size,
-        type: userPhoto.type,
-        name: `test-user-name`,
-        lastModified: userPhoto.lastModified,
-      },
-      userBgPhoto: userBgPhoto,
-      // 暫時
-      finishAllForm: true,
-      time: date,
-    });
+    // 先暫時隱藏
+    // const userImageUrl = await saveImage(userPhoto);
+    // await setDoc(doc(db, 'blogRootList', id), {
+    //   id: id,
+    //   cardType: cardType,
+    //   name: name,
+    //   work: work,
+    //   description: description,
+    //   url: userImageUrl,
+    //   userPhoto: {
+    //     url: userImageUrl,
+    //     size: userPhoto.size,
+    //     type: userPhoto.type,
+    //     name: `test-user-name`,
+    //     lastModified: userPhoto.lastModified,
+    //   },
+    //   userBgPhoto: userBgPhoto,
+    //   // 暫時
+    //   finishAllForm: true,
+    //   time: date,
+    // });
     return {
       success: true,
     };
