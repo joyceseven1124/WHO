@@ -1,13 +1,17 @@
 import { BusinessCardListProp, ImageTypeScript } from '@/src/lib/definitions';
+import { FormDataList } from '@/src/lib/feature/formDataSlice';
 import { db } from '@/src/lib/firebaseConfig';
 import {
   collection,
+  doc,
   getCountFromServer,
   onSnapshot,
   query,
+  setDoc,
   where,
 } from 'firebase/firestore';
 import {
+  deleteObject,
   getDownloadURL,
   getStorage,
   ref,
@@ -71,20 +75,37 @@ export async function fetchCountPageRootCard() {
   }
 }
 
-export async function saveImage(file: File) {
+export async function saveImage(file: File, imageName: string) {
   noStore();
   const storage = getStorage();
   const metadata = {
     contentType: `${file.type}`,
   };
-  const storageRef = ref(storage, 'rootCard/' + file.name);
+  const storageRef = ref(storage, 'rootCard/' + imageName);
   const uploadTask = uploadBytesResumable(storageRef, file, metadata);
   try {
     await uploadTask;
     const url = await getDownloadURL(uploadTask.snapshot.ref);
-    return url;
+    return { status: true, url: url };
   } catch (error) {
-    console.error('Error saving image:', error);
-    throw error;
+    // throw error;
+    return { status: false, error: error };
   }
+}
+
+export async function deleteImage(imagePath: string) {
+  noStore();
+  const storage = getStorage();
+  const desertRef = ref(storage, imagePath);
+  deleteObject(desertRef)
+    .then(() => {
+      return { result: true };
+    })
+    .catch((error) => {
+      return { result: false, message: error };
+    });
+}
+
+export async function saveFormData(formData: FormDataList) {
+  await setDoc(doc(db, 'blogs', 'test1'), formData.formData);
 }

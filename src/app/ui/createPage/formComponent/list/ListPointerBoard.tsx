@@ -5,13 +5,7 @@ import { selectFormData } from '@/src/lib/feature/formDataSlice';
 import useDragDropHandle from '@/src/lib/hooks/uselistPointerDragAndDrop';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { useContext } from 'react';
-import styled from 'styled-components';
-
-const ListPointerBoardStyle = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 20px;
-`;
+import { ListPointerBoardStyle } from '../../../ComponentStyle';
 
 export default function ListPointerBoard() {
   const data = useAppSelector(selectFormData);

@@ -13,38 +13,15 @@ import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs, { Dayjs } from 'dayjs';
-import { TimeHTMLAttributes, useContext, useState } from 'react';
-import styled from 'styled-components';
+import { useContext } from 'react';
+import {
+  TimeLineDataStyle,
+  TimeLineHorizontalLine,
+  TimeLineWrapper,
+} from '../../../ComponentStyle';
 import DeleteButton from '../button/DeleteButton';
 import TextArea from './TextArea';
-
-const TimeLineEditWrapper = styled.div`
-  display: flex;
-  column-gap: 20px;
-  align-items: flex-start;
-`;
-const DecorativeElementsWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-const Circle = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  background-color: black;
-`;
-const VerticalLine = styled.div`
-  width: 1px;
-  height: 180px;
-  background-color: black;
-`;
-
-const HorizontalLine = styled.div`
-  height: 1px;
-  width: 50px;
-  background-color: ${(props) => props.theme.gray};
-`;
+import TimeLineDecorate from './TimeLineDecorate';
 
 const materialTheme = createTheme({
   components: {
@@ -52,7 +29,7 @@ const materialTheme = createTheme({
       styleOverrides: {
         root: {
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'black', // Customize border color on focus
+            borderColor: 'black',
             color: 'black',
           },
         },
@@ -61,9 +38,8 @@ const materialTheme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          // Default color
           '&.Mui-focused': {
-            color: 'black', // Label color when input is focused
+            color: 'black',
           },
         },
       },
@@ -76,11 +52,8 @@ export default function TimeLineEdit() {
   const childKey = useContext(ChildKeyContext);
   const dispatch = useAppDispatch();
   const formList = useAppSelector(selectFormData);
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs('2024-04'));
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs('2024-04'));
   const { getInputValue, handleTextAreaDispatch } =
     useTextAreaInputValue(childKey);
-  // const nodeKey = useContext(NodeKeyContext);
 
   const inputValue = getInputValue();
 
@@ -133,17 +106,14 @@ export default function TimeLineEdit() {
   };
 
   return (
-    <TimeLineEditWrapper>
-      <DecorativeElementsWrapper className="text-black">
-        <Circle />
-        <VerticalLine />
-      </DecorativeElementsWrapper>
+    <TimeLineWrapper>
+      <TimeLineDecorate />
       <div className="grid w-full grid-cols-[auto,40px] items-center gap-x-2">
         <div className="flex flex-col gap-y-2">
           <ThemeProvider theme={materialTheme}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['MuiDatePicker', 'MuiDatePicker']}>
-                <div className="mb-4 flex items-center gap-x-2">
+                <TimeLineDataStyle>
                   <MuiDatePicker
                     label='"起始年月份選取"'
                     value={initStartTime ?? dayjs()}
@@ -152,7 +122,7 @@ export default function TimeLineEdit() {
                     }}
                     views={['month', 'year']}
                   />
-                  <HorizontalLine />
+                  <TimeLineHorizontalLine />
                   <MuiDatePicker
                     label='"結束年月份選取"'
                     value={initEndTime ?? dayjs()}
@@ -161,7 +131,7 @@ export default function TimeLineEdit() {
                     }}
                     views={['month', 'year']}
                   />
-                </div>
+                </TimeLineDataStyle>
               </DemoContainer>
             </LocalizationProvider>
           </ThemeProvider>
@@ -184,6 +154,6 @@ export default function TimeLineEdit() {
           <DeleteButton />
         </div>
       </div>
-    </TimeLineEditWrapper>
+    </TimeLineWrapper>
   );
 }

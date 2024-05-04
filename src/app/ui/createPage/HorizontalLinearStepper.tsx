@@ -1,6 +1,8 @@
 import { Theme } from '@/src/app/theme';
 import { useAppSelector } from '@/src/lib/RThooks';
 import { selectCardData } from '@/src/lib/feature/businessCardDataSlice';
+import { selectFormData } from '@/src/lib/feature/formDataSlice';
+import { saveFormData } from '@/src/lib/handleData';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Step from '@mui/material/Step';
@@ -28,6 +30,7 @@ export default function HorizontalLinearStepper({
   setActiveStep: Dispatch<SetStateAction<number>>;
 }) {
   const data = useAppSelector(selectCardData);
+  const formData = useAppSelector(selectFormData);
   const [errorMessage, setErrorMessage] = useState('');
   const handleNext = () => {
     switch (activeStep) {
@@ -47,8 +50,15 @@ export default function HorizontalLinearStepper({
         } else {
           setErrorMessage('請將表單填寫完並且儲存');
         }
-
         break;
+
+      case 3:
+        console.log('完成表單');
+        console.log(formData);
+        const formDataObject = {
+          formData: formData,
+        };
+        saveFormData(formDataObject);
 
       default:
         setActiveStep((prevActiveStep) => prevActiveStep + 1);

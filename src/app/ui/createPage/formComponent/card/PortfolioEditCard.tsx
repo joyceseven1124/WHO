@@ -5,19 +5,11 @@ import { removeFormChildElement } from '@/src/lib/feature/formDataSlice';
 import useTextAreaInputValue from '@/src/lib/hooks/useTextAreaInputValue';
 import { useContext } from 'react';
 import styled from 'styled-components';
+import { PortfolioCardStyle } from '../../../ComponentStyle';
 import DeleteButton from '../button/DeleteButton';
 import ImageComponent from '../smallElement/ImageComponent';
 import LinkComponent from '../smallElement/LinkComponent';
 import TextArea from '../smallElement/TextArea';
-
-const CardWrapper = styled.div`
-  color: black;
-  display: block;
-  border: 1px solid black;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-`;
 
 export default function PortfolioEditCard({ childKey }: { childKey: string }) {
   const nodeKey = useContext(NodeKeyContext);
@@ -28,7 +20,7 @@ export default function PortfolioEditCard({ childKey }: { childKey: string }) {
 
   return (
     <ChildKeyContext.Provider value={childKey}>
-      <CardWrapper className={childKey} data-id={childKey}>
+      <PortfolioCardStyle className={childKey} data-id={childKey}>
         <div
           className="mb-2 flex justify-end"
           onClick={() => {
@@ -53,7 +45,7 @@ export default function PortfolioEditCard({ childKey }: { childKey: string }) {
         <div className="mb-4 flex justify-end">
           <LinkComponent />
         </div>
-      </CardWrapper>
+      </PortfolioCardStyle>
     </ChildKeyContext.Provider>
   );
 }

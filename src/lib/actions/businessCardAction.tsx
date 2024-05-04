@@ -33,14 +33,14 @@ const BusinessCardSchema = z
       .refine((file) => file?.size <= MAX_FILE_SIZE, '只能繳交1MB的圖片大小')
       .refine(
         (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        '需繳交圖檔，如jpeg|jpg|png|webp|gif'
+        '需繳交圖檔，如jpeg|jpg|png|webp'
       ),
     userBgPhoto: z
       .any({ invalid_type_error: '必須繳交圖檔' })
       .refine((file) => file?.size <= MAX_FILE_SIZE, '只能繳交1MB的圖片大小')
       .refine(
         (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        '需繳交圖檔，如jpeg|jpg|png|webp|gif'
+        '需繳交圖檔，如jpeg|jpg|png|webp'
       )
       .nullable(),
   })
@@ -91,8 +91,9 @@ export async function createBusinessCard(
   const id = 'test2';
   const date = getCurrentDateFormatted();
   try {
-    // 先暫時隱藏
-    // const userImageUrl = await saveImage(userPhoto);
+    // 先暫時隱藏 今天修改一下
+    // const userImageUrl = await saveImage(userPhoto,'test-user-name');
+
     // await setDoc(doc(db, 'blogRootList', id), {
     //   id: id,
     //   cardType: cardType,

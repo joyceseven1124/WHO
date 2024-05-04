@@ -1,9 +1,7 @@
 'use client';
-import { MEDIA_QUERY_LG, MEDIA_QUERY_MD } from '@/src/app/style';
 import { useAppDispatch, useAppSelector } from '@/src/lib/RThooks';
 import { NodeKeyContext } from '@/src/lib/context';
 import {
-  FormElement,
   addFormChildElement,
   changeFormChildElement,
   selectFormData,
@@ -12,21 +10,8 @@ import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useContext, useEffect, useRef } from 'react';
 import Sortable from 'sortablejs';
 import styled from 'styled-components';
+import { PortfolioCardListWrapperStyle } from '../../../ComponentStyle';
 import PortfolioEditCard from '../card/PortfolioEditCard';
-
-const ListWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 20px;
-  row-gap: 20px;
-
-  ${MEDIA_QUERY_MD} {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-  ${MEDIA_QUERY_LG} {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-`;
 
 const AddComponentButtonStyle = styled.div`
   color: ${(props) => props.theme.gray};
@@ -95,7 +80,7 @@ export default function PortfolioEditCardList() {
   });
   return (
     <>
-      <ListWrapper ref={gridRef} id="gridDemo">
+      <PortfolioCardListWrapperStyle ref={gridRef} id="gridDemo">
         {cardList}
         {cardList.length < formList[nodeKey]['componentCount'] && (
           <AddComponentButtonStyle
@@ -114,7 +99,7 @@ export default function PortfolioEditCardList() {
             <PlusCircleIcon className="cardButtonIcon h-[24px] w-[24px] text-gray-500  peer-focus:text-gray-900" />
           </AddComponentButtonStyle>
         )}
-      </ListWrapper>
+      </PortfolioCardListWrapperStyle>
     </>
   );
 }

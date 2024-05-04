@@ -3,11 +3,9 @@ import EditFormButtonsGroup from '@/src/app/ui/createPage/formComponent/EditForm
 export default function StepperThree() {
   return (
     <>
-      <form>
+      <div>
         <CombinationForm />
-        <button type="button">Cancel</button>
-        <button type="button">SAVE</button>
-      </form>
+      </div>
       <EditFormButtonsGroup />
     </>
   );

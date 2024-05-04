@@ -1,4 +1,5 @@
 'use client';
+import { Theme } from '@/src/app/theme';
 import { useAppSelector } from '@/src/lib/RThooks';
 import { selectFormData } from '@/src/lib/feature/formDataSlice';
 import { ReactNode, useContext, useEffect, useState } from 'react';
@@ -24,7 +25,7 @@ export default function ImageComponent() {
           <Thumb
             imageURL={ImageURL}
             imageInformation={ImageInformation}
-            styleHeight={'200px'}
+            styleHeight={Theme.portfolioCardHeight}
           />
         );
       } else {

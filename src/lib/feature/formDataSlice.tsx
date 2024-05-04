@@ -7,6 +7,7 @@ export interface FormElement {
   inputText?: string;
   imageURL?: string;
   imageInformation?: string;
+  // editImage?: string;
   // imageFile?: File;
   linkText?: string;
   linkURL?: string;
@@ -17,22 +18,22 @@ export interface FormElement {
   listTextArray?: (string | undefined)[];
   [key: string]: string | (string | undefined)[] | undefined | null[] | Dayjs;
 }
-interface ComponentStructure {
+export interface ComponentStructure {
   componentType: string;
   componentTitle: string;
   componentCount: number;
   children: { [key: string]: FormElement };
 }
 
-interface ImageCollectionType {
-  childKey: string;
-  nodeKey: string;
-  imageFile?: Blob;
-}
+// interface ImageCollectionType {
+//   childKey: string;
+//   nodeKey: string;
+//   imageFile?: Blob;
+// }
 
 export interface FormDataList {
   formData: { [key: string]: ComponentStructure };
-  imageCollection: ImageCollectionType[];
+  // imageCollection: ImageCollectionType[];
 }
 
 interface editFormElement {
@@ -70,7 +71,7 @@ interface RemovePayload {
 // Define the initial state using that type
 const initialState: FormDataList = {
   formData: {},
-  imageCollection: [],
+  // imageCollection: [],
 };
 
 export const formEditSlice = createSlice({
@@ -157,25 +158,25 @@ export const formEditSlice = createSlice({
       }
     },
 
-    addImageCollection: (state, action: PayloadAction<ImageCollectionType>) => {
-      const { nodeKey, childKey, imageFile } = action.payload;
-      const data = {
-        nodeKey: nodeKey,
-        childKey: childKey,
-        imageFile: imageFile,
-      };
-      state.imageCollection.push(data);
-    },
+    // addImageCollection: (state, action: PayloadAction<ImageCollectionType>) => {
+    //   const { nodeKey, childKey, imageFile } = action.payload;
+    //   const data = {
+    //     nodeKey: nodeKey,
+    //     childKey: childKey,
+    //     imageFile: imageFile,
+    //   };
+    //   state.imageCollection.push(data);
+    // },
 
-    removeImageCollection: (
-      state,
-      action: PayloadAction<ImageCollectionType>
-    ) => {
-      const { nodeKey, childKey } = action.payload;
-      state.imageCollection = state.imageCollection.filter((element) => {
-        return !(element.nodeKey === nodeKey && element.childKey === childKey);
-      });
-    },
+    // removeImageCollection: (
+    //   state,
+    //   action: PayloadAction<ImageCollectionType>
+    // ) => {
+    //   const { nodeKey, childKey } = action.payload;
+    //   state.imageCollection = state.imageCollection.filter((element) => {
+    //     return !(element.nodeKey === nodeKey && element.childKey === childKey);
+    //   });
+    // },
   },
 });
 
@@ -188,8 +189,8 @@ export const {
   changeFormChildElement,
   changeFormElement,
   editFormElement,
-  addImageCollection,
-  removeImageCollection,
+  // addImageCollection,
+  // removeImageCollection,
 } = formEditSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

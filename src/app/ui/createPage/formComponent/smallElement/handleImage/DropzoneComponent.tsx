@@ -1,11 +1,10 @@
 'use client';
 import { useAppDispatch } from '@/src/lib/RThooks';
+import { uploadCardImageAction } from '@/src/lib/actions/uploadCardImageAction';
 import { ChildKeyContext, NodeKeyContext } from '@/src/lib/context';
-import {
-  addImageCollection,
-  editFormChildElement,
-} from '@/src/lib/feature/formDataSlice';
-import { useCallback, useContext } from 'react';
+import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useFormState } from 'react-dom';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
@@ -43,43 +42,68 @@ const Container = styled.div<{ $styleHeight?: string }>`
 
 export default function DropzoneComponent({
   styleHeight,
+  imageInformation,
 }: {
   styleHeight?: string;
+  imageInformation?: string;
 }) {
+  const imageSubmitButton = useRef<HTMLButtonElement>(null);
+  const imageForm = useRef<HTMLFormElement>(null);
   const nodeKey = useContext(NodeKeyContext);
   const childKey = useContext(ChildKeyContext);
+  const [fileName, setFileName] = useState('');
+  const hiddenInputImageRef = useRef<HTMLInputElement>(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  let imageUrlView = '';
+  const initialState = {
+    message: null,
+    errors: {},
+    success: false,
+    successImageUrl: '',
+  };
   const dispatch = useAppDispatch();
+  const [state, formDispatch] = useFormState(
+    uploadCardImageAction,
+    initialState
+  );
+
+  useEffect(() => {
+    if (state && state.success && state.successImageUrl) {
+      let imageUrlView = state.successImageUrl;
+
+      const data = {
+        nodeKey: nodeKey,
+        childKey: childKey,
+        elements: {
+          // editImage: URL.createObjectURL(file),
+          imageURL: imageUrlView,
+          imageInformation: fileName,
+        },
+      };
+      dispatch(editFormChildElement(data));
+    }
+  }, [state, childKey, nodeKey, dispatch, fileName]);
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      // const elements: { imageURL: string; imageInformation: string } = {
-      //   imageURL: '',
-      //   imageInformation: '',
-      // };
+      if (acceptedFiles.length === 0) {
+        return;
+      }
+
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(acceptedFiles[0]);
+      if (hiddenInputImageRef.current)
+        hiddenInputImageRef.current.files = dataTransfer.files;
 
       acceptedFiles.map((file) => {
         Object.assign(file, {
           preview: URL.createObjectURL(file),
         });
-        // elements['imageURL'] = URL.createObjectURL(file);
-        // elements['imageInformation'] = `${file.name} - ${file.size}`;
-
-        const data = {
-          nodeKey: nodeKey,
-          childKey: childKey,
-          elements: {
-            imageURL: URL.createObjectURL(file),
-            imageInformation: `${file.name} - ${file.size}`,
-          },
-        };
-
-        // const image = {
-        //   nodeKey: nodeKey,
-        //   childKey: childKey,
-        //   imageFile: file,
-        // };
-        // dispatch(addImageCollection(image));
-
-        dispatch(editFormChildElement(data));
+        setFileName(`${file.name} - ${file.size}`);
+        if (imageForm.current?.requestSubmit) {
+          imageForm.current.requestSubmit();
+        }
       });
     },
     [childKey, dispatch, nodeKey]
@@ -100,8 +124,24 @@ export default function DropzoneComponent({
       'image/*': [],
     },
     maxFiles: 1,
-    // 5MB
-    maxSize: 5242880,
+    // 1MB
+    maxSize: 1048576,
+    // onDropAccepted: (acceptedFiles) => {
+    //   console.log('Accepted:', acceptedFiles);
+    //   setErrorMessage('');
+    // },
+    onDropRejected: (fileRejections) => {
+      if (
+        fileRejections.length > 1 ||
+        fileRejections.some((f) =>
+          f.errors.some((e) => e.code === 'too-many-files')
+        )
+      ) {
+        setErrorMessage('只能上傳一个文件');
+      } else {
+        setErrorMessage('上傳的文件不符合要求');
+      }
+    },
   });
 
   return (
@@ -113,8 +153,22 @@ export default function DropzoneComponent({
         $isDragReject: { isDragReject },
       })}
     >
-      <input {...getInputProps()} data-testid="dropzone-input" />
-      {isDragActive ? <p>將照片拖曳至此</p> : <p>請拖曳或點擊要上傳的圖片</p>}
+      <form action={formDispatch} ref={imageForm}>
+        <input type="hidden" name="fileName" value={fileName} />
+        <input
+          type="file"
+          name="cardImage"
+          style={{ display: 'none' }}
+          ref={hiddenInputImageRef}
+        />
+        <input {...getInputProps()} data-testid="dropzone-input" />
+        {isDragActive ? <p>將照片拖曳至此</p> : <p>請拖曳或點擊要上傳的圖片</p>}
+        <button
+          type="submit"
+          className="hidden"
+          ref={imageSubmitButton}
+        ></button>
+      </form>
     </Container>
   );
 }

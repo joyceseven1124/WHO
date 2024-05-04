@@ -1,8 +1,6 @@
 import { useAppDispatch } from '@/src/lib/RThooks';
-import {
-  addImageCollection,
-  editFormChildElement,
-} from '@/src/lib/feature/formDataSlice';
+import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
+import { deleteImage, saveImage } from '@/src/lib/handleData';
 import getCroppedImg, { CroppedImageResult } from '@/src/lib/utils/cropImage';
 import { Cancel } from '@mui/icons-material';
 import CropIcon from '@mui/icons-material/Crop';
@@ -16,16 +14,24 @@ import {
   Slider,
   Typography,
 } from '@mui/material';
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
 import { ChildKeyContext, NodeKeyContext } from '../../../../../../lib/context';
 
 const CropImageComponent = ({
   imageURL,
+  imageInformation,
   setOpenCrop,
   openCrop,
 }: {
   imageURL: string;
+  imageInformation: string;
   setOpenCrop: Dispatch<SetStateAction<boolean>>;
   openCrop: boolean;
 }) => {
@@ -56,26 +62,38 @@ const CropImageComponent = ({
 
         if (typeof result !== null) {
           const { file, url } = result as CroppedImageResult;
-          const elements = { imageURL: url };
-          // dispatch(
-          //   addImageCollection({
-          //     nodeKey: nodeKey,
-          //     childKey: childKey,
-          //     imageFile: file,
-          //   })
-          // );
-          dispatch(
-            editFormChildElement({
-              nodeKey: nodeKey,
-              childKey: childKey,
-              elements: elements,
-            })
+
+          const fileFormat = new File([file], imageInformation, {
+            type: file.type, // 可以复用原 Blob 的类型
+            lastModified: new Date().getTime(), // 可以指定文件的最后修改时间
+          });
+
+          // 先儲存後刪除圖片
+          const imageUploadValue = await saveImage(
+            fileFormat,
+            imageInformation
           );
-          setOpenCrop(false);
+
+          if (imageUploadValue.status) {
+            deleteImage(imageURL);
+            const elements = { imageURL: imageUploadValue.url };
+
+            dispatch(
+              editFormChildElement({
+                nodeKey: nodeKey,
+                childKey: childKey,
+                elements: elements,
+              })
+            );
+
+            setOpenCrop(false);
+          }
+          // const elements = { imageURL: url };
         }
       }
     } catch (error) {
-      console.log(error);
+      throw error;
+      // console.log(error);
       // setAlert({
       //   isAlert: true,
       //   severity: 'error',

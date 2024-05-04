@@ -1,6 +1,7 @@
 'use client';
 import FormTitle from '@/src/app/ui/createPage/FormTitle';
 import HorizontalLinearStepper from '@/src/app/ui/createPage/HorizontalLinearStepper';
+import StepperFour from '@/src/app/ui/createPage/step/StepperFour';
 import StepperOne from '@/src/app/ui/createPage/step/StepperOne';
 import StepperThree from '@/src/app/ui/createPage/step/StepperThree';
 import StepperTwo from '@/src/app/ui/createPage/step/StepperTwo';
@@ -40,6 +41,15 @@ export default function CreateStepsCombine() {
             hover底下區塊，選取想要的區塊樣式後，開始編輯自己的blog。(每張卡片都可以利用拖曳進行位置調整)
           </FormTitle>
           <StepperThree />
+        </>
+      )}
+
+      {activeStep === 3 && (
+        <>
+          <FormTitle>
+            檢視完，就可以按FINISH儲存囉！如不滿意，可以繼續編輯，按上方BACK。
+          </FormTitle>
+          <StepperFour />
         </>
       )}
     </>

@@ -1,10 +1,7 @@
 'use client';
 import { useAppDispatch } from '@/src/lib/RThooks';
 import { ChildKeyContext, NodeKeyContext } from '@/src/lib/context';
-import {
-  addImageCollection,
-  editFormChildElement,
-} from '@/src/lib/feature/formDataSlice';
+import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
 import Image from 'next/image';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
@@ -106,9 +103,6 @@ export default function Thumb({
                     elements: { imageURL: '', imageInformation: '' },
                   })
                 );
-                dispatch(
-                  addImageCollection({ nodeKey: nodeKey, childKey: childKey })
-                );
                 URL.revokeObjectURL(imageURL);
               }}
             >
@@ -125,6 +119,7 @@ export default function Thumb({
       {openCrop && (
         <CropImageWrapper className="">
           <CropImageComponent
+            imageInformation={imageInformation}
             imageURL={imageURL}
             setOpenCrop={setOpenCrop}
             openCrop={openCrop}

@@ -16,4 +16,10 @@ export const Theme = {
 
   //卡片圓角
   businessCardBorderRadius: ' 15px',
+
+  // portfolioCard 高度
+  portfolioCardHeight: '200px',
+
+  // 淺灰色
+  brightGray: '#c5c5c5',
 };
