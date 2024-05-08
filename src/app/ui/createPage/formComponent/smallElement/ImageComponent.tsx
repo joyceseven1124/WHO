@@ -3,7 +3,10 @@ import { Theme } from '@/src/app/theme';
 import { useAppSelector } from '@/src/lib/RThooks';
 import { selectFormData } from '@/src/lib/feature/formDataSlice';
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { ChildKeyContext, NodeKeyContext } from '../../../../../lib/context';
+import {
+  ChildKeyContext,
+  NodeKeyContext,
+} from '../../../../../lib/provider/context';
 import DropzoneComponent from './handleImage/DropzoneComponent';
 import Thumb from './handleImage/PreviewImage';
 

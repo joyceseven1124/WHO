@@ -3,7 +3,7 @@
 // import { revalidatePath } from 'next/cache';
 // import { redirect } from 'next/navigation';
 import { db } from '@/src/lib/firebaseConfig';
-import { saveImage } from '@/src/lib/handleData';
+import { saveImage } from '@/src/lib/handleData/handleContentData';
 import { doc, setDoc } from 'firebase/firestore';
 import { z } from 'zod';
 import { getCurrentDateFormatted } from '../utils/getCurrentDateFormatted';

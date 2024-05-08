@@ -1,10 +1,13 @@
+import { auth, signOut } from '@/src/auth';
+import { firebaseSignOut } from '@/src/lib/handleData/HandleAuth';
 import { UserIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import ButtonCva from './ButtonCva';
 import Search from './Search';
 
-export function Navigation() {
+export async function Navigation() {
+  const session = await auth();
   return (
     <header className="relative z-40 border-b border-gray-200 bg-white">
       <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-y-5 p-4 md:grid-cols-[auto_1fr_auto] md:justify-around md:gap-x-4">
@@ -21,7 +24,7 @@ export function Navigation() {
           <button className="h-6 w-6">
             <UserIcon className="h-[24px] w-[24px] text-gray-500 peer-focus:text-gray-900" />
           </button>
-          <Link href="/">
+          <Link href="/auth/login">
             <ButtonCva size={'sm'}>LogIn</ButtonCva>
           </Link>
         </div>
@@ -32,9 +35,21 @@ export function Navigation() {
           <Link href="/WhoForm/create">
             <ButtonCva intent={'secondary'}>My Blog</ButtonCva>
           </Link>
-          <Link href="/">
-            <ButtonCva>LogIn</ButtonCva>
-          </Link>
+          {session ? (
+            <form
+              action={async () => {
+                'use server';
+                await signOut();
+                await firebaseSignOut();
+              }}
+            >
+              <ButtonCva>LogOut</ButtonCva>
+            </form>
+          ) : (
+            <Link href="/auth/login">
+              <ButtonCva>LogIn</ButtonCva>
+            </Link>
+          )}
         </div>
       </div>
     </header>

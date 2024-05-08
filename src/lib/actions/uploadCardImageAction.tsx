@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { saveImage } from '../handleData';
+import { saveImage } from '../handleData/handleContentData';
 
 export type State = {
   cardImage?: {

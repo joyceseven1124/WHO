@@ -28,3 +28,10 @@ export interface BusinessCardListProp {
   finishAllForm: boolean;
   time: string;
 }
+
+export type User = {
+  id?: string;
+  email: string;
+  name?: string;
+  emailVerified?: boolean;
+};

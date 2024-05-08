@@ -2,7 +2,7 @@ import { Theme } from '@/src/app/theme';
 import { useAppSelector } from '@/src/lib/RThooks';
 import { selectCardData } from '@/src/lib/feature/businessCardDataSlice';
 import { selectFormData } from '@/src/lib/feature/formDataSlice';
-import { saveFormData } from '@/src/lib/handleData';
+import { saveFormData } from '@/src/lib/handleData/handleContentData';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Step from '@mui/material/Step';
@@ -53,8 +53,6 @@ export default function HorizontalLinearStepper({
         break;
 
       case 3:
-        console.log('完成表單');
-        console.log(formData);
         const formDataObject = {
           formData: formData,
         };
@@ -63,9 +61,6 @@ export default function HorizontalLinearStepper({
       default:
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-    // if(activeStep === 0 && data.id && data.cardType ){
-    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // }
   };
 
   const handleBack = () => {

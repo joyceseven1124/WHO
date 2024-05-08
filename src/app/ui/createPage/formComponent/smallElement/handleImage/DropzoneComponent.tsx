@@ -1,8 +1,8 @@
 'use client';
 import { useAppDispatch } from '@/src/lib/RThooks';
 import { uploadCardImageAction } from '@/src/lib/actions/uploadCardImageAction';
-import { ChildKeyContext, NodeKeyContext } from '@/src/lib/context';
 import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
+import { ChildKeyContext, NodeKeyContext } from '@/src/lib/provider/context';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { useDropzone } from 'react-dropzone';
@@ -76,7 +76,6 @@ export default function DropzoneComponent({
         nodeKey: nodeKey,
         childKey: childKey,
         elements: {
-          // editImage: URL.createObjectURL(file),
           imageURL: imageUrlView,
           imageInformation: fileName,
         },
@@ -126,10 +125,6 @@ export default function DropzoneComponent({
     maxFiles: 1,
     // 1MB
     maxSize: 1048576,
-    // onDropAccepted: (acceptedFiles) => {
-    //   console.log('Accepted:', acceptedFiles);
-    //   setErrorMessage('');
-    // },
     onDropRejected: (fileRejections) => {
       if (
         fileRejections.length > 1 ||

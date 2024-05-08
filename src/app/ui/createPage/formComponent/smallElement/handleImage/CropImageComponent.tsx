@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/src/lib/RThooks';
 import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
-import { deleteImage, saveImage } from '@/src/lib/handleData';
+import { deleteImage, saveImage } from '@/src/lib/handleData/handleContentData';
 import getCroppedImg, { CroppedImageResult } from '@/src/lib/utils/cropImage';
 import { Cancel } from '@mui/icons-material';
 import CropIcon from '@mui/icons-material/Crop';
@@ -22,7 +22,10 @@ import {
   useState,
 } from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
-import { ChildKeyContext, NodeKeyContext } from '../../../../../../lib/context';
+import {
+  ChildKeyContext,
+  NodeKeyContext,
+} from '../../../../../../lib/provider/context';
 
 const CropImageComponent = ({
   imageURL,

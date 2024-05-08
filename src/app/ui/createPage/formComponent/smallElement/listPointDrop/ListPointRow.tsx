@@ -3,9 +3,9 @@ import { ListPointerWrapper } from '@/src/app/ui/ComponentStyle';
 import DeleteButton from '@/src/app/ui/createPage/formComponent/button/DeleteButton';
 import TextArea from '@/src/app/ui/createPage/formComponent/smallElement/TextArea';
 import { useAppDispatch } from '@/src/lib/RThooks';
-import { NodeKeyContext } from '@/src/lib/context';
 import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
 import useTextAreaInputValue from '@/src/lib/hooks/useTextAreaInputValue';
+import { NodeKeyContext } from '@/src/lib/provider/context';
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { useContext } from 'react';
 

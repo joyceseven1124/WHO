@@ -1,5 +1,5 @@
 import DropzoneComponent from '@/src/app/ui/createPage/formComponent/smallElement/handleImage/DropzoneComponent';
-import { ChildKeyContext, NodeKeyContext } from '@/src/lib/context';
+import { ChildKeyContext, NodeKeyContext } from '@/src/lib/provider/context';
 import '@testing-library/jest-dom';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';

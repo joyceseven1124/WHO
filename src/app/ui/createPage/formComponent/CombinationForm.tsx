@@ -8,11 +8,11 @@ import {
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { useRef, useState } from 'react';
 import CollapseListButton from './button/CollapseListButton';
+import BaseInformationList from './list/BaseInformationList';
 import ListLayout from './list/ListLayout';
 import ListPointerBoard from './list/ListPointerBoard';
 import PortfolioEditCardList from './list/PortfolioEditCardList'; // @preserve
 import TimeLineEditList from './list/TimeLineEditList';
-import TextArea from './smallElement/TextArea';
 
 export default function CombinationForm() {
   const store = useAppStore();
@@ -99,30 +99,7 @@ export default function CombinationForm() {
 
   return (
     <div>
-      <div className="text-black">
-        相關資料
-        <label>姓名</label>
-        <input
-          type="text"
-          maxLength={10}
-          placeholder="限制10字元"
-          id="formName"
-        />
-        <label>信箱</label>
-        <input
-          type="mail"
-          maxLength={30}
-          placeholder="限制30字元"
-          id="formMail"
-        />
-        <label>社群媒體</label>
-        <input
-          type="mail"
-          maxLength={30}
-          placeholder="限制30字元"
-          id="formMail"
-        />
-      </div>
+      <BaseInformationList />
       <div className="mb-5 mt-5 flex w-full justify-end">
         <CollapseListButton
           collapseStatus={collapseStatus}

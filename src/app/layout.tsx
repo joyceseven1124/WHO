@@ -1,3 +1,4 @@
+// 'use server';
 import { Navigation } from '@/src/app/ui/Navigation';
 import { notoSanaTc } from '@/src/app/ui/fonts';
 import { Metadata } from 'next';
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
     'Introduce your experiences, abilities, characteristics, and so on to everyone. Let more people get to know you.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

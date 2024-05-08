@@ -1,5 +1,5 @@
-import { initialTextAreaArray } from '@/src/lib/context';
 import { ComponentStructure } from '@/src/lib/feature/formDataSlice';
+import { initialTextAreaArray } from '@/src/lib/provider/context';
 import styled from 'styled-components';
 import { ListPointerBoardStyle, ListPointerWrapper } from '../ComponentStyle';
 import ViewTitle from './smallComponent/ViewTitle';
