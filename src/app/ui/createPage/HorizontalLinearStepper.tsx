@@ -10,6 +10,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Link from 'next/link';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 const theme = createTheme({
@@ -44,19 +45,21 @@ export default function HorizontalLinearStepper({
         break;
 
       case 1:
-        if (data.submitStatus) {
-          setActiveStep((prevActiveStep) => prevActiveStep + 1);
-          setErrorMessage('');
-        } else {
-          setErrorMessage('請將表單填寫完並且儲存');
-        }
-        break;
+      // 先隱藏
+      // if (data.submitStatus) {
+      //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      //   setErrorMessage('');
+      // } else {
+      //   setErrorMessage('請將表單填寫完並且儲存');
+      // }
+      // break;
 
       case 3:
         const formDataObject = {
           formData: formData,
         };
-        saveFormData(formDataObject);
+      // 先隱藏
+      // saveFormData(formDataObject);
 
       default:
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -96,15 +99,31 @@ export default function HorizontalLinearStepper({
 
         {/* 完成後 應該為自動前往blog*/}
         {activeStep === steps.length ? (
-          <>
-            <Typography sx={{ mt: 2, mb: 1 }}>
+          <div className="mt-10 flex flex-col items-center justify-center">
+            <h2 className="text-xl text-black">
+              完成所有表單填寫，去看看最終成果吧！！
+            </h2>
+            <Link href={'/'} className="text-black">
+              Go to my blog
+            </Link>
+            {/* <Typography sx={{ mt: 2, mb: 1, color: 'black', fontSize: '24px' }}>
               完成所有表單填寫，去看看最終成果吧！！
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                pt: 2,
+                alignItems: 'center',
+
+              }}
+            >
               <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={() => {}}>Go to my blog</Button>
-            </Box>
-          </>
+              <Link href={'/'} className="text-black">
+                Go to my blog
+              </Link>
+            </Box> */}
+          </div>
         ) : (
           <>
             <Box

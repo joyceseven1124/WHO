@@ -1,7 +1,11 @@
 'use server';
 import { signIn } from '@/src/auth';
 import { AuthError } from 'next-auth';
-import { registerHandle, signInHandle } from '../handleData/HandleAuth';
+import {
+  persistAuthHandle,
+  registerHandle,
+  signInHandle,
+} from '../handleData/HandleAuth';
 // import { getAuth} from "firebase/auth";
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -43,7 +47,8 @@ export async function authenticate(
     }
   } else {
     try {
-      const signInResult: any = await signInHandle(account, password);
+      await signInHandle(account, password);
+      // await persistAuthHandle();
     } catch (error) {
       return {
         message: '登入失敗',
@@ -53,7 +58,7 @@ export async function authenticate(
     }
 
     try {
-      const result = await signIn('credentials', formData, {
+      await signIn('credentials', formData, {
         callbackUrl: '/',
       });
     } catch (error) {

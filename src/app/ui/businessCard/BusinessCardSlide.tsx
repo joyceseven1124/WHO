@@ -14,13 +14,9 @@ export default function BusinessCardSlide({
   return (
     <div className={`${stylesSlide.card} ${styles.cardWrapper}`}>
       <div className={`${stylesSlide.cardFront} ${styles.cardFrontWrapper}`}>
-        <Image
-          src={userPhoto}
-          width={150}
-          height={150}
-          alt={userPhotoAlt}
-          className={`${styles.personImage}`}
-        />
+        <div className={`${stylesSlide.personImage}`}>
+          <Image src={userPhoto} width={150} height={150} alt={userPhotoAlt} />
+        </div>
         <p className={`${stylesSlide.cardTitle} ${styles.cardName}`}>{name}</p>
         <p className={`${styles.cardWork}`}>{work}</p>
         <p className={`${styles.cardDescription}`}>{description}</p>

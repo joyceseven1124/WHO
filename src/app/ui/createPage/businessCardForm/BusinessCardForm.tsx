@@ -99,7 +99,7 @@ export default function BusinessCardForm() {
 
   return (
     <FormStyle action={formDispatch}>
-      <input type="hidden" name="id" value={'/test'} />
+      {/* <input type="hidden" name="id" value={'/test'} /> */}
       <input type="hidden" name="cardType" value={data.cardType} />
       <CardInput>
         <label className="input-label" htmlFor="userPhotoInput">

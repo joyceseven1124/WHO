@@ -10,7 +10,9 @@ export type BusinessCardItems = {
   work: string;
   description: string;
   userPhoto: null | ImageTypeScript;
+  userPhotoInformation: string;
   userBgPhoto: null | ImageTypeScript;
+  userBgPhotoInformation: string;
   submitStatus: boolean;
   [key: string]: null | ImageTypeScript | string | boolean;
 };
@@ -27,7 +29,9 @@ const initialState: BusinessCardData = {
     work: '',
     description: '',
     userPhoto: null,
+    userPhotoInformation: '',
     userBgPhoto: null,
+    userBgPhotoInformation: '',
     submitStatus: false,
   },
 };

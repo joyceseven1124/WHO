@@ -22,8 +22,10 @@ export interface BusinessCardListProp {
   name: string;
   work: string;
   description: string;
-  userPhoto: ImageTypeScript;
-  userBgPhoto: ImageTypeScript | null;
+  userPhotoUrl: string;
+  userPhotoInformation: string;
+  userBgPhotoUrl: string | null;
+  userBgPhotoInformation: string | null;
   // 暫時
   finishAllForm: boolean;
   time: string;
@@ -34,4 +36,10 @@ export type User = {
   email: string;
   name?: string;
   emailVerified?: boolean;
+};
+
+export type checkAuthType = {
+  email: string;
+  uid: string;
+  authStatus: boolean;
 };

@@ -54,6 +54,7 @@ export default function DropzoneComponent({
   const [fileName, setFileName] = useState('');
   const hiddenInputImageRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [uploadImageStatus, setUploadImageStatus] = useState(false);
 
   let imageUrlView = '';
   const initialState = {
@@ -80,6 +81,7 @@ export default function DropzoneComponent({
           imageInformation: fileName,
         },
       };
+      setUploadImageStatus(true);
       dispatch(editFormChildElement(data));
     }
   }, [state, childKey, nodeKey, dispatch, fileName]);
@@ -101,6 +103,7 @@ export default function DropzoneComponent({
         });
         setFileName(`${file.name} - ${file.size}`);
         if (imageForm.current?.requestSubmit) {
+          setUploadImageStatus(true);
           imageForm.current.requestSubmit();
         }
       });
@@ -134,7 +137,7 @@ export default function DropzoneComponent({
       ) {
         setErrorMessage('只能上傳一个文件');
       } else {
-        setErrorMessage('上傳的文件不符合要求');
+        setErrorMessage('上傳的文件需1MB以內的圖檔');
       }
     },
   });
@@ -157,7 +160,15 @@ export default function DropzoneComponent({
           ref={hiddenInputImageRef}
         />
         <input {...getInputProps()} data-testid="dropzone-input" />
-        {isDragActive ? <p>將照片拖曳至此</p> : <p>請拖曳或點擊要上傳的圖片</p>}
+        {uploadImageStatus ? (
+          <p className="text-green-600">上傳中，請稍等</p>
+        ) : errorMessage ? (
+          <p className="text-red-600">{errorMessage}</p>
+        ) : isDragActive ? (
+          <p>將照片拖曳至此</p>
+        ) : (
+          <p>請拖曳或點擊要上傳的圖片</p>
+        )}
         <button
           type="submit"
           className="hidden"

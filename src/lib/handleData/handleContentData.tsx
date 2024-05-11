@@ -5,6 +5,7 @@ import {
   collection,
   doc,
   getCountFromServer,
+  getDoc,
   onSnapshot,
   query,
   setDoc,
@@ -18,6 +19,7 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { unstable_noStore as noStore } from 'next/cache';
+import { checkAuthStatus } from './HandleAuth';
 
 const rootCardPerPageCount = 12;
 
@@ -25,6 +27,7 @@ export async function websocketRootCard(): Promise<BusinessCardListProp[]> {
   noStore();
   return new Promise((resolve, reject) => {
     try {
+      console.log('監測中');
       const qRootCard = query(
         collection(db, 'blogRootList'),
         where('finishAllForm', '==', true)
@@ -42,8 +45,10 @@ export async function websocketRootCard(): Promise<BusinessCardListProp[]> {
               name: data.name,
               work: data.work,
               description: data.description,
-              userPhoto: data.userPhoto,
-              userBgPhoto: data.userBgPhoto,
+              userPhotoUrl: data.userPhotoUrl,
+              userPhotoInformation: data.userPhotoInformation,
+              userBgPhotoUrl: data.userBgPhotoUrl || null,
+              userBgPhotoInformation: data.userBgPhotoInformation || null,
               finishAllForm: data.finishAllForm,
               time: data.time,
             });
@@ -75,6 +80,16 @@ export async function fetchCountPageRootCard() {
   }
 }
 
+export async function fetchViewContent(id: string) {
+  const viewDataPath = doc(db, 'blogs', id);
+  const viewData = await getDoc(viewDataPath);
+  if (viewData.exists()) {
+    console.log('存在', viewData.data());
+  } else {
+    console.log('不存在任何資料');
+  }
+}
+
 export async function saveImage(file: File, imageName: string) {
   noStore();
   const storage = getStorage();
@@ -82,8 +97,8 @@ export async function saveImage(file: File, imageName: string) {
     contentType: `${file.type}`,
   };
   const storageRef = ref(storage, 'rootCard/' + imageName);
-  const uploadTask = uploadBytesResumable(storageRef, file, metadata);
   try {
+    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
     await uploadTask;
     const url = await getDownloadURL(uploadTask.snapshot.ref);
     return { status: true, url: url };
@@ -107,5 +122,13 @@ export async function deleteImage(imagePath: string) {
 }
 
 export async function saveFormData(formData: FormDataList) {
-  await setDoc(doc(db, 'blogs', 'test1'), formData.formData);
+  const result = await checkAuthStatus();
+  console.log('這個人儲存表單', result);
+  if (result.authStatus) {
+    await setDoc(doc(db, 'blogs', result.uid), formData.formData);
+  }
+}
+
+export async function saveCardContent(id: string, data: BusinessCardListProp) {
+  await setDoc(doc(db, 'blogRootList', id), data);
 }

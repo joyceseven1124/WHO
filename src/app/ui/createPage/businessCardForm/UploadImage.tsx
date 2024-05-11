@@ -28,12 +28,23 @@ export function UploadImage({
   const [errorMessage, setErrorMessage] = useState<null | string>();
   useEffect(() => {
     if (!data.submitStatus) {
-      dispatch(editCardData({ [inputName]: image as ImageTypeScript }));
+      dispatch(
+        editCardData({
+          [inputName]: image as ImageTypeScript,
+          [`${inputName}Information`]: (image as ImageTypeScript)?.name || '',
+        })
+      );
     }
   }, [image, dispatch, inputName, data.submitStatus]);
 
   return (
     <div>
+      <input
+        type="hidden"
+        // className='hidden'
+        value={(data[inputName] as ImageTypeScript)?.name || ''}
+        name={`${inputName}Information`}
+      />
       <input
         type="file"
         id={id}

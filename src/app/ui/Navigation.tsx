@@ -1,9 +1,10 @@
-import { auth, signOut } from '@/src/auth';
-import { firebaseSignOut } from '@/src/lib/handleData/HandleAuth';
+import { auth } from '@/src/auth';
+import { checkAuthStatus } from '@/src/lib/handleData/HandleAuth';
 import { UserIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import ButtonCva from './ButtonCva';
+import SignOutButton from './LogOutButton';
 import Search from './Search';
 
 export async function Navigation() {
@@ -24,9 +25,13 @@ export async function Navigation() {
           <button className="h-6 w-6">
             <UserIcon className="h-[24px] w-[24px] text-gray-500 peer-focus:text-gray-900" />
           </button>
-          <Link href="/auth/login">
-            <ButtonCva size={'sm'}>LogIn</ButtonCva>
-          </Link>
+          {session ? (
+            <SignOutButton></SignOutButton>
+          ) : (
+            <Link href="/auth/login">
+              <ButtonCva size={'sm'}>LogIn</ButtonCva>
+            </Link>
+          )}
         </div>
         <div className="col-span-2 md:col-auto">
           <Search />
@@ -36,15 +41,7 @@ export async function Navigation() {
             <ButtonCva intent={'secondary'}>My Blog</ButtonCva>
           </Link>
           {session ? (
-            <form
-              action={async () => {
-                'use server';
-                await signOut();
-                await firebaseSignOut();
-              }}
-            >
-              <ButtonCva>LogOut</ButtonCva>
-            </form>
+            <SignOutButton></SignOutButton>
           ) : (
             <Link href="/auth/login">
               <ButtonCva>LogIn</ButtonCva>

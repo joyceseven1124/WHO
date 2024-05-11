@@ -4,7 +4,6 @@ import { User } from '@/src/lib/definitions';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import google from 'next-auth/providers/google';
-import { signInHandle } from './lib/handleData/HandleAuth';
 
 export const {
   handlers: { GET, POST },

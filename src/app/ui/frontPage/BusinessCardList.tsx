@@ -2,6 +2,7 @@ import BusinessCardBook from '@/src/app/ui/businessCard/BusinessCardBook';
 import BusinessCardFlip from '@/src/app/ui/businessCard/BusinessCardFlip';
 import BusinessCardSlide from '@/src/app/ui/businessCard/BusinessCardSlide';
 import { BusinessCardListProp } from '@/src/lib/definitions';
+import Link from 'next/link';
 
 export default function BusinessCardList({
   data,
@@ -11,6 +12,7 @@ export default function BusinessCardList({
   let renderElementList;
   if (data.length > 0) {
     renderElementList = data.map((element) => {
+      console.log('元素', element);
       let ComponentToRender;
       switch (element.cardType) {
         case 'BusinessCardBook':
@@ -28,28 +30,26 @@ export default function BusinessCardList({
 
       return (
         ComponentToRender && (
-          <ComponentToRender
-            key={element.id}
-            time={element.time}
-            name={element.name}
-            work={element.work}
-            description={element.description}
-            userPhoto={element.userPhoto.url}
-            userPhotoAlt={encodeURIComponent(element.userPhoto.name)}
-            bgPhoto={
-              element.userBgPhoto
-                ? encodeURIComponent(element.userBgPhoto.name)
-                : null
-            }
-            bgPhotoAlt={
-              element.userBgPhoto
-                ? encodeURIComponent(element.userBgPhoto.name)
-                : null
-            }
-          />
+          // 先暫時隱藏
+          <Link href={`/WhoForm/view/${element.id}`} key={element.id}>
+            <ComponentToRender
+              time={element.time}
+              name={element.name}
+              work={element.work}
+              description={element.description}
+              userPhoto={element.userPhotoUrl}
+              userPhotoAlt={element.userPhotoInformation}
+              bgPhoto={element.userBgPhotoUrl || ''}
+              bgPhotoAlt={element.userBgPhotoInformation || ''}
+            />
+          </Link>
         )
       );
     });
   }
-  return <div>{renderElementList}</div>;
+  return (
+    <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 mdPlus:grid-cols-3 xl:grid-cols-4">
+      {renderElementList}
+    </div>
+  );
 }
