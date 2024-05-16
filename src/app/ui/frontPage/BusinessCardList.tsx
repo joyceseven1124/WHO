@@ -12,7 +12,6 @@ export default function BusinessCardList({
   let renderElementList;
   if (data.length > 0) {
     renderElementList = data.map((element) => {
-      console.log('元素', element);
       let ComponentToRender;
       switch (element.cardType) {
         case 'BusinessCardBook':
@@ -27,10 +26,8 @@ export default function BusinessCardList({
         default:
           ComponentToRender = null;
       }
-
       return (
         ComponentToRender && (
-          // 先暫時隱藏
           <Link href={`/WhoForm/view/${element.id}`} key={element.id}>
             <ComponentToRender
               time={element.time}

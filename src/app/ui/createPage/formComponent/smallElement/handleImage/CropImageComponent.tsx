@@ -1,7 +1,8 @@
+'use client';
 import { useAppDispatch } from '@/src/lib/RThooks';
+import { cropImageAction } from '@/src/lib/actions/cropImageAction';
 import { editFormChildElement } from '@/src/lib/feature/formDataSlice';
-import { deleteImage, saveImage } from '@/src/lib/handleData/handleContentData';
-import getCroppedImg, { CroppedImageResult } from '@/src/lib/utils/cropImage';
+import useCropImageState from '@/src/lib/hooks/useCropImageState';
 import { Cancel } from '@mui/icons-material';
 import CropIcon from '@mui/icons-material/Crop';
 import {
@@ -21,6 +22,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useFormState } from 'react-dom';
 import Cropper, { Area, Point } from 'react-easy-crop';
 import {
   ChildKeyContext,
@@ -42,72 +44,39 @@ const CropImageComponent = ({
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-
-  // const fileData = useAppSelector((state) => state.FormData.formData);
+  const [cropResult, setCropResult] = useCropImageState(null);
   const nodeKey = useContext(NodeKeyContext);
   const childKey = useContext(ChildKeyContext);
   const dispatch = useAppDispatch();
   const cropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
-
-  // const { setAlert, setLoading } = useAuth();
-
-  const cropImage = async () => {
-    // setLoading(true);
-    try {
-      if (imageURL && croppedAreaPixels) {
-        const result = await getCroppedImg(
-          imageURL,
-          croppedAreaPixels,
-          rotation
-        );
-
-        if (typeof result !== null) {
-          const { file, url } = result as CroppedImageResult;
-
-          const fileFormat = new File([file], imageInformation, {
-            type: file.type, // 可以复用原 Blob 的类型
-            lastModified: new Date().getTime(), // 可以指定文件的最后修改时间
-          });
-
-          // 先儲存後刪除圖片
-          const imageUploadValue = await saveImage(
-            fileFormat,
-            imageInformation
-          );
-
-          if (imageUploadValue.status) {
-            deleteImage(imageURL);
-            const elements = { imageURL: imageUploadValue.url };
-
-            dispatch(
-              editFormChildElement({
-                nodeKey: nodeKey,
-                childKey: childKey,
-                elements: elements,
-              })
-            );
-
-            setOpenCrop(false);
-          }
-          // const elements = { imageURL: url };
-        }
-      }
-    } catch (error) {
-      throw error;
-      // console.log(error);
-      // setAlert({
-      //   isAlert: true,
-      //   severity: 'error',
-      //   message: error.message,
-      //   timeout: 5000,
-      //   location: 'modal',
-      // });
-    }
-
-    // setLoading(false);
+  const initialState = {
+    message: '',
+    errors: {},
+    success: false,
+    resultData: '',
   };
+  const [stateMsg, actionDispatch] = useFormState(
+    cropImageAction,
+    initialState
+  );
+
+  useEffect(() => {
+    if (stateMsg && stateMsg.success && stateMsg.resultData) {
+      console.log('裁切成功');
+      const elements = { imageURL: stateMsg.resultData };
+      dispatch(
+        editFormChildElement({
+          nodeKey: nodeKey,
+          childKey: childKey,
+          elements: elements,
+        })
+      );
+      setOpenCrop(false);
+    }
+  }, [stateMsg, childKey, nodeKey, dispatch, setOpenCrop]);
+
   return (
     <Dialog open={openCrop}>
       <DialogTitle sx={{ textAlign: 'left' }}>Image Cropper</DialogTitle>
@@ -157,10 +126,8 @@ const CropImageComponent = ({
             <Typography>Rotation: {rotation}</Typography>
             <Slider
               valueLabelDisplay="auto"
-              // valueLabelFormat={zoomPercent}
               min={0}
               max={360}
-              // step={0o1}
               value={rotation}
               onChange={(e, rotation) => {
                 if (typeof rotation === 'number') {
@@ -175,16 +142,39 @@ const CropImageComponent = ({
             variant="outlined"
             startIcon={<Cancel />}
             onClick={() => setOpenCrop(false)}
+            type="button"
           >
             Cancel
           </Button>
-          <Button
-            variant="outlined"
-            startIcon={<CropIcon />}
-            onClick={cropImage}
-          >
-            Crop
-          </Button>
+          <form action={actionDispatch} id={`${nodeKey}-${childKey}-crop`}>
+            <input type="hidden" value={imageURL} name="imageURL" />
+            <input
+              type="hidden"
+              value={imageInformation}
+              name="imageInformation"
+            />
+            <input
+              type="hidden"
+              value={typeof cropResult === 'string' ? cropResult : ''}
+              name="cropResult"
+            />
+            <Button
+              variant="outlined"
+              startIcon={<CropIcon />}
+              type="submit"
+              form={`${nodeKey}-${childKey}-crop`}
+              onClick={async () => {
+                setCropResult(
+                  imageURL,
+                  croppedAreaPixels,
+                  rotation,
+                  imageInformation
+                );
+              }}
+            >
+              {cropResult ? 'Save' : 'Crop'}
+            </Button>
+          </form>
         </Box>
       </DialogActions>
     </Dialog>

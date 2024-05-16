@@ -1,47 +1,44 @@
 import { Theme } from '@/src/app/theme';
 import PortfolioCard from '@/src/app/ui/viewPage/PortfolioCard';
 import { useAppSelector } from '@/src/lib/RThooks';
-import { selectFormData } from '@/src/lib/feature/formDataSlice';
-import styled, { ThemeProvider } from 'styled-components';
-import { ViewLayoutWrapper } from '../../ComponentStyle';
-import ListPointer from '../../viewPage/ListPointer';
-import TimeLine from '../../viewPage/TimeLine';
+import { whoFormAction } from '@/src/lib/actions/whoFormAction';
+import {
+  selectFormData,
+  selectSelfInformation,
+} from '@/src/lib/feature/formDataSlice';
+import { useFormState } from 'react-dom';
+import CombineDataView from '../../viewPage/CombineDataView';
 
 export default function StepperFour() {
-  const formList = useAppSelector(selectFormData);
-  let ComponentToRender: any;
-  const viewFormListRender = Object.keys(formList).map(
-    (key: string, index: number) => {
-      const CurrentElement = formList[key];
-      let ComponentToRender: any;
-      switch (CurrentElement.componentType) {
-        case 'PortfolioEditCardList':
-          ComponentToRender = PortfolioCard;
-          break;
-        case 'ListPoints':
-          ComponentToRender = ListPointer;
-          break;
-        case 'TimeLineEdit':
-          ComponentToRender = TimeLine;
-          break;
-        default:
-          ComponentToRender = null;
-      }
-      if (ComponentToRender) {
-        return (
-          <div key={key}>
-            <ComponentToRender value={formList[key]} />
-          </div>
-        );
-      } else {
-        return null;
-      }
-    }
-  );
+  const initialState = { message: '', errors: {}, success: false };
+  const [stateMsg, dispatch] = useFormState(whoFormAction, initialState);
 
+  const formList = useAppSelector(selectFormData);
+  const selfFormList = useAppSelector(selectSelfInformation);
+  const formDataObject = {
+    formData: formList,
+    selfInformation: selfFormList,
+  };
+  console.log(
+    '進資料庫前的排序，',
+    JSON.stringify({
+      formData: formList,
+      selfInformation: selfFormList,
+    })
+  );
   return (
-    <ThemeProvider theme={Theme}>
-      <ViewLayoutWrapper>{viewFormListRender}</ViewLayoutWrapper>
-    </ThemeProvider>
+    <>
+      <form action={dispatch} id="whoFormJson">
+        <input
+          type="hidden"
+          name="formJsonData"
+          value={JSON.stringify({
+            formData: formList,
+            selfInformation: selfFormList,
+          })}
+        />
+      </form>
+      <CombineDataView allData={formDataObject} />
+    </>
   );
 }

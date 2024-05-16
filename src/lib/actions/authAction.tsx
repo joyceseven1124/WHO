@@ -1,23 +1,24 @@
 'use server';
 import { signIn } from '@/src/auth';
-import { AuthError } from 'next-auth';
+// import { AuthError } from 'next-auth';
+import { State } from '../definitions';
 import {
-  persistAuthHandle,
+  // persistAuthHandle,
   registerHandle,
   signInHandle,
-} from '../handleData/HandleAuth';
+} from '../handleData/handleAuth';
 // import { getAuth} from "firebase/auth";
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+// import { revalidatePath } from 'next/cache';
+// import { redirect } from 'next/navigation';
 
-export type State = {
-  errors?: any;
-  message?: string | null | undefined;
-  success?: boolean | undefined;
-};
+// export type State = {
+//   errors?: any;
+//   message?: string | null | undefined;
+//   success?: boolean | undefined;
+// };
 
 export async function authenticate(
-  prevState: State,
+  prevState: State | void,
   formData: FormData
 ): Promise<State | void> {
   const type = formData.get('authType');
@@ -27,7 +28,8 @@ export async function authenticate(
   if (type === 'register') {
     try {
       const result = await registerHandle(account, password);
-      return { message: '', errors: '', success: true };
+      console.log('註冊完的結果', result);
+      return { message: '註冊成功', errors: '', success: true };
     } catch (error: any) {
       let message = '發生非預期的錯誤';
       let errorCode = error.errorCode;
@@ -48,7 +50,6 @@ export async function authenticate(
   } else {
     try {
       await signInHandle(account, password);
-      // await persistAuthHandle();
     } catch (error) {
       return {
         message: '登入失敗',
@@ -62,6 +63,7 @@ export async function authenticate(
         callbackUrl: '/',
       });
     } catch (error) {
+      // 需丟出throw防止跳轉
       throw error;
     }
   }

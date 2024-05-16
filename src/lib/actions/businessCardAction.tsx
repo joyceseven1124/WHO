@@ -2,11 +2,15 @@
 // import { BusinessCardItems } from '@/src/lib/feature/businessCardDataSlice';
 // import { revalidatePath } from 'next/cache';
 // import { redirect } from 'next/navigation';
+import { auth } from '@/src/auth';
 import { db } from '@/src/lib/firebaseConfig';
-import { saveImage } from '@/src/lib/handleData/handleContentData';
+import {
+  saveCardContent,
+  saveImage,
+} from '@/src/lib/handleData/handleContentData';
 import { doc, setDoc } from 'firebase/firestore';
 import { z } from 'zod';
-import { checkAuthStatus } from '../handleData/HandleAuth';
+import { checkAuthStatus } from '../handleData/handleAuth';
 import { getCurrentDateFormatted } from '../utils/getCurrentDateFormatted';
 
 const MAX_FILE_SIZE = 1024 * 1024;
@@ -19,7 +23,7 @@ const ACCEPTED_IMAGE_TYPES = [
 
 const BusinessCardSchema = z
   .object({
-    // id: z.string(),
+    id: z.string(),
     cardType: z.enum(
       ['BusinessCardBook', 'BusinessCardFlip', 'BusinessCardSlide'],
       {
@@ -29,25 +33,36 @@ const BusinessCardSchema = z
     name: z.string().nonempty({ message: '名稱不可為空' }),
     work: z.string().nonempty({ message: '職稱不可為空' }),
     description: z.string().nullable(),
+    position: z.string(),
     userPhoto: z
       .any({ invalid_type_error: '必須放上大頭貼' })
-      .refine((file) => file?.size <= MAX_FILE_SIZE, '只能繳交1MB的圖片大小')
-      .refine(
-        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        '需繳交圖檔，如jpeg|jpg|png|webp'
-      ),
+      .refine((file) => file?.size <= MAX_FILE_SIZE, '只能繳交1MB的圖片大小'),
+    // .refine(
+    //   (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+    //   '需繳交圖檔，如jpeg|jpg|png|webp'
+    // ),
     userPhotoInformation: z.string(),
     userBgPhotoInformation: z.string(),
     userBgPhoto: z
       .any({ invalid_type_error: '必須繳交圖檔' })
       .refine((file) => file?.size <= MAX_FILE_SIZE, '只能繳交1MB的圖片大小')
-      .refine(
-        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        '需繳交圖檔，如jpeg|jpg|png|webp'
-      )
+      // .refine(
+      //   (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      //   '需繳交圖檔，如jpeg|jpg|png|webp'
+      // )
       .nullable(),
+
+    userPhotoUrl: z.string(),
+    userBgPhotoUrl: z.string(),
   })
-  .omit({ id: true, userPhotoInformation: true, userBgPhotoInformation: true });
+  .omit({
+    id: true,
+    userPhotoInformation: true,
+    userBgPhotoInformation: true,
+    position: true,
+    userPhotoUrl: true,
+    userBgPhotoUrl: true,
+  });
 const CreateBusinessCard = BusinessCardSchema.superRefine((data, ctx) => {
   if (data.cardType === 'BusinessCardFlip' && !data.userBgPhoto) {
     ctx.addIssue({
@@ -74,7 +89,6 @@ export async function createBusinessCard(
   state: State,
   formData: FormData
 ): Promise<State> {
-  console.log('近來');
   const validatedFields = CreateBusinessCard.safeParse({
     cardType: formData.get('cardType'),
     name: formData.get('name'),
@@ -85,7 +99,6 @@ export async function createBusinessCard(
   });
 
   if (!validatedFields.success) {
-    console.log('創建失敗');
     return {
       success: false,
       errors: validatedFields.error.flatten().fieldErrors,
@@ -100,46 +113,98 @@ export async function createBusinessCard(
   const userBgPhotoInformation =
     formData.get('userBgPhotoInformation')?.toString() || '';
   const date = getCurrentDateFormatted();
+  const urlPosition = formData.get('position');
+  const userPhotoUrl = formData.get('userPhotoUrl') as string;
+  const userBgPhotoUrl = formData.get('userBgPhotoUrl') as string;
+  let checkIsFirstSubmit = true;
+  if (urlPosition !== 'WhoForm/create') {
+    checkIsFirstSubmit = false;
+  }
+  // const result = await checkAuthStatus();
+  // console.log('目前登入狀態1234', result);
+
+  // if (result.authStatus) {
+  //   try {
+  //     const userImageUrl = await saveImage(userPhoto, userPhotoInformation);
+  //     let userImageBgUrl;
+  //     if (userBgPhoto) {
+  //       userImageBgUrl = await saveImage(userBgPhoto, userBgPhotoInformation);
+  //     }
+  //     await setDoc(doc(db, 'blogRootList', result.email), {
+  //       id: result.email,
+  //       cardType: cardType,
+  //       name: name,
+  //       work: work,
+  //       description: description,
+  //       userPhotoUrl: userImageUrl.url,
+  //       userPhotoInformation: userPhotoInformation,
+  //       userBgPhotoUrl: userImageBgUrl?.url || userBgPhoto,
+  //       userBgPhotoInformation: userBgPhotoInformation,
+  //       finishAllForm: true,
+  //       time: date,
+  //       submitStatus: true,
+  //     });
+  //     return {
+  //       success: true,
+  //       message: '儲存成功，請按下一步',
+  //     };
+  //   } catch (error) {
+  //     return { success: false, message: '儲存失敗' };
+  //   }
+  // }
   const result = await checkAuthStatus();
   console.log('目前登入狀態1234', result);
-
-  if (result.authStatus) {
+  const session = await auth();
+  if (session && session.user && session.user.email) {
     try {
-      // 先暫時隱藏 今天修改一下
-
-      const userImageUrl = await saveImage(userPhoto, userPhotoInformation);
+      let userImageUrl;
+      if (userPhotoUrl === '') {
+        userImageUrl = await saveImage(userPhoto, userPhotoInformation);
+      }
       let userImageBgUrl;
-
-      if (userBgPhoto) {
+      if (userBgPhoto === '') {
         userImageBgUrl = await saveImage(userBgPhoto, userBgPhotoInformation);
       }
-
-      await setDoc(doc(db, 'blogRootList', result.uid), {
-        id: result.uid,
+      console.log('儲存成功2');
+      const data = {
+        id: session.user.email,
         cardType: cardType,
         name: name,
         work: work,
-        description: description,
-        userPhotoUrl: userImageUrl.url,
+        description: description || '',
+        userPhotoUrl: userImageUrl?.url || userPhotoUrl || '',
         userPhotoInformation: userPhotoInformation,
-        // userPhoto: {
-        //   url:userPhoto,
-        //   // size: userPhoto.size,
-        //   // type: userPhoto.type,
-        //   name: userPhotoInformation,
-        //   // lastModified: userPhoto.lastModified,
-        // },
-        userBgPhotoUrl: userImageBgUrl?.url || userBgPhoto,
+        userBgPhotoUrl: userImageBgUrl?.url || userBgPhotoUrl || '',
         userBgPhotoInformation: userBgPhotoInformation,
-        // 暫時
-        finishAllForm: true,
+        finishAllForm: !checkIsFirstSubmit,
         time: date,
         submitStatus: true,
-      });
+        userPhoto: null,
+        userBgPhoto: null,
+      };
+      console.log('儲存成功1');
+      await saveCardContent(session.user.email, data);
+      // await setDoc(doc(db, 'blogRootList', session.user.email), {
+      //   id: session.user.email,
+      //   cardType: cardType,
+      //   name: name,
+      //   work: work,
+      //   description: description,
+      //   userPhotoUrl: userImageUrl.url,
+      //   userPhotoInformation: userPhotoInformation,
+      //   userBgPhotoUrl: userImageBgUrl?.url || userBgPhoto,
+      //   userBgPhotoInformation: userBgPhotoInformation,
+      //   finishAllForm: true,
+      //   time: date,
+      //   submitStatus: true,
+      // });
+      console.log('儲存成功');
       return {
         success: true,
+        message: '儲存成功，請按下一步',
       };
     } catch (error) {
+      console.log('儲存失敗', error);
       return { success: false, message: '儲存失敗' };
     }
   }

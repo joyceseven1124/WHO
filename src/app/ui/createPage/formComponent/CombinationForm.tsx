@@ -8,10 +8,12 @@ import {
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { useRef, useState } from 'react';
 import CollapseListButton from './button/CollapseListButton';
+import BannerEditCardList from './list/BannerEditCardList';
 import BaseInformationList from './list/BaseInformationList';
 import ListLayout from './list/ListLayout';
 import ListPointerBoard from './list/ListPointerBoard';
 import PortfolioEditCardList from './list/PortfolioEditCardList'; // @preserve
+import StringCardList from './list/StringCardList';
 import TimeLineEditList from './list/TimeLineEditList';
 
 export default function CombinationForm() {
@@ -64,6 +66,15 @@ export default function CombinationForm() {
         case 'TimeLineEdit':
           ComponentToRender = TimeLineEditList;
           break;
+
+        case 'BannerEditCardList':
+          ComponentToRender = BannerEditCardList;
+          break;
+
+        case 'StringCard':
+          ComponentToRender = StringCardList;
+          break;
+
         default:
           ComponentToRender = null;
       }
@@ -99,7 +110,9 @@ export default function CombinationForm() {
 
   return (
     <div>
-      <BaseInformationList />
+      <div className="my-10">
+        <BaseInformationList />
+      </div>
       <div className="mb-5 mt-5 flex w-full justify-end">
         <CollapseListButton
           collapseStatus={collapseStatus}

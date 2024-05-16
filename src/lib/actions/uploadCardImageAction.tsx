@@ -1,3 +1,4 @@
+'use server';
 import { z } from 'zod';
 import { saveImage } from '../handleData/handleContentData';
 
@@ -38,6 +39,7 @@ export async function uploadCardImageAction(
   formData: FormData
 ): Promise<State> {
   try {
+    console.log('我要上傳圖片囉');
     const file = formData.get('cardImage');
     const validatedFields = UploadCardImageSchema.safeParse({
       cardImage: file,
@@ -56,7 +58,9 @@ export async function uploadCardImageAction(
     const fileName = (formData.get('fileName') as string) || imageFile.name;
     // 先暫時拿掉
     const imageUploadURL = await saveImage(imageFile, fileName);
+    console.log('儲存完畢', fileName, imageUploadURL);
     if (imageUploadURL.status) {
+      console.log('上傳成功');
       return {
         ...state,
         success: true,
@@ -64,9 +68,11 @@ export async function uploadCardImageAction(
         successImageUrl: imageUploadURL.url,
       };
     } else {
+      console.log('上傳失敗再一次');
       return { ...state, message: '請重新上傳一次', success: false };
     }
   } catch (error) {
+    console.log(error, '圖片無法上傳的原因');
     return { ...state, message: '上傳過程中發生錯誤', success: false };
   }
 }

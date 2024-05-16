@@ -81,8 +81,12 @@ export default function DropzoneComponent({
           imageInformation: fileName,
         },
       };
-      setUploadImageStatus(true);
+      // setUploadImageStatus(true);
+
       dispatch(editFormChildElement(data));
+      setUploadImageStatus(false);
+    } else if (state && !state.success && state.message) {
+      setErrorMessage(state.message);
     }
   }, [state, childKey, nodeKey, dispatch, fileName]);
 
@@ -151,7 +155,7 @@ export default function DropzoneComponent({
         $isDragReject: { isDragReject },
       })}
     >
-      <form action={formDispatch} ref={imageForm}>
+      <form action={formDispatch} ref={imageForm} id="dropzoneButton">
         <input type="hidden" name="fileName" value={fileName} />
         <input
           type="file"
@@ -160,10 +164,10 @@ export default function DropzoneComponent({
           ref={hiddenInputImageRef}
         />
         <input {...getInputProps()} data-testid="dropzone-input" />
-        {uploadImageStatus ? (
-          <p className="text-green-600">上傳中，請稍等</p>
-        ) : errorMessage ? (
+        {errorMessage ? (
           <p className="text-red-600">{errorMessage}</p>
+        ) : uploadImageStatus ? (
+          <p className="text-green-600">上傳中，請稍等</p>
         ) : isDragActive ? (
           <p>將照片拖曳至此</p>
         ) : (
@@ -173,6 +177,7 @@ export default function DropzoneComponent({
           type="submit"
           className="hidden"
           ref={imageSubmitButton}
+          form="dropzoneButton"
         ></button>
       </form>
     </Container>

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const TitleContainer = styled.h2`
   font-size: 30px;
+  color: black;
 `;
 
 const Circle = styled.div`
@@ -39,7 +40,8 @@ export default function ViewTitle({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+  console.log('這個小孩值', children);
+  return children ? (
     <TitleWrapper>
       <TitleContainer>{children}</TitleContainer>
       <BottomLine>
@@ -48,5 +50,7 @@ export default function ViewTitle({
         <Circle />
       </BottomLine>
     </TitleWrapper>
+  ) : (
+    <></>
   );
 }

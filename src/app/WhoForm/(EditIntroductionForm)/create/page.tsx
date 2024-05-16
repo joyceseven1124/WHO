@@ -5,6 +5,6 @@ export const metadata: Metadata = {
   title: 'Create',
 };
 
-export default function Page() {
+export default async function Page() {
   return <CreateStepsCombine />;
 }

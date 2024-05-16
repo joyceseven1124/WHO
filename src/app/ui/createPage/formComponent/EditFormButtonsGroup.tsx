@@ -26,8 +26,9 @@ export default function EditFormButtonsGroup() {
           </AddNewComponentButton>
 
           <AddNewComponentButton
-            componentType="PortfolioEditBanner"
+            componentType="BannerEditCardList"
             description="由圖片、敘述文字、連結組成的Banner，共1張"
+            count={1}
           >
             <Image
               src="/componentButton/bannerCard.png"
@@ -50,7 +51,7 @@ export default function EditFormButtonsGroup() {
             ></Image>
           </AddNewComponentButton>
 
-          <AddNewComponentButton
+          {/* <AddNewComponentButton
             componentType="PortfolioEditCardListSlideShow"
             description="由圖片、敘述文字、連結組成的卡片，並且輪播，共12張"
           >
@@ -60,9 +61,9 @@ export default function EditFormButtonsGroup() {
               height={150}
               alt="Portfolio Card List Slideshow"
             ></Image>
-          </AddNewComponentButton>
+          </AddNewComponentButton> */}
 
-          <AddNewComponentButton
+          {/* <AddNewComponentButton
             componentType="PortfolioEditBannerSlideShow"
             description="由圖片、敘述文字、連結組成的Banner，並且輪播"
           >
@@ -72,7 +73,7 @@ export default function EditFormButtonsGroup() {
               height={150}
               alt="Portfolio Banner Slideshow"
             ></Image>
-          </AddNewComponentButton>
+          </AddNewComponentButton> */}
 
           <AddNewComponentButton
             componentType="ListPoints"
@@ -84,6 +85,19 @@ export default function EditFormButtonsGroup() {
               width={150}
               height={150}
               alt="List Points"
+            ></Image>
+          </AddNewComponentButton>
+
+          <AddNewComponentButton
+            componentType="StringCard"
+            description="純文字卡"
+            count={1}
+          >
+            <Image
+              src="/componentButton/stringCard.png"
+              width={150}
+              height={150}
+              alt="String Card"
             ></Image>
           </AddNewComponentButton>
         </div>

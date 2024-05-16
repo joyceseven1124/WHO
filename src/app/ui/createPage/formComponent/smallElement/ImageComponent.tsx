@@ -10,7 +10,11 @@ import {
 import DropzoneComponent from './handleImage/DropzoneComponent';
 import Thumb from './handleImage/PreviewImage';
 
-export default function ImageComponent() {
+export default function ImageComponent({
+  styleNodeHeight,
+}: {
+  styleNodeHeight?: string;
+}) {
   const [imageStatus, setImageStatus] = useState(false);
   const [thumb, setThumb] = useState<ReactNode>(null);
   const fileData = useAppSelector(selectFormData);
@@ -28,7 +32,7 @@ export default function ImageComponent() {
           <Thumb
             imageURL={ImageURL}
             imageInformation={ImageInformation}
-            styleHeight={Theme.portfolioCardHeight}
+            styleHeight={styleNodeHeight || Theme.portfolioCardHeight}
           />
         );
       } else {
@@ -39,6 +43,14 @@ export default function ImageComponent() {
   }, [childKey, currentComponent]);
 
   return (
-    <>{imageStatus ? thumb : <DropzoneComponent styleHeight={'200px'} />}</>
+    <>
+      {imageStatus ? (
+        thumb
+      ) : (
+        <DropzoneComponent
+          styleHeight={styleNodeHeight || Theme.portfolioCardHeight}
+        />
+      )}
+    </>
   );
 }

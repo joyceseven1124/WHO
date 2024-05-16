@@ -1,3 +1,5 @@
+'use server';
+import { auth } from '@/src/auth';
 import { BusinessCardListProp, ImageTypeScript } from '@/src/lib/definitions';
 import { FormDataList } from '@/src/lib/feature/formDataSlice';
 import { db } from '@/src/lib/firebaseConfig';
@@ -9,6 +11,7 @@ import {
   onSnapshot,
   query,
   setDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import {
@@ -17,17 +20,18 @@ import {
   getStorage,
   ref,
   uploadBytesResumable,
+  uploadString,
 } from 'firebase/storage';
 import { unstable_noStore as noStore } from 'next/cache';
-import { checkAuthStatus } from './HandleAuth';
+import { checkAuthStatus } from './handleAuth';
 
 const rootCardPerPageCount = 12;
+const mouseReplace = process.env.MOUSE_REPLACE || '';
 
 export async function websocketRootCard(): Promise<BusinessCardListProp[]> {
   noStore();
   return new Promise((resolve, reject) => {
     try {
-      console.log('監測中');
       const qRootCard = query(
         collection(db, 'blogRootList'),
         where('finishAllForm', '==', true)
@@ -37,10 +41,9 @@ export async function websocketRootCard(): Promise<BusinessCardListProp[]> {
         (querySnapshot) => {
           const rootCard: BusinessCardListProp[] = [];
           querySnapshot.forEach((doc) => {
-            // rootCard.push(doc.data());
             const data = doc.data();
             rootCard.push({
-              id: doc.id,
+              id: data.id,
               cardType: data.cardType,
               name: data.name,
               work: data.work,
@@ -51,18 +54,18 @@ export async function websocketRootCard(): Promise<BusinessCardListProp[]> {
               userBgPhotoInformation: data.userBgPhotoInformation || null,
               finishAllForm: data.finishAllForm,
               time: data.time,
+              submitStatus: true,
+              userPhoto: null,
+              userBgPhoto: null,
             });
           });
-          // return rootCard;
           resolve(rootCard);
         },
         (error) => {
-          console.log(error);
           reject(error);
         }
       );
     } catch (error) {
-      console.log(error);
       reject(error);
     }
   });
@@ -81,12 +84,26 @@ export async function fetchCountPageRootCard() {
 }
 
 export async function fetchViewContent(id: string) {
-  const viewDataPath = doc(db, 'blogs', id);
+  noStore();
+  const newId = id.replace(/%40|@/g, mouseReplace);
+  const viewDataPath = doc(db, 'blogs', newId);
   const viewData = await getDoc(viewDataPath);
   if (viewData.exists()) {
-    console.log('存在', viewData.data());
+    return { success: true, data: viewData.data() };
   } else {
-    console.log('不存在任何資料');
+    return { success: false, data: null };
+  }
+}
+
+export async function fetchBusinessCard(id: string) {
+  noStore();
+  const newId = id.replace(/%40|@/g, mouseReplace);
+  const cardDataPath = doc(db, 'blogRootList', newId);
+  const cardData = await getDoc(cardDataPath);
+  if (cardData.exists()) {
+    return { success: true, data: cardData.data() };
+  } else {
+    return { success: false, data: null };
   }
 }
 
@@ -103,7 +120,19 @@ export async function saveImage(file: File, imageName: string) {
     const url = await getDownloadURL(uploadTask.snapshot.ref);
     return { status: true, url: url };
   } catch (error) {
-    // throw error;
+    return { status: false, error: error };
+  }
+}
+
+export async function saveImageBase64Crop(file: string, imageName: string) {
+  noStore();
+  const storage = getStorage();
+  const storageRef = ref(storage, 'rootCard/' + imageName);
+  try {
+    const snapshot = await uploadString(storageRef, file, 'data_url');
+    const url = await getDownloadURL(snapshot.ref);
+    return { status: true, url: url };
+  } catch (error) {
     return { status: false, error: error };
   }
 }
@@ -121,14 +150,22 @@ export async function deleteImage(imagePath: string) {
     });
 }
 
-export async function saveFormData(formData: FormDataList) {
+export async function saveFormData(formData: any) {
   const result = await checkAuthStatus();
-  console.log('這個人儲存表單', result);
-  if (result.authStatus) {
-    await setDoc(doc(db, 'blogs', result.uid), formData.formData);
+  const session = await auth();
+  if (session && session.user && session.user.email && result.authStatus) {
+    const newId = session.user.email.replace(/%40|@/g, mouseReplace);
+    try {
+      await setDoc(doc(db, 'blogs', newId), formData);
+      await updateDoc(doc(db, 'blogRootList', newId), { finishAllForm: true });
+      return { success: true };
+    } catch (error) {
+      return { success: false, errorMessage: error };
+    }
   }
 }
 
 export async function saveCardContent(id: string, data: BusinessCardListProp) {
-  await setDoc(doc(db, 'blogRootList', id), data);
+  const newId = id.replace(/%40|@/g, mouseReplace);
+  await setDoc(doc(db, 'blogRootList', newId), data);
 }

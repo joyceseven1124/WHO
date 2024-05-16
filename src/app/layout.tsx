@@ -24,7 +24,7 @@ export default async function RootLayout({
       <body className={notoSanaTc.className}>
         <Navigation />
         <StoreProvider>{children}</StoreProvider>
-        <footer className="border-t p-4 text-center text-black text-slate-600">
+        <footer className="border-t p-4 text-center text-slate-600">
           <p className="mb-2 text-lg">WHO I AM</p>
           <p>©2024 CHIA-YI LIU All Rights Reserved</p>
         </footer>

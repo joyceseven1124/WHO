@@ -34,12 +34,12 @@ export default function ListPointer({ value }: { value: ComponentStructure }) {
 
         return (
           <ViewListPointerColumnStyle key={childKey}>
-            <SubtitleStyle className="text-black">123{inputText}</SubtitleStyle>
+            <SubtitleStyle className="text-black">{inputText}</SubtitleStyle>
             {listTextArray.map((element: string | undefined, index: number) => {
               return (
                 <ListPointerWrapper className=" text-black" key={index}>
                   <div className="point"></div>
-                  <p className="text-black">456{element}</p>
+                  <p className="text-black">{element}</p>
                 </ListPointerWrapper>
               );
             })}

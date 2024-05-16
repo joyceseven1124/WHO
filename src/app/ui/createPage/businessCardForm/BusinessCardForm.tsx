@@ -5,9 +5,11 @@ import {
   editCardData,
   selectCardData,
 } from '@/src/lib/feature/businessCardDataSlice';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import styled from 'styled-components';
+import AuthButtonSubmit from '../../login/AuthButtonSubmit';
 import { UploadImage } from './UploadImage';
 
 const FormStyle = styled.form`
@@ -71,12 +73,11 @@ const ErrorMessage = styled.p`
 export default function BusinessCardForm() {
   let textAreaLength;
   const data = useAppSelector(selectCardData);
-
   const dispatch = useAppDispatch();
   const cardType = data.cardType;
   const initialState = { message: null, errors: {}, success: false };
   const [state, formDispatch] = useFormState(createBusinessCard, initialState);
-
+  const pathname = usePathname();
   switch (cardType) {
     case 'BusinessCardBook':
       textAreaLength = 32;
@@ -100,7 +101,18 @@ export default function BusinessCardForm() {
   return (
     <FormStyle action={formDispatch}>
       {/* <input type="hidden" name="id" value={'/test'} /> */}
+      <input type="hidden" name="position" value={pathname} />
       <input type="hidden" name="cardType" value={data.cardType} />
+      <input
+        type="hidden"
+        name="userPhotoUrl"
+        value={data.userPhotoUrl || ''}
+      />
+      <input
+        type="hidden"
+        name="userBgPhotoUrl"
+        value={data.userBgPhotoUrl || ''}
+      />
       <CardInput>
         <label className="input-label" htmlFor="userPhotoInput">
           大頭貼:
@@ -196,9 +208,14 @@ export default function BusinessCardForm() {
       )}
 
       <ButtonWrapper>
-        <ButtonCva type="submit" intent={'secondary'}>
-          儲存
-        </ButtonCva>
+        {state.success && data.submitStatus ? (
+          <div className="text-lime-600">儲存成功</div>
+        ) : (
+          <AuthButtonSubmit>儲存</AuthButtonSubmit>
+          // <ButtonCva type="submit" intent={'secondary'}>
+          //   儲存
+          // </ButtonCva>
+        )}
       </ButtonWrapper>
     </FormStyle>
   );

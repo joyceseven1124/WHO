@@ -2,13 +2,23 @@ import type { RootState } from '@/src/lib/store';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import dayjs, { Dayjs } from 'dayjs';
+import { fetchWhoFormThunkById } from '../actions/whoFormThunkActions';
+
+export interface SelfInformationType {
+  userName?: string;
+  userEmail?: string;
+  userPhone?: string;
+  userIntroduction?: string;
+  gitHub?: string;
+  linkedIn?: string;
+  facebook?: string;
+  instagram?: string;
+  otherUrl?: string;
+}
 export interface FormElement {
-  // position?: string;
   inputText?: string;
   imageURL?: string;
   imageInformation?: string;
-  // editImage?: string;
-  // imageFile?: File;
   linkText?: string;
   linkURL?: string;
   startTimeLine?: string;
@@ -24,19 +34,12 @@ export interface ComponentStructure {
   componentCount: number;
   children: { [key: string]: FormElement };
 }
-
-// interface ImageCollectionType {
-//   childKey: string;
-//   nodeKey: string;
-//   imageFile?: Blob;
-// }
-
 export interface FormDataList {
   formData: { [key: string]: ComponentStructure };
-  // imageCollection: ImageCollectionType[];
+  selfInformation: SelfInformationType;
 }
 
-interface editFormElement {
+interface EditFormElement {
   nodeKey: string;
   componentTitle: string;
 }
@@ -56,7 +59,6 @@ export interface FormInitPayload {
 export interface ChangePositionChildPayload {
   nodeKey: string;
   childrenPositionArray: string[] | [];
-  // children: { [key: string]: FormElement };
 }
 
 export interface ChangePositionPayload {
@@ -71,7 +73,7 @@ interface RemovePayload {
 // Define the initial state using that type
 const initialState: FormDataList = {
   formData: {},
-  // imageCollection: [],
+  selfInformation: {},
 };
 
 export const formEditSlice = createSlice({
@@ -79,6 +81,16 @@ export const formEditSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    editSelfInformation: (
+      state,
+      action: PayloadAction<Partial<SelfInformationType>>
+    ) => {
+      state.selfInformation = {
+        ...state.selfInformation,
+        ...(action.payload as SelfInformationType),
+      };
+    },
+
     addFormElement: (state, action: PayloadAction<FormInitPayload>) => {
       const { nodeKey, componentType, children, componentCount } =
         action.payload;
@@ -89,6 +101,7 @@ export const formEditSlice = createSlice({
         children: children,
       };
     },
+
     removeFormElement: (state, action: PayloadAction<RemovePayload>) => {
       const nodeKey = action.payload.nodeKey;
       delete state.formData[nodeKey];
@@ -102,7 +115,7 @@ export const formEditSlice = createSlice({
       state.formData = { ...elementKeyArray };
     },
 
-    editFormElement: (state, action: PayloadAction<editFormElement>) => {
+    editFormElement: (state, action: PayloadAction<EditFormElement>) => {
       const { nodeKey, componentTitle } = action.payload;
       state.formData[nodeKey]['componentTitle'] = componentTitle;
     },
@@ -158,29 +171,32 @@ export const formEditSlice = createSlice({
       }
     },
 
-    // addImageCollection: (state, action: PayloadAction<ImageCollectionType>) => {
-    //   const { nodeKey, childKey, imageFile } = action.payload;
-    //   const data = {
-    //     nodeKey: nodeKey,
-    //     childKey: childKey,
-    //     imageFile: imageFile,
-    //   };
-    //   state.imageCollection.push(data);
-    // },
+    initializeFormData: (state) => {
+      state.formData = {};
+    },
+  },
 
-    // removeImageCollection: (
-    //   state,
-    //   action: PayloadAction<ImageCollectionType>
-    // ) => {
-    //   const { nodeKey, childKey } = action.payload;
-    //   state.imageCollection = state.imageCollection.filter((element) => {
-    //     return !(element.nodeKey === nodeKey && element.childKey === childKey);
-    //   });
-    // },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchWhoFormThunkById.fulfilled, (state, action) => {
+        if (action.payload) {
+          const { formData, selfInformation } = action.payload.data;
+          console.log('我的表單資料', formData);
+          if (formData) state.formData = formData;
+          if (selfInformation) state.selfInformation = selfInformation;
+        } else {
+          state.formData = {};
+          state.selfInformation = {};
+        }
+      })
+      .addCase(fetchWhoFormThunkById.rejected, (state, action) => {
+        console.log('錯誤thunk whoform');
+      });
   },
 });
 
 export const {
+  editSelfInformation,
   removeFormElement,
   removeFormChildElement,
   editFormChildElement,
@@ -189,11 +205,12 @@ export const {
   changeFormChildElement,
   changeFormElement,
   editFormElement,
-  // addImageCollection,
-  // removeImageCollection,
+  initializeFormData,
 } = formEditSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectFormData = (state: RootState) => state.FormData.formData;
+export const selectSelfInformation = (state: RootState) =>
+  state.FormData.selfInformation;
 
 export default formEditSlice.reducer;

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import AuthButtonSubmit from '../../ui/login/AuthButtonSubmit';
 import LogInForm from '../../ui/login/LogInForm';
 import PageTitle from '../../ui/login/PageTitle';
 
@@ -15,12 +16,7 @@ export default function Page() {
           >
             已有帳號
           </Link>
-          <button
-            className="w-fit rounded bg-black p-3 text-white hover:bg-zinc-800"
-            form="authForm"
-          >
-            註冊
-          </button>
+          <AuthButtonSubmit>註冊</AuthButtonSubmit>
         </LogInForm>
       </div>
     </div>

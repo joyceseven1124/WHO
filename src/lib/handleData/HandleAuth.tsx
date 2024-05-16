@@ -1,14 +1,17 @@
+'use server';
 import { signOut } from '@/src/auth';
 import { checkAuthType } from '@/src/lib/definitions';
 import { auth } from '@/src/lib/firebaseConfig';
 import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
   setPersistence,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
-export function registerHandle(email: string, password: string) {
+export async function registerHandle(email: string, password: string) {
   return new Promise((resolve, reject) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -28,7 +31,7 @@ export function registerHandle(email: string, password: string) {
   });
 }
 
-export function signInHandle(email: string, password: string) {
+export async function signInHandle(email: string, password: string) {
   return new Promise((resolve, reject) => {
     setPersistence(auth, browserLocalPersistence).then(() => {
       return signInWithEmailAndPassword(auth, email, password)
@@ -53,16 +56,16 @@ export async function firebaseSignOut() {
   try {
     return auth.signOut();
   } catch (error) {
-    console.error('Error signing out with Google', error);
+    console.error(error);
   }
 }
 
 export async function checkAuthStatus(): Promise<checkAuthType> {
   return new Promise((resolve) => {
-    auth.onAuthStateChanged(function (user: any) {
+    onAuthStateChanged(auth, function (user: any) {
       if (user) {
-        var email = user.email;
-        var uid = user.uid;
+        const email = user.email;
+        const uid = user.uid;
         resolve({ email: email, uid: uid, authStatus: true });
       } else {
         resolve({ email: '', uid: '', authStatus: false });
@@ -71,11 +74,6 @@ export async function checkAuthStatus(): Promise<checkAuthType> {
   });
 }
 
-export async function persistAuthHandle() {
-  await setPersistence(auth, browserLocalPersistence);
-}
-
 export async function authSignOut() {
-  // 'use server';
   await signOut();
 }

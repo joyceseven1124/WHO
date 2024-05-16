@@ -94,7 +94,6 @@ export default function StepperOne() {
     if (typeList.length > 0) {
       const data = {
         cardType: typeList[currentIndex],
-        id: Date.now().toString(),
       };
       dispatch(editCardData(data));
     }

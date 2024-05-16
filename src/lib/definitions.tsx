@@ -1,3 +1,4 @@
+import { BusinessCardItems } from './feature/businessCardDataSlice';
 export interface ImageTypeScript {
   name: string;
   url: string;
@@ -16,19 +17,25 @@ export interface RootCardType {
   bgPhotoAlt: string | null;
 }
 
-export interface BusinessCardListProp {
-  id: string;
-  cardType: string;
-  name: string;
-  work: string;
-  description: string;
-  userPhotoUrl: string;
-  userPhotoInformation: string;
-  userBgPhotoUrl: string | null;
-  userBgPhotoInformation: string | null;
+export interface BusinessCardListProp extends BusinessCardItems {
+  // id: string;
+  // cardType: string;
+  // name: string;
+  // work: string;
+  // description: string;
+  // userPhotoUrl: string;
+  // userPhotoInformation: string;
+  // userBgPhotoUrl: string | null;
+  // userBgPhotoInformation: string | null;
+  // // 暫時
+  // finishAllForm: boolean;
+  // time: string;
+  // userPhotoUrl: string;
+  // userBgPhotoUrl: string | null;
   // 暫時
   finishAllForm: boolean;
   time: string;
+  // userBgPhotoInformation: string; // 修改類型為字符串
 }
 
 export type User = {
@@ -42,4 +49,11 @@ export type checkAuthType = {
   email: string;
   uid: string;
   authStatus: boolean;
+};
+
+export type State = {
+  errors?: any;
+  message?: string | null | undefined;
+  success?: boolean | undefined;
+  resultData?: string;
 };

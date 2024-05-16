@@ -1,5 +1,4 @@
 'use client';
-
 import { MEDIA_QUERY_MD } from '@/src/app/style';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import styled from 'styled-components';

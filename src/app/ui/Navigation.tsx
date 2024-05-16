@@ -1,10 +1,10 @@
 import { auth } from '@/src/auth';
-import { checkAuthStatus } from '@/src/lib/handleData/HandleAuth';
 import { UserIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import ButtonCva from './ButtonCva';
 import SignOutButton from './LogOutButton';
+import MyBlogButton from './MyBlogButton';
 import Search from './Search';
 
 export async function Navigation() {
@@ -37,9 +37,10 @@ export async function Navigation() {
           <Search />
         </div>
         <div className="hidden gap-x-3 md:flex">
-          <Link href="/WhoForm/create">
+          <MyBlogButton>
             <ButtonCva intent={'secondary'}>My Blog</ButtonCva>
-          </Link>
+          </MyBlogButton>
+
           {session ? (
             <SignOutButton></SignOutButton>
           ) : (
