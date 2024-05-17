@@ -26,12 +26,20 @@ export interface FormElement {
   initStartTime?: string;
   initEndTime?: string;
   listTextArray?: (string | undefined)[];
-  [key: string]: string | (string | undefined)[] | undefined | null[] | Dayjs;
+  position?: number;
+  [key: string]:
+    | string
+    | (string | undefined)[]
+    | undefined
+    | null[]
+    | Dayjs
+    | number;
 }
 export interface ComponentStructure {
   componentType: string;
   componentTitle: string;
   componentCount: number;
+  componentPosition?: number;
   children: { [key: string]: FormElement };
 }
 export interface FormDataList {
@@ -181,7 +189,6 @@ export const formEditSlice = createSlice({
       .addCase(fetchWhoFormThunkById.fulfilled, (state, action) => {
         if (action.payload) {
           const { formData, selfInformation } = action.payload.data;
-          console.log('我的表單資料', formData);
           if (formData) state.formData = formData;
           if (selfInformation) state.selfInformation = selfInformation;
         } else {
@@ -190,7 +197,7 @@ export const formEditSlice = createSlice({
         }
       })
       .addCase(fetchWhoFormThunkById.rejected, (state, action) => {
-        console.log('錯誤thunk whoform');
+        console.log('錯誤thunk');
       });
   },
 });

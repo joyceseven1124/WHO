@@ -19,7 +19,6 @@ const cropImageAction = async (
         cropResult,
         imageInformation
       );
-      console.log('儲存過後的網址結果', imageUploadValue);
       if (imageUploadValue.status) {
         deleteImage(imageURL);
         return {

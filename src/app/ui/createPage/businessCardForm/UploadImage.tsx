@@ -45,8 +45,6 @@ export function UploadImage({
     <div>
       <input
         type="hidden"
-        // className='hidden'
-        // value={(data[inputName] as ImageTypeScript)?.name || ''}
         value={inputValue as string}
         name={`${inputName}Information`}
       />
@@ -74,7 +72,6 @@ export function UploadImage({
               (data[inputName] as ImageTypeScript)?.url ||
               (data[`${inputName}Url`] as string)
             }
-            // alt={(data[inputName] as ImageTypeScript)?.name}
             alt={inputValue as string}
             width={150}
             height={150}

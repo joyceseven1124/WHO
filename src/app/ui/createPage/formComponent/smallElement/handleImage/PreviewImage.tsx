@@ -82,16 +82,7 @@ export default function Thumb({
   return (
     <>
       <ThumbStyle $styleHeight={styleHeight}>
-        <Image
-          alt={imageInformation}
-          src={imageURL}
-          width={500}
-          height={500}
-          // Revoke data uri after image is loaded
-          // onLoad={() => {
-          //   URL.revokeObjectURL(imageURL);
-          // }}
-        />
+        <Image alt={imageInformation} src={imageURL} width={500} height={500} />
         <HoverStyle id="hoverDialog">
           <ButtonsDialog id="buttonDialog">
             <div

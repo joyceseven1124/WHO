@@ -60,7 +60,6 @@ export default function AddNewComponentButton({
     crypto.getRandomValues(randomValuesArray);
     const childrenList: { [key: string]: {} } = {};
     Array.from(randomValuesArray).forEach((element) => {
-      // const childKey: string = element.toString(16).padStart(16, '0');
       let childKey: string = element.toString().padStart(16, '0');
       if (childrenList[childKey]) {
         childKey = childKey + 1;

@@ -51,22 +51,6 @@ export const businessCardDataSlice = createSlice({
     ) => {
       state.data = { ...state.data, ...(action.payload as BusinessCardItems) };
     },
-
-    // initializeCardData: (state) => {
-    //   state.data = {
-    //     id: '',
-    //     cardType: '',
-    //     name: '',
-    //     work: '',
-    //     description: '',
-    //     userPhoto: null,
-    //     userPhotoInformation: '',
-    //     userBgPhoto: null,
-    //     userBgPhotoInformation: '',
-    //     submitStatus: false,
-    //   };
-    //   console.log('目前的state', state);
-    // },
   },
 
   extraReducers: (builder) => {

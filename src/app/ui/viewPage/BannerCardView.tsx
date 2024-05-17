@@ -1,10 +1,5 @@
 'use client';
-import {
-  MEDIA_QUERY_LG,
-  MEDIA_QUERY_MD,
-  MEDIA_QUERY_SM,
-  MEDIA_QUERY_SSM,
-} from '@/src/app/style';
+import { MEDIA_QUERY_MD } from '@/src/app/style';
 import ViewTitle from '@/src/app/ui/viewPage/smallComponent/ViewTitle';
 import { ComponentStructure } from '@/src/lib/feature/formDataSlice';
 import Image from 'next/image';
@@ -13,10 +8,14 @@ import styled from 'styled-components';
 const BannerCardViewWrapper = styled.div`
   display: grid;
   grid-template-rows: 1fr auto;
-  gap: 10px;
-  ${MEDIA_QUERY_SM} {
-    grid-template-columns: 1fr 2fr;
+  row-gap: 30px;
+  ${MEDIA_QUERY_MD} {
+    grid-template-columns: 2fr 3fr;
+    column-gap: 30px;
     grid-template-rows: 1fr;
+  }
+  img {
+    width: 100%;
   }
 `;
 

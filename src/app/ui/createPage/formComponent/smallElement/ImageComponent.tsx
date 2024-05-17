@@ -40,7 +40,7 @@ export default function ImageComponent({
         setThumb(null);
       }
     }
-  }, [childKey, currentComponent]);
+  }, [childKey, currentComponent, styleNodeHeight]);
 
   return (
     <>

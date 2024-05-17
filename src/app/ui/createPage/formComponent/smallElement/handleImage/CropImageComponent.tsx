@@ -64,7 +64,6 @@ const CropImageComponent = ({
 
   useEffect(() => {
     if (stateMsg && stateMsg.success && stateMsg.resultData) {
-      console.log('裁切成功');
       const elements = { imageURL: stateMsg.resultData };
       dispatch(
         editFormChildElement({

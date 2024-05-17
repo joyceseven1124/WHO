@@ -10,7 +10,6 @@ export default function AuthButtonSubmit({
   return (
     <button
       className="w-fit rounded bg-black p-3 text-white hover:bg-zinc-800"
-      // form="authForm"
       type="submit"
       disabled={status.pending}
     >

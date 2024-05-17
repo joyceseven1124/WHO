@@ -1,8 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/src/lib/RThooks';
-import {
-  addFormChildElement,
-  selectFormData,
-} from '@/src/lib/feature/formDataSlice';
+import { selectFormData } from '@/src/lib/feature/formDataSlice';
 import { ChildKeyContext, NodeKeyContext } from '@/src/lib/provider/context';
 import { useContext } from 'react';
 import BannerEditCard from '../card/BannerEditCard';

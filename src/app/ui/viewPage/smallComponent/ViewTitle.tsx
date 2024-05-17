@@ -32,7 +32,6 @@ const TitleWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 30px;
-  /* row-gap: 10px; */
 `;
 
 export default function ViewTitle({
@@ -40,7 +39,6 @@ export default function ViewTitle({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log('這個小孩值', children);
   return children ? (
     <TitleWrapper>
       <TitleContainer>{children}</TitleContainer>

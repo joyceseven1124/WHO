@@ -31,7 +31,6 @@ export default function LinkComponent() {
           editLink();
         }}
       >
-        {/* {linkWord} */}
         {childData && childData.linkText ? childData.linkText : '了解更多'}
       </LinkComponentStyle>
       {showEditCard && <LinkDialog setShowCardList={setShowCardList} />}

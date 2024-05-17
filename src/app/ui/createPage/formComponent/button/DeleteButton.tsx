@@ -1,5 +1,4 @@
 import { TrashIcon } from '@heroicons/react/24/outline';
-import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 
 export default function DeleteButton({

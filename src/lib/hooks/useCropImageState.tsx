@@ -1,8 +1,5 @@
-import { resolve } from 'path';
-import { Result } from 'postcss';
 import { useState } from 'react';
 import { Area } from 'react-easy-crop';
-import { string } from 'zod';
 import getCroppedImg, { CroppedImageResult } from '../utils/cropImage';
 
 export default function useCropImageState(

@@ -1,9 +1,4 @@
-import {
-  MEDIA_QUERY_LG,
-  MEDIA_QUERY_MD,
-  MEDIA_QUERY_SM,
-  MEDIA_QUERY_SSM,
-} from '@/src/app/style';
+import { MEDIA_QUERY_SM } from '@/src/app/style';
 import { useAppDispatch, useAppSelector } from '@/src/lib/RThooks';
 import {
   editSelfInformation,
@@ -21,9 +16,6 @@ import styled from 'styled-components';
 import TextArea from '../smallElement/TextArea';
 
 const BaseInformationWrapper = styled.div`
-  /* grid-template-rows: 1fr 1fr 1fr; */
-  /* grid-template-columns: 1fr; */
-  /* grid-template-columns: 1f; */
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -72,14 +64,9 @@ const BaseInput = styled.div`
 const BaseMediaInput = styled.div`
   display: flex;
   align-items: center;
-  /* display: grid;
-  grid-template-columns: 20px 40px auto; */
   input {
     width: 100%;
   }
-  /* label {
-    margin-left: 5px;
-  } */
 `;
 
 export default function BaseInformationList() {

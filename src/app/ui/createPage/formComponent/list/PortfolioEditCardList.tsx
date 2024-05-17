@@ -53,7 +53,6 @@ export default function PortfolioEditCardList() {
   }
 
   const onListChange = () => {
-    // const list: { [key: string]: FormElement } = {};
     const list: string[] = [];
     if (gridRef.current) {
       //  PortfolioEditCard 中設有data-id

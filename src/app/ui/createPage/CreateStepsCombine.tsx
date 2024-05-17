@@ -8,13 +8,7 @@ import StepperTwo from '@/src/app/ui/createPage/step/StepperTwo';
 import { useAppDispatch } from '@/src/lib/RThooks';
 import { fetchBusinessCardThunkById } from '@/src/lib/actions/businessCardThunkActions';
 import { fetchWhoFormThunkById } from '@/src/lib/actions/whoFormThunkActions';
-import { checkAuthType } from '@/src/lib/definitions';
-import { BusinessCardItems } from '@/src/lib/feature/businessCardDataSlice';
-import { FormDataList } from '@/src/lib/feature/formDataSlice';
-// import { auth } from '@/src/lib/firebaseConfig';
-import { checkAuthStatus } from '@/src/lib/handleData/handleAuth';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import StepperFinish from './step/StepperFinish';
 
 export default function CreateStepsCombine({ email }: { email?: string }) {
@@ -26,32 +20,7 @@ export default function CreateStepsCombine({ email }: { email?: string }) {
       dispatch(fetchWhoFormThunkById(email));
     }
   }, [dispatch, email]);
-  // const user = userData;
-  // useEffect(() => {
-  //   const auth = getAuth();
-  //   onAuthStateChanged(auth, function (user: any) {
-  //     if (user) {
-  //       console.log('目前登入中', user.email);
-  //       const email = user.email;
-  //       // const uid = user.uid;
-  //       // // 登入狀態
-  //       // dispatch({
-  //       //   type: 'AUTH_SUCCESS',
-  //       //   payload: { email: email, uid: uid, authStatus: true },
-  //       // });
-  //       // 可以在這裡調用其他需要在用戶登入後執行的邏輯
-  //       dispatch(fetchBusinessCardThunkById(email));
-  //     } else {
-  //       // 登出狀態
-  //       console.log('目前登出中');
-  //       // dispatch({
-  //       //   type: 'AUTH_FAILURE',
-  //       //   payload: { email: '', uid: '', authStatus: false },
-  //       // });
-  //     }
-  //   });
-  //   // return () => unsubscribe();
-  // }, []);
+
   return (
     <>
       <HorizontalLinearStepper

@@ -81,7 +81,6 @@ export default function DropzoneComponent({
           imageInformation: fileName,
         },
       };
-      // setUploadImageStatus(true);
 
       dispatch(editFormChildElement(data));
       setUploadImageStatus(false);
@@ -90,31 +89,27 @@ export default function DropzoneComponent({
     }
   }, [state, childKey, nodeKey, dispatch, fileName]);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (acceptedFiles.length === 0) {
-        return;
-      }
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length === 0) {
+      return;
+    }
 
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(acceptedFiles[0]);
-      if (hiddenInputImageRef.current)
-        hiddenInputImageRef.current.files = dataTransfer.files;
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(acceptedFiles[0]);
+    if (hiddenInputImageRef.current)
+      hiddenInputImageRef.current.files = dataTransfer.files;
 
-      acceptedFiles.map((file) => {
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        });
-        setFileName(`${file.name} - ${file.size}`);
-        if (imageForm.current?.requestSubmit) {
-          setUploadImageStatus(true);
-          imageForm.current.requestSubmit();
-        }
+    acceptedFiles.map((file) => {
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
       });
-    },
-    [childKey, dispatch, nodeKey]
-  );
-  // 這邊depedency 不確定
+      setFileName(`${file.name} - ${file.size}`);
+      if (imageForm.current?.requestSubmit) {
+        setUploadImageStatus(true);
+        imageForm.current.requestSubmit();
+      }
+    });
+  }, []);
 
   const {
     acceptedFiles,

@@ -1,12 +1,7 @@
 'use server';
 import { auth } from '@/src/auth';
-import { checkAuthStatus } from '@/src/lib/handleData/handleAuth';
-import {
-  fetchBusinessCard,
-  fetchViewContent,
-} from '@/src/lib/handleData/handleContentData';
+import { fetchBusinessCard } from '@/src/lib/handleData/handleContentData';
 import { Link } from '@mui/material';
-import ButtonCva from './ButtonCva';
 
 export default async function MyBlogButton({
   children,

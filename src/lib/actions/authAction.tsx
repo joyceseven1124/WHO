@@ -1,21 +1,7 @@
 'use server';
 import { signIn } from '@/src/auth';
-// import { AuthError } from 'next-auth';
 import { State } from '../definitions';
-import {
-  // persistAuthHandle,
-  registerHandle,
-  signInHandle,
-} from '../handleData/handleAuth';
-// import { getAuth} from "firebase/auth";
-// import { revalidatePath } from 'next/cache';
-// import { redirect } from 'next/navigation';
-
-// export type State = {
-//   errors?: any;
-//   message?: string | null | undefined;
-//   success?: boolean | undefined;
-// };
+import { registerHandle, signInHandle } from '../handleData/HandleAuth';
 
 export async function authenticate(
   prevState: State | void,
@@ -28,7 +14,6 @@ export async function authenticate(
   if (type === 'register') {
     try {
       const result = await registerHandle(account, password);
-      console.log('註冊完的結果', result);
       return { message: '註冊成功', errors: '', success: true };
     } catch (error: any) {
       let message = '發生非預期的錯誤';

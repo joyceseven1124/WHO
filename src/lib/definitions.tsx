@@ -18,24 +18,8 @@ export interface RootCardType {
 }
 
 export interface BusinessCardListProp extends BusinessCardItems {
-  // id: string;
-  // cardType: string;
-  // name: string;
-  // work: string;
-  // description: string;
-  // userPhotoUrl: string;
-  // userPhotoInformation: string;
-  // userBgPhotoUrl: string | null;
-  // userBgPhotoInformation: string | null;
-  // // 暫時
-  // finishAllForm: boolean;
-  // time: string;
-  // userPhotoUrl: string;
-  // userBgPhotoUrl: string | null;
-  // 暫時
   finishAllForm: boolean;
   time: string;
-  // userBgPhotoInformation: string; // 修改類型為字符串
 }
 
 export type User = {

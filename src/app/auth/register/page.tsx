@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import AuthButtonSubmit from '../../ui/login/AuthButtonSubmit';
 import LogInForm from '../../ui/login/LogInForm';

@@ -1,8 +1,3 @@
-// {
-//   "projects": {
-//     "default": "whoiam-38f06"
-//   }
-// }
 {
   "hosting": {
     "public": "public",

@@ -1,4 +1,3 @@
-// import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import AuthButtonSubmit from '../../ui/login/AuthButtonSubmit';
 import LogInForm from '../../ui/login/LogInForm';
@@ -16,13 +15,7 @@ export default function Page() {
           >
             註冊會員
           </Link>
-          <AuthButtonSubmit
-          // className="w-fit rounded bg-black p-3 text-white hover:bg-zinc-800"
-          // form="authForm"
-          // // onClick={() => signIn('google')}
-          >
-            登入
-          </AuthButtonSubmit>
+          <AuthButtonSubmit>登入</AuthButtonSubmit>
         </LogInForm>
       </div>
     </div>

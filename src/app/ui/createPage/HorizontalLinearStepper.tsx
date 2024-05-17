@@ -5,13 +5,11 @@ import {
   selectFormData,
   selectSelfInformation,
 } from '@/src/lib/feature/formDataSlice';
-// import { saveFormData } from '@/src/lib/handleData/handleContentData';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
-import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Dispatch, SetStateAction, useState } from 'react';
 
@@ -57,14 +55,6 @@ export default function HorizontalLinearStepper({
         }
         break;
 
-      case 3:
-      // const formDataObject = {
-      //   formData: formData,
-      //   selfInformation: baseInformationData,
-      // };
-      // 先隱藏
-      // saveFormData(formDataObject);
-
       default:
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -101,7 +91,6 @@ export default function HorizontalLinearStepper({
           })}
         </Stepper>
 
-        {/* 完成後 應該為自動前往blog*/}
         {activeStep === steps.length ? null : (
           <>
             <Box

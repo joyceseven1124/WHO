@@ -1,4 +1,3 @@
-import ButtonCva from '@/src/app/ui/ButtonCva';
 import { useAppDispatch, useAppSelector } from '@/src/lib/RThooks';
 import { createBusinessCard } from '@/src/lib/actions/businessCardAction';
 import {
@@ -100,7 +99,6 @@ export default function BusinessCardForm() {
 
   return (
     <FormStyle action={formDispatch}>
-      {/* <input type="hidden" name="id" value={'/test'} /> */}
       <input type="hidden" name="position" value={pathname} />
       <input type="hidden" name="cardType" value={data.cardType} />
       <input
@@ -212,9 +210,6 @@ export default function BusinessCardForm() {
           <div className="text-lime-600">儲存成功</div>
         ) : (
           <AuthButtonSubmit>儲存</AuthButtonSubmit>
-          // <ButtonCva type="submit" intent={'secondary'}>
-          //   儲存
-          // </ButtonCva>
         )}
       </ButtonWrapper>
     </FormStyle>

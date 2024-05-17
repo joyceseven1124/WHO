@@ -19,13 +19,11 @@ const SearchBar = styled.div`
     max-width: 600px;
     padding: 8px 20px;
   }
-  /* justify-content: space-around; */
 `;
 
 const SearchInput = styled.input`
   width: calc(100% - 52px);
   outline: none;
-  /* max-width: 250px; */
 `;
 
 const SearchButton = styled.button`

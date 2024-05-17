@@ -1,8 +1,8 @@
 'use server';
 import { auth } from '@/src/auth';
 import { BusinessCardListProp, ImageTypeScript } from '@/src/lib/definitions';
-import { FormDataList } from '@/src/lib/feature/formDataSlice';
 import { db } from '@/src/lib/firebaseConfig';
+import { checkAuthStatus } from '@/src/lib/handleData/HandleAuth';
 import {
   collection,
   doc,
@@ -23,7 +23,7 @@ import {
   uploadString,
 } from 'firebase/storage';
 import { unstable_noStore as noStore } from 'next/cache';
-import { checkAuthStatus } from './handleAuth';
+import { orderData } from '../utils/orderData';
 
 const rootCardPerPageCount = 12;
 const mouseReplace = process.env.MOUSE_REPLACE || '';
@@ -89,7 +89,10 @@ export async function fetchViewContent(id: string) {
   const viewDataPath = doc(db, 'blogs', newId);
   const viewData = await getDoc(viewDataPath);
   if (viewData.exists()) {
-    return { success: true, data: viewData.data() };
+    const data = viewData.data();
+    const { formData, selfInformation } = data;
+    const newData = orderData({ formData, selfInformation });
+    return { success: true, data: newData };
   } else {
     return { success: false, data: null };
   }

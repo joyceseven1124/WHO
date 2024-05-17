@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 export default function PageTitle({ children }: { children: React.ReactNode }) {
   return (
     <div className="">

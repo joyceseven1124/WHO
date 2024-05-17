@@ -1,14 +1,5 @@
-import {
-  MEDIA_QUERY_LG,
-  MEDIA_QUERY_MD,
-  MEDIA_QUERY_SM,
-  MEDIA_QUERY_SSM,
-} from '@/src/app/style';
-import { useAppSelector } from '@/src/lib/RThooks';
-import {
-  SelfInformationType,
-  selectSelfInformation,
-} from '@/src/lib/feature/formDataSlice';
+import { MEDIA_QUERY_SM } from '@/src/app/style';
+import { SelfInformationType } from '@/src/lib/feature/formDataSlice';
 import BadgeIcon from '@mui/icons-material/Badge';
 import EmailIcon from '@mui/icons-material/Email';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -35,7 +26,6 @@ const BaseInformationWrapper = styled.div`
   ${MEDIA_QUERY_SM} {
     display: grid;
     grid-template-columns: fit-content 1fr;
-    /* grid-template-rows: 1fr 1fr; */
     gap: 20px 50px;
   }
 `;
@@ -54,8 +44,6 @@ export default function BaseInformationView({
 }: {
   baseData: SelfInformationType;
 }) {
-  // const userInformationData = useAppSelector(selectSelfInformation);
-
   return (
     <BaseInformationWrapper>
       <div>
