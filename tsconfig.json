@@ -13,7 +13,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "declaration": true,
     "noImplicitAny": true,
     "preserveSymlinks": true,
     "plugins": [
@@ -31,7 +30,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/auth.ts",
-    "src/app/auth.config.ts"
+    "src/app/auth.config.ts",
+    "src/auth.js"
   ],
   "exclude": ["node_modules"]
 }

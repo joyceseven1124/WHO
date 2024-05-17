@@ -6,9 +6,9 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
-        pathname: '**'
-      }
-    ]
+        pathname: '**',
+      },
+    ],
     // domains: ['firebasestorage.googleapis.com'],
   },
   // experimental: {

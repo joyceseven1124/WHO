@@ -49,7 +49,7 @@ export const {
   ],
   callbacks: {
     async session({ session, token, user }) {
-      session.user = token.user as User;
+      session.user = token.user as any;
       return session;
     },
     async jwt({ token, user, trigger, session }) {
