@@ -20,5 +20,8 @@
       "**/cache/**",
       "src/lib/__test__"
     ]
+  },
+  "projects": {
+    "default": "whoiam-38f06"
   }
 }
