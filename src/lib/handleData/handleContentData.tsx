@@ -4,13 +4,18 @@ import { BusinessCardListProp, ImageTypeScript } from '@/src/lib/definitions';
 import { db } from '@/src/lib/firebaseConfig';
 import { checkAuthStatus } from '@/src/lib/handleData/HandleAuth';
 import {
+  and,
   collection,
   doc,
   getCountFromServer,
   getDoc,
+  limit,
   onSnapshot,
+  or,
+  orderBy,
   query,
   setDoc,
+  startAfter,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -28,14 +33,36 @@ import { orderData } from '../utils/orderData';
 const rootCardPerPageCount = 12;
 const mouseReplace = process.env.MOUSE_REPLACE || '';
 
-export async function websocketRootCard(): Promise<BusinessCardListProp[]> {
+export async function websocketRootCard(
+  page: number = 1,
+  keyWord: string | null = null
+): Promise<BusinessCardListProp[]> {
   noStore();
   return new Promise((resolve, reject) => {
     try {
-      const qRootCard = query(
-        collection(db, 'blogRootList'),
-        where('finishAllForm', '==', true)
-      );
+      const lastVisible = (page - 1) * rootCardPerPageCount - 1;
+      let qRootCard;
+      if (!keyWord) {
+        qRootCard = query(
+          collection(db, 'blogRootList'),
+          and(where('finishAllForm', '==', true)),
+          orderBy('time'),
+          startAfter(lastVisible),
+          limit(rootCardPerPageCount)
+        );
+      } else {
+        qRootCard = query(
+          collection(db, 'blogRootList'),
+          and(
+            where('finishAllForm', '==', true),
+            or(where('work', '==', keyWord), where('userName', '==', keyWord))
+          ),
+          orderBy('time'),
+          startAfter(lastVisible),
+          limit(rootCardPerPageCount)
+        );
+      }
+
       const unsubscribe = onSnapshot(
         qRootCard,
         (querySnapshot) => {
@@ -45,7 +72,7 @@ export async function websocketRootCard(): Promise<BusinessCardListProp[]> {
             rootCard.push({
               id: data.id,
               cardType: data.cardType,
-              name: data.name,
+              userName: data.userName,
               work: data.work,
               description: data.description,
               userPhotoUrl: data.userPhotoUrl,

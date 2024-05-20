@@ -7,7 +7,7 @@ import { fetchBusinessCardThunkById } from '../actions/businessCardThunkActions'
 export interface BusinessCardItems {
   id: string;
   cardType: string;
-  name: string;
+  userName: string;
   work: string;
   description: string;
   userPhoto: null | ImageTypeScript;
@@ -28,7 +28,7 @@ const initialState: BusinessCardData = {
   data: {
     id: '',
     cardType: '',
-    name: '',
+    userName: '',
     work: '',
     description: '',
     userPhoto: null,
@@ -62,7 +62,7 @@ export const businessCardDataSlice = createSlice({
           state.data = {
             id: '',
             cardType: '',
-            name: '',
+            userName: '',
             work: '',
             description: '',
             userPhoto: null,

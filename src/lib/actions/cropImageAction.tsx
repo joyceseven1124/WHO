@@ -20,7 +20,7 @@ const cropImageAction = async (
         imageInformation
       );
       if (imageUploadValue.status) {
-        deleteImage(imageURL);
+        // deleteImage(imageURL);
         return {
           message: '裁切成功',
           errors: '',

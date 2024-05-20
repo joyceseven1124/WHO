@@ -136,16 +136,16 @@ export default function BusinessCardForm() {
           maxLength={12}
           placeholder="限制12字元"
           id="nameInput"
-          name="name"
+          name="userName"
           onChange={(e) =>
             dispatch(
-              editCardData({ name: e.target.value, submitStatus: false })
+              editCardData({ userName: e.target.value, submitStatus: false })
             )
           }
-          value={data.name}
+          value={data.userName}
         ></input>
-        {state?.errors?.name &&
-          state.errors.name.map((error: string) => (
+        {state?.errors?.userName &&
+          state.errors.userName.map((error: string) => (
             <ErrorMessage key={error}>{error}</ErrorMessage>
           ))}
       </CardInput>

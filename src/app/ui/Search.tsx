@@ -1,8 +1,9 @@
 'use client';
 import { MEDIA_QUERY_MD } from '@/src/app/style';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import styled from 'styled-components';
-// import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 
 const SearchBar = styled.div`
   display: flex;
@@ -28,18 +29,45 @@ const SearchInput = styled.input`
 
 const SearchButton = styled.button`
   color: #4d4d4d;
+  position: relative;
+  cursor: pointer;
   &:hover {
     color: black;
+    &:before {
+      position: absolute;
+      content: 'Waiting';
+      background-color: white;
+    }
   }
 `;
 
 export default function Search() {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const handleSearch = useDebouncedCallback((term) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
+    if (term) {
+      params.set('query', term);
+    } else {
+      params.delete('query');
+    }
+    replace(`/?${params.toString()}`);
+  }, 300);
+
   return (
     <SearchBar>
       <label htmlFor="search">
         <MagnifyingGlassIcon className="h-[18px] w-[18px] text-gray-500 peer-focus:text-gray-900" />
       </label>
-      <SearchInput placeholder="Who to search for" />
+      <SearchInput
+        placeholder="Who to search for"
+        onChange={(e) => {
+          handleSearch(e.target.value);
+        }}
+        defaultValue={searchParams.get('query')?.toString()}
+      />
       <SearchButton>Search</SearchButton>
     </SearchBar>
   );

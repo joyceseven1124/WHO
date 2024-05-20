@@ -23,6 +23,13 @@ const config: Config = {
       xl: '1280px',
       '2xl': '1536px',
     },
+    keyframes: {
+      shimmer: {
+        '100%': {
+          transform: 'translateX(100%)',
+        },
+      },
+    },
   },
   plugins: [],
 };

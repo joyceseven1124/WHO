@@ -1,31 +1,41 @@
 import Pagination from '@/src/app/ui/Pagination';
-import { auth } from '@/src/auth';
 import {
   fetchCountPageRootCard,
   websocketRootCard,
 } from '@/src/lib/handleData/handleContentData';
 import Image from 'next/image';
+import { Suspense } from 'react';
 import ButtonCva from './ui/ButtonCva';
 import BusinessCardList from './ui/frontPage/BusinessCardList';
+import { CardSkeletonGroup } from './ui/skeletons';
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
   const totalPagesResult = await fetchCountPageRootCard();
-  const cardDataWebsocket = await websocketRootCard();
-  let totalPages: number = 1;
+  const cardDataWebsocket = await websocketRootCard(currentPage, query);
 
+  let totalPages: number = 1;
   if (typeof totalPagesResult === 'number') {
     totalPages = totalPagesResult;
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 pt-24">
-      <div className="mb-20 flex flex-col items-center gap-x-10 sm:flex-row">
+      <div className="mb-20 flex max-w-[1200px] flex-col items-center gap-x-10 sm:flex-row">
         <Image
           src="/frontPage-Banner.jpg"
           width={150}
           height={150}
           alt="website home page banner"
-          className="h-auto w-6/12"
+          className="h-auto w-6/12 border"
         ></Image>
 
         <div className="flex w-6/12 flex-col items-center gap-y-3 text-black">
@@ -41,7 +51,10 @@ export default async function Home() {
           </div>
         </div>
       </div>
-      <BusinessCardList data={cardDataWebsocket} />
+      <Suspense key={query + currentPage} fallback={<CardSkeletonGroup />}>
+        <BusinessCardList data={cardDataWebsocket} />
+      </Suspense>
+
       <div className="mt-20">
         <Pagination totalPages={totalPages} />
       </div>

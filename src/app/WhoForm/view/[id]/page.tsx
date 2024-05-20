@@ -1,7 +1,7 @@
+import Loading from '@/src/app/WhoForm/loading';
 import CombineDataView from '@/src/app/ui/viewPage/CombineDataView';
 import { fetchViewContent } from '@/src/lib/handleData/handleContentData';
 import { Metadata } from 'next';
-
 const metadata: Metadata = {
   title: 'Hello',
 };

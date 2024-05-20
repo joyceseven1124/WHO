@@ -10,7 +10,7 @@ import Search from './Search';
 export async function Navigation() {
   const session = await auth();
   return (
-    <header className="relative z-40 border-b border-gray-200 bg-white">
+    <header className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white">
       <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-y-5 p-4 md:grid-cols-[auto_1fr_auto] md:justify-around md:gap-x-4">
         <Link href="/">
           <Image

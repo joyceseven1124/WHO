@@ -55,6 +55,8 @@
     border: 1px solid whitesmoke;
     margin: auto;
     margin-top: 80px;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
   }
 
   .cardDescription {

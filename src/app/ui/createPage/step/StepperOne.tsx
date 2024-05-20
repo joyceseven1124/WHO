@@ -1,17 +1,18 @@
+'use client';
 import { Theme } from '@/src/app/theme';
 import ButtonCva from '@/src/app/ui/ButtonCva';
 import Carousel from '@/src/app/ui/Carousel';
 import BusinessCardBook from '@/src/app/ui/businessCard/BusinessCardBook';
 import BusinessCardFlip from '@/src/app/ui/businessCard/BusinessCardFlip';
 import BusinessCardSlide from '@/src/app/ui/businessCard/BusinessCardSlide';
+import { Check } from '@/src/app/ui/createPage/formComponent/smallElement/Check';
 import { useAppDispatch, useAppSelector, useAppStore } from '@/src/lib/RThooks';
 import {
   editCardData,
   selectCardData,
 } from '@/src/lib/feature/businessCardDataSlice';
-import { CheckIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
-import styled, { ThemeProvider, keyframes } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 const SlideItemWrapper = styled.div`
   width: 100%;
@@ -21,53 +22,6 @@ const SlideItemWrapper = styled.div`
   padding: 30px;
   border-radius: 8px;
 `;
-
-const growAnimation = keyframes`
-  0% {
-    width: 10px;
-    height: 10px;
-    opacity: 1;
-  }
-  100% {
-    width: 50px;
-    height: 50px;
-    opacity: 1;
-  }
-`;
-
-const checkShowAnimation = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
-const SlideCheck = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: black;
-  border-radius: 25px;
-  position: absolute;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: -1px 0px 7px 0px rgba(50, 50, 50, 0.75);
-  animation: ${growAnimation} 0.2s ease-in;
-  .check-icon {
-    animation: ${checkShowAnimation} 0.5s ease-in;
-  }
-`;
-
-function Check() {
-  return (
-    <SlideCheck>
-      <CheckIcon className="check-icon w-8 text-white" />
-    </SlideCheck>
-  );
-}
 
 export default function StepperOne() {
   const store = useAppStore();
@@ -81,16 +35,19 @@ export default function StepperOne() {
   ];
 
   const [animate, setAnimate] = useState(false);
+  const [firstRender, setFirstRender] = useState(true);
   useEffect(() => {
+    // if (firstRender && !cardType) setFirstRender(false);
     const timer = setTimeout(() => {
       setAnimate(true);
     }, 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [cardType, firstRender]);
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const checkHandle = () => {
+    setFirstRender(false);
     if (typeList.length > 0) {
       const data = {
         cardType: typeList[currentIndex],
@@ -99,12 +56,26 @@ export default function StepperOne() {
     }
   };
 
+  // 控制底層元素點擊左右鍵
+  const parentNextRef = useRef();
+  const parentPrevRef = useRef();
   return (
     <ThemeProvider theme={Theme}>
       <div className="mb-10">
-        <Carousel setChange={setCurrentIndex}>
+        <Carousel
+          setChange={setCurrentIndex}
+          refPrevProp={parentPrevRef}
+          refNextProp={parentNextRef}
+        >
           <SlideItemWrapper>
-            {cardType === 'BusinessCardSlide' && <Check />}
+            {cardType === 'BusinessCardSlide' && (
+              <Check
+                checkIndex={0}
+                // refNextProp={parentNextRef}
+                firstRender={firstRender}
+                setFirstRender={setFirstRender}
+              />
+            )}
             {animate && (
               <BusinessCardSlide
                 time="2024/2/4"
@@ -120,7 +91,14 @@ export default function StepperOne() {
           </SlideItemWrapper>
 
           <SlideItemWrapper>
-            {cardType === 'BusinessCardBook' && <Check />}
+            {cardType === 'BusinessCardBook' && (
+              <Check
+                checkIndex={1}
+                refClickProp={parentNextRef}
+                firstRender={firstRender}
+                setFirstRender={setFirstRender}
+              />
+            )}
             <BusinessCardBook
               time="2024/2/4"
               name="一諾"
@@ -134,7 +112,14 @@ export default function StepperOne() {
           </SlideItemWrapper>
 
           <SlideItemWrapper>
-            {cardType === 'BusinessCardFlip' && <Check />}
+            {cardType === 'BusinessCardFlip' && (
+              <Check
+                checkIndex={2}
+                refClickProp={parentPrevRef}
+                firstRender={firstRender}
+                setFirstRender={setFirstRender}
+              />
+            )}
             <BusinessCardFlip
               time="2024/2/4"
               name="樂天"

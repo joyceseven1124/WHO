@@ -85,6 +85,7 @@ export default function DropzoneComponent({
       dispatch(editFormChildElement(data));
       setUploadImageStatus(false);
     } else if (state && !state.success && state.message) {
+      console.log(state.errors);
       setErrorMessage(state.message);
     }
   }, [state, childKey, nodeKey, dispatch, fileName]);
@@ -166,7 +167,7 @@ export default function DropzoneComponent({
         ) : isDragActive ? (
           <p>將照片拖曳至此</p>
         ) : (
-          <p>請拖曳或點擊要上傳的圖片</p>
+          <p>請拖曳或點擊要上傳的圖片(限1MB)</p>
         )}
         <button
           type="submit"

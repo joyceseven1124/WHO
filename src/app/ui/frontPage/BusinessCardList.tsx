@@ -31,7 +31,7 @@ export default function BusinessCardList({
           <Link href={`/WhoForm/view/${element.id}`} key={element.id}>
             <ComponentToRender
               time={element.time}
-              name={element.name}
+              name={element.userName}
               work={element.work}
               description={element.description}
               userPhoto={element.userPhotoUrl}

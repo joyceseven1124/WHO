@@ -25,7 +25,7 @@ const BusinessCardSchema = z
         invalid_type_error: '請選擇其中一個卡片樣式',
       }
     ),
-    name: z.string().nonempty({ message: '名稱不可為空' }),
+    userName: z.string().nonempty({ message: '名稱不可為空' }),
     work: z.string().nonempty({ message: '職稱不可為空' }),
     description: z.string().nullable(),
     position: z.string(),
@@ -62,7 +62,7 @@ const CreateBusinessCard = BusinessCardSchema.superRefine((data, ctx) => {
 export type State = {
   errors?: {
     cardType?: string[];
-    name?: string[];
+    userName?: string[];
     work?: string[];
     description?: string[];
     userPhoto?: string[];
@@ -78,7 +78,7 @@ export async function createBusinessCard(
 ): Promise<State> {
   const validatedFields = CreateBusinessCard.safeParse({
     cardType: formData.get('cardType'),
-    name: formData.get('name'),
+    userName: formData.get('userName'),
     work: formData.get('work'),
     description: formData.get('description'),
     userPhoto: formData.get('userPhoto'),
@@ -92,7 +92,7 @@ export async function createBusinessCard(
       message: '創建失敗，有些欄位未符合標準',
     };
   }
-  const { cardType, name, work, description, userPhoto, userBgPhoto } =
+  const { cardType, userName, work, description, userPhoto, userBgPhoto } =
     validatedFields.data;
   const userPhotoInformation =
     formData.get('userPhotoInformation')?.toString() || '';
@@ -116,19 +116,19 @@ export async function createBusinessCard(
         userImageUrl = await saveImage(userPhoto, userPhotoInformation);
       }
       let userImageBgUrl;
-      if (userBgPhoto === '') {
+      if (userBgPhotoUrl === '' && userBgPhoto && userBgPhotoInformation) {
         userImageBgUrl = await saveImage(userBgPhoto, userBgPhotoInformation);
       }
       const data = {
         id: session.user.email,
         cardType: cardType,
-        name: name,
+        userName: userName,
         work: work,
         description: description || '',
         userPhotoUrl: userImageUrl?.url || userPhotoUrl || '',
         userPhotoInformation: userPhotoInformation,
         userBgPhotoUrl: userImageBgUrl?.url || userBgPhotoUrl || '',
-        userBgPhotoInformation: userBgPhotoInformation,
+        userBgPhotoInformation: userBgPhotoInformation || '',
         finishAllForm: !checkIsFirstSubmit,
         time: date,
         submitStatus: true,
