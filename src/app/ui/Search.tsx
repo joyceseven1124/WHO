@@ -62,7 +62,7 @@ export default function Search() {
         <MagnifyingGlassIcon className="h-[18px] w-[18px] text-gray-500 peer-focus:text-gray-900" />
       </label>
       <SearchInput
-        placeholder="Who to search for"
+        placeholder="搜尋名稱或名字"
         onChange={(e) => {
           handleSearch(e.target.value);
         }}

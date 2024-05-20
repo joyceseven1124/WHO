@@ -1,5 +1,5 @@
-import styles from '@/src/lib/cssModule/businessCard.module.scss';
-import stylesSlide from '@/src/lib/cssModule/businessCardSLide.module.scss';
+import styles from '@/src/lib/cssModule/BusinessCard.module.scss';
+import stylesSlide from '@/src/lib/cssModule/BusinessCardSlide.module.scss';
 import { RootCardType } from '@/src/lib/definitions';
 import Image from 'next/image';
 

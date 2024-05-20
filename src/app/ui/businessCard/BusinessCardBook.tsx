@@ -1,5 +1,5 @@
-import styles from '@/src/lib/cssModule/businessCard.module.scss';
-import stylesBook from '@/src/lib/cssModule/businessCardBook.module.scss';
+import styles from '@/src/lib/cssModule/BusinessCard.module.scss';
+import stylesBook from '@/src/lib/cssModule/BusinessCardBook.module.scss';
 import { RootCardType } from '@/src/lib/definitions';
 import Image from 'next/image';
 
