@@ -7,9 +7,10 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnWhoForm = nextUrl.pathname.startsWith('/WhoForm');
+      const isOnWhoFormCreate = nextUrl.pathname.startsWith('/WhoForm/create');
+      const isOnWhoFormEdit = nextUrl.pathname.startsWith('/WhoForm/edit');
       const isOnAuth = nextUrl.pathname.startsWith('/auth');
-      if (isOnWhoForm) {
+      if (isOnWhoFormCreate || isOnWhoFormEdit) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       }
