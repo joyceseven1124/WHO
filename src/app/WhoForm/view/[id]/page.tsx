@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       selfInformation: result.data.selfInformation,
     };
     return (
-      <div className="mt-10">
+      <div className="my-10">
         <CombineDataView allData={data} />
       </div>
     );

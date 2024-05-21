@@ -22,7 +22,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import Cropper, { Area, Point } from 'react-easy-crop';
 import {
   ChildKeyContext,
@@ -61,6 +61,7 @@ const CropImageComponent = ({
     cropImageAction,
     initialState
   );
+  const cropStatus = useFormStatus();
 
   useEffect(() => {
     if (stateMsg && stateMsg.success && stateMsg.resultData) {
@@ -170,8 +171,9 @@ const CropImageComponent = ({
                   imageInformation
                 );
               }}
+              disabled={cropStatus.pending}
             >
-              {cropResult ? 'Save' : 'Crop'}
+              {cropResult ? (cropStatus.pending ? 'waiting' : 'Save') : 'Crop'}
             </Button>
           </form>
         </Box>

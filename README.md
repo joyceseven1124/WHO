@@ -2,7 +2,7 @@
 
 ### 利用特製的元件表單，填寫關於自己的故事、經驗、作品，並公開分享給更多的人知道。
 
-Website URL https://whoiam-38f06.web.app/
+Website URL https://who-blond.vercel.app/
 
 ## Catalog
 
@@ -16,6 +16,7 @@ Website URL https://whoiam-38f06.web.app/
   - [填寫卡片基本資料](#step-2)
   - [內容頁的撰寫，以及相關注意事項](#step-3)
   - [最終檢查](#step-4)
+  - [其他頁面的補充](#補充)
 
 - [contact](README.md#contact)
 
@@ -54,7 +55,8 @@ Website URL https://whoiam-38f06.web.app/
 | react-dropzone      | Implement drag-and-drop photo upload functionality.                      |
 | react-easy-crop     | Image cropping.                                                          |
 | react-slick         | Carousel effect.                                                         |
-| Firebase            | Authentication, Cloud Firestore, Hoisting, Storage.                      |
+| Firebase            | Authentication, Cloud Firestore, Storage.                                |
+| Vercel              | deploy website                                                           |
 
 ## Steps
 
@@ -123,6 +125,12 @@ Website URL https://whoiam-38f06.web.app/
 檢查Step 3 編輯後的樣式。此樣式將與未來公開檢閱的頁面樣式相同。如果您不滿意，可以按上方的 "BACK" 按鈕返回進行修改。如果填寫完畢無需修改，請按上方的 "FINISH" 按鈕進行儲存。就完成囉！
 
 ![image](https://github.com/joyceseven1124/WHO/blob/main/ReadMeImg/Step4-saveData.png)
+
+### 補充
+
+**搜尋功能:**
+
+只能搜尋名字和職稱，且字要完全一樣，沒有模糊查詢
 
 ## Contact
 
