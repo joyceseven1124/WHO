@@ -12,7 +12,7 @@ describe('test for formDataSlice', () => {
   test('should return the initial state', () => {
     expect(reducer(undefined, { type: '' })).toEqual({
       formData: {},
-      imageCollection: [],
+      selfInformation: {},
     });
   });
 
@@ -31,7 +31,7 @@ describe('test for formDataSlice', () => {
           children: { '122': {} },
         },
       },
-      imageCollection: [],
+      selfInformation: {},
     });
   });
 
@@ -52,7 +52,7 @@ describe('test for formDataSlice', () => {
           children: { '122': {} },
         },
       },
-      imageCollection: [],
+      selfInformation: {},
     };
 
     const payload = {
@@ -68,7 +68,7 @@ describe('test for formDataSlice', () => {
           children: { '122': {} },
         },
       },
-      imageCollection: [],
+      selfInformation: {},
     });
   });
 
@@ -82,12 +82,12 @@ describe('test for formDataSlice', () => {
           children: { '122': {} },
         },
       },
-      imageCollection: [],
+      selfInformation: {},
     };
     const payload = {
       nodeKey: '12',
       childKey: '122',
-      elements: { position: '123' },
+      elements: { position: 123 },
     };
     expect(reducer(initialState, editFormChildElement(payload))).toEqual({
       formData: {
@@ -95,10 +95,10 @@ describe('test for formDataSlice', () => {
           componentType: 'PortfolioEditCard',
           componentTitle: 'hello',
           componentCount: 12,
-          children: { '122': { position: '123' } },
+          children: { '122': { position: 123 } },
         },
       },
-      imageCollection: [],
+      selfInformation: {},
     });
   });
 
@@ -116,7 +116,7 @@ describe('test for formDataSlice', () => {
           },
         },
       },
-      imageCollection: [],
+      selfInformation: {},
     };
     const payload = {
       nodeKey: '12',
@@ -135,7 +135,7 @@ describe('test for formDataSlice', () => {
           },
         },
       },
-      imageCollection: [],
+      selfInformation: {},
     });
   });
 });

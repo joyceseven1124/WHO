@@ -1,7 +1,7 @@
 'use server';
 import { auth } from '@/src/auth';
 import { fetchBusinessCard } from '@/src/lib/handleData/handleContentData';
-import { Link } from '@mui/material';
+import Link from 'next/link';
 
 export default async function MyBlogButton({
   children,

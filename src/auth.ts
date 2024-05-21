@@ -3,7 +3,7 @@ import { authConfig } from '@/src/auth.config';
 import { User } from '@/src/lib/definitions';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import google from 'next-auth/providers/google';
+// import google from 'next-auth/providers/google';
 
 export const {
   handlers: { GET, POST },
@@ -38,8 +38,10 @@ export const {
           // Failed logging in
           if (!loginRes.success) return null;
           // Successful log in
+          const currentTime = new Date().getTime().toString();
           const user = {
             email: loginRes.data.user.EMAIL ?? '',
+            name: currentTime,
           } as User;
           return user;
         }

@@ -1,3 +1,4 @@
+'use server';
 import { signOut } from '@/src/auth';
 import { auth } from '@/src/lib/firebaseConfig';
 import ButtonCva from './ButtonCva';

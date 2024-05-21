@@ -4,6 +4,7 @@ import {
   websocketRootCard,
 } from '@/src/lib/handleData/handleContentData';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Suspense } from 'react';
 import ButtonCva from './ui/ButtonCva';
 import BusinessCardList from './ui/frontPage/BusinessCardList';
@@ -44,11 +45,11 @@ export default async function Home({
             當你願意分享你的學經歷時，你不僅能夠讓更多人看到你的成就和努力，也可以啟發他人、建立連結，甚至可能為自己帶來新的機會和成長。因此，不妨勇敢地分享你的故事，讓更多人受益，一同成長。
           </p>
 
-          <div className="mt-5 h-fit ">
+          <Link href="/WhoForm/create" className="mt-5 h-fit">
             <ButtonCva intent={'secondary'} size={'lg'}>
               立馬體驗
             </ButtonCva>
-          </div>
+          </Link>
         </div>
       </div>
       <Suspense key={query + currentPage} fallback={<CardSkeletonGroup />}>

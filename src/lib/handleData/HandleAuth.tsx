@@ -33,22 +33,20 @@ export async function registerHandle(email: string, password: string) {
 
 export async function signInHandle(email: string, password: string) {
   return new Promise((resolve, reject) => {
-    setPersistence(auth, browserLocalPersistence).then(() => {
-      return signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          resolve({ userData: user, success: true });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          reject({
-            errorCode: errorCode,
-            errorMessage: errorMessage,
-            success: false,
-          });
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        resolve({ userData: user, success: true });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        reject({
+          errorCode: errorCode,
+          errorMessage: errorMessage,
+          success: false,
         });
-    });
+      });
   });
 }
 

@@ -27,6 +27,7 @@ export type User = {
   email: string;
   name?: string;
   emailVerified?: boolean;
+  currentTime?: Date;
 };
 
 export type checkAuthType = {
