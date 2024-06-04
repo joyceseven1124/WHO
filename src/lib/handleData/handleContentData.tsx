@@ -2,7 +2,7 @@
 import { auth } from '@/src/auth';
 import { BusinessCardListProp, ImageTypeScript } from '@/src/lib/definitions';
 import { db } from '@/src/lib/firebaseConfig';
-import { checkAuthStatus } from '@/src/lib/handleData/HandleAuth';
+import { checkAuthStatus } from '@/src/lib/handleData/handleAuth';
 import {
   and,
   collection,

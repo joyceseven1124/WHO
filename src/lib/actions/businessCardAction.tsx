@@ -5,7 +5,7 @@ import {
   saveImage,
 } from '@/src/lib/handleData/handleContentData';
 import { z } from 'zod';
-import { checkAuthStatus } from '../handleData/HandleAuth';
+import { checkAuthStatus } from '../handleData/handleAuth';
 import { getCurrentDateFormatted } from '../utils/getCurrentDateFormatted';
 
 const MAX_FILE_SIZE = 1024 * 1024;
