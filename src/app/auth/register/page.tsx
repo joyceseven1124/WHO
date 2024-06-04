@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import AuthButtonSubmit from '../../ui/login/AuthButtonSubmit';
+// import AuthButtonSubmit from '../../ui/login/AuthButtonSubmit';
 import LogInForm from '../../ui/login/LogInForm';
 import PageTitle from '../../ui/login/PageTitle';
 
@@ -15,7 +15,7 @@ export default function Page() {
           >
             已有帳號
           </Link>
-          <AuthButtonSubmit>註冊</AuthButtonSubmit>
+          {/* <AuthButtonSubmit>註冊</AuthButtonSubmit> */}
         </LogInForm>
       </div>
     </div>

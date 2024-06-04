@@ -1,4 +1,5 @@
 import { BusinessCardItems } from './feature/businessCardDataSlice';
+
 export interface ImageTypeScript {
   name: string;
   url: string;
@@ -42,3 +43,14 @@ export type State = {
   success?: boolean | undefined;
   resultData?: string;
 };
+
+export interface SignInSuccess {
+  userData: any;
+  success: true;
+}
+
+export interface SignInError {
+  errorCode: string;
+  errorMessage: string;
+  success: false;
+}

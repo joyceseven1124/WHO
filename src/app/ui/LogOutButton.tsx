@@ -1,18 +1,17 @@
-'use server';
-import { signOut } from '@/src/auth';
+'use client';
 import { auth } from '@/src/lib/firebaseConfig';
+import { useRouter } from 'next/navigation';
 import ButtonCva from './ButtonCva';
 
-export default async function SignOutButton() {
-  return (
-    <form
-      action={async () => {
-        'use server';
-        await signOut();
-        await auth.signOut();
-      }}
-    >
-      <ButtonCva>LogOut</ButtonCva>
-    </form>
-  );
+export default function SignOutButton() {
+  const router = useRouter();
+
+  async function handleLogout() {
+    await auth.signOut();
+    await fetch('/api/logout');
+    window.location.reload();
+    router.push('/');
+  }
+
+  return <ButtonCva onClick={() => handleLogout()}>LogOut</ButtonCva>;
 }

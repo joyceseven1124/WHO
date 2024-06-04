@@ -1,6 +1,6 @@
-'use server';
+// 'use server';
 import { z } from 'zod';
-import { saveImage } from '../handleData/handleContentData';
+import { saveImage } from '../handleData/saveContentData';
 
 export type State = {
   cardImage?: {
@@ -55,7 +55,6 @@ export async function uploadCardImageAction(
     const imageFile = validatedFields.data.cardImage;
     const fileName = (formData.get('fileName') as string) || imageFile.name;
     const imageUploadURL = await saveImage(imageFile, fileName);
-    console.log(imageUploadURL, '圖片上傳問題');
     if (imageUploadURL.status) {
       return {
         ...state,
@@ -66,7 +65,6 @@ export async function uploadCardImageAction(
     } else {
       return { ...state, message: '請重新上傳一次', success: false };
     }
-    console.log(imageUploadURL, '圖片上傳問題');
   } catch (error) {
     return { ...state, message: '上傳過程中發生錯誤', success: false };
   }

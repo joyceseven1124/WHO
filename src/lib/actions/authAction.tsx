@@ -1,7 +1,7 @@
 'use server';
 import { signIn } from '@/src/auth';
 import { State } from '../definitions';
-import { registerHandle, signInHandle } from '../handleData/HandleAuth';
+import { registerHandle, signInHandle } from '../handleData/handleAuth';
 
 export async function authenticate(
   prevState: State | void,

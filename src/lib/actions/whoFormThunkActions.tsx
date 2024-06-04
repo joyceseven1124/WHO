@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchViewContent } from '../handleData/handleContentData';
+import { fetchViewContent } from '../handleData/fetchContentData';
 
 export const fetchWhoFormThunkById: any = createAsyncThunk(
   'WhoForm/fetchViewForm',
@@ -12,7 +12,6 @@ export const fetchWhoFormThunkById: any = createAsyncThunk(
         return null;
       }
     } catch (errors) {
-      console.log(errors);
       return rejectWithValue(errors);
     }
   }

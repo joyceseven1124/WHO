@@ -1,11 +1,12 @@
-'use server';
-import { auth } from '@/src/auth';
+// 'use server';
+// import { auth } from '@/src/auth';
+import { getToken } from '@/src/lib/handleData/handleAuth';
 import {
   saveCardContent,
   saveImage,
-} from '@/src/lib/handleData/handleContentData';
+} from '@/src/lib/handleData/saveContentData';
 import { z } from 'zod';
-import { checkAuthStatus } from '../handleData/HandleAuth';
+import { checkAuthStatus } from '../handleData/handleAuth';
 import { getCurrentDateFormatted } from '../utils/getCurrentDateFormatted';
 
 const MAX_FILE_SIZE = 1024 * 1024;
@@ -107,9 +108,46 @@ export async function createBusinessCard(
     checkIsFirstSubmit = false;
   }
 
-  const result = await checkAuthStatus();
-  const session = await auth();
-  if (session && session.user && session.user.email) {
+  // const result = await checkAuthStatus();
+  // const session = await auth();
+  // if (session && session.user && session.user.email) {
+  //   try {
+  //     let userImageUrl;
+  //     if (userPhotoUrl === '') {
+  //       userImageUrl = await saveImage(userPhoto, userPhotoInformation);
+  //     }
+  //     let userImageBgUrl;
+  //     if (userBgPhotoUrl === '' && userBgPhoto && userBgPhotoInformation) {
+  //       userImageBgUrl = await saveImage(userBgPhoto, userBgPhotoInformation);
+  //     }
+  //     const data = {
+  //       id: session.user.email,
+  //       cardType: cardType,
+  //       userName: userName,
+  //       work: work,
+  //       description: description || '',
+  //       userPhotoUrl: userImageUrl?.url || userPhotoUrl || '',
+  //       userPhotoInformation: userPhotoInformation,
+  //       userBgPhotoUrl: userImageBgUrl?.url || userBgPhotoUrl || '',
+  //       userBgPhotoInformation: userBgPhotoInformation || '',
+  //       finishAllForm: !checkIsFirstSubmit,
+  //       time: date,
+  //       submitStatus: true,
+  //       userPhoto: null,
+  //       userBgPhoto: null,
+  //     };
+  //     await saveCardContent(session.user.email, data);
+  //     return {
+  //       success: true,
+  //       message: '儲存成功，請按下一步',
+  //     };
+  //   } catch (error) {
+  //     return { success: false, message: '儲存失敗' };
+  //   }
+  // }
+  const tokens = await getToken();
+  if (tokens && tokens?.decodedToken.email) {
+    const userId = tokens?.decodedToken.email;
     try {
       let userImageUrl;
       if (userPhotoUrl === '') {
@@ -120,7 +158,7 @@ export async function createBusinessCard(
         userImageBgUrl = await saveImage(userBgPhoto, userBgPhotoInformation);
       }
       const data = {
-        id: session.user.email,
+        id: userId,
         cardType: cardType,
         userName: userName,
         work: work,
@@ -135,7 +173,7 @@ export async function createBusinessCard(
         userPhoto: null,
         userBgPhoto: null,
       };
-      await saveCardContent(session.user.email, data);
+      await saveCardContent(userId, data);
       return {
         success: true,
         message: '儲存成功，請按下一步',

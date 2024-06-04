@@ -1,14 +1,14 @@
-import { auth } from '@/src/auth';
+import { getToken } from '@/src/lib/handleData/handleAuth';
 import { UserIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import ButtonCva from './ButtonCva';
-import SignOutButton from './LogOutButton';
 import MyBlogButton from './MyBlogButton';
 import Search from './Search';
+import NavLogIn from './login/NavLogIn';
 
 export async function Navigation() {
-  const session = await auth();
+  const tokens = await getToken();
   return (
     <header className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white">
       <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-y-5 p-4 md:grid-cols-[auto_1fr_auto] md:justify-around md:gap-x-4">
@@ -25,13 +25,8 @@ export async function Navigation() {
           <button className="h-6 w-6">
             <UserIcon className="h-[24px] w-[24px] text-gray-500 peer-focus:text-gray-900" />
           </button>
-          {session ? (
-            <SignOutButton></SignOutButton>
-          ) : (
-            <Link href="/auth/login">
-              <ButtonCva size={'sm'}>LogIn</ButtonCva>
-            </Link>
-          )}
+
+          <NavLogIn buttonSize={'sm'} />
         </div>
         <div className="col-span-2 md:col-auto">
           <Search />
@@ -41,13 +36,7 @@ export async function Navigation() {
             <ButtonCva intent={'secondary'}>My Blog</ButtonCva>
           </MyBlogButton>
 
-          {session ? (
-            <SignOutButton></SignOutButton>
-          ) : (
-            <Link href="/auth/login">
-              <ButtonCva>LogIn</ButtonCva>
-            </Link>
-          )}
+          <NavLogIn />
         </div>
       </div>
     </header>
