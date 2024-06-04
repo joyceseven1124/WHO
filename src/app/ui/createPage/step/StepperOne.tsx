@@ -26,6 +26,7 @@ const SlideItemWrapper = styled.div`
 export default function StepperOne() {
   const store = useAppStore();
   const data = useAppSelector(selectCardData);
+
   const cardType = data.cardType;
   const dispatch = useAppDispatch();
   const typeList = [
@@ -37,7 +38,6 @@ export default function StepperOne() {
   const [animate, setAnimate] = useState(false);
   const [firstRender, setFirstRender] = useState(true);
   useEffect(() => {
-    // if (firstRender && !cardType) setFirstRender(false);
     const timer = setTimeout(() => {
       setAnimate(true);
     }, 100);
@@ -71,7 +71,6 @@ export default function StepperOne() {
             {cardType === 'BusinessCardSlide' && (
               <Check
                 checkIndex={0}
-                // refNextProp={parentNextRef}
                 firstRender={firstRender}
                 setFirstRender={setFirstRender}
               />

@@ -15,7 +15,7 @@ export default function Page() {
           >
             註冊會員
           </Link>
-          <AuthButtonSubmit>登入</AuthButtonSubmit>
+          {/* <AuthButtonSubmit>登入</AuthButtonSubmit> */}
         </LogInForm>
       </div>
     </div>

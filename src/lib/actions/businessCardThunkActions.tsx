@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchBusinessCard } from '../handleData/handleContentData';
+import { fetchBusinessCard } from '../handleData/fetchContentData';
 
 export const fetchBusinessCardThunkById: any = createAsyncThunk(
   'businessCard/fetchBusinessCardData',
@@ -12,7 +12,6 @@ export const fetchBusinessCardThunkById: any = createAsyncThunk(
         return null;
       }
     } catch (errors) {
-      console.log(errors);
       return rejectWithValue(errors);
     }
   }

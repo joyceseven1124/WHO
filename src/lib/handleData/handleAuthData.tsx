@@ -1,15 +1,15 @@
 'use server';
+import { clientConfig, serverConfig } from '@/config';
 import { signOut } from '@/src/auth';
 import { checkAuthType } from '@/src/lib/definitions';
 import { auth } from '@/src/lib/firebaseConfig';
 import {
-  browserLocalPersistence,
   createUserWithEmailAndPassword,
-  getAuth,
   onAuthStateChanged,
-  setPersistence,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import { getTokens } from 'next-firebase-auth-edge';
+import { cookies } from 'next/headers';
 
 export async function registerHandle(email: string, password: string) {
   return new Promise((resolve, reject) => {
@@ -74,4 +74,15 @@ export async function checkAuthStatus(): Promise<checkAuthType> {
 
 export async function authSignOut() {
   await signOut();
+}
+
+export async function getToken() {
+  const result = await getTokens(cookies(), {
+    apiKey: clientConfig.apiKey,
+    cookieName: serverConfig.cookieName,
+    cookieSignatureKeys: serverConfig.cookieSignatureKeys,
+    serviceAccount: serverConfig.serviceAccount,
+  });
+
+  return result;
 }

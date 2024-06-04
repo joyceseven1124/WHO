@@ -1,3 +1,4 @@
+'use client';
 import { Theme } from '@/src/app/theme';
 import { useAppSelector } from '@/src/lib/RThooks';
 import { selectCardData } from '@/src/lib/feature/businessCardDataSlice';
@@ -46,7 +47,6 @@ export default function HorizontalLinearStepper({
         break;
 
       case 1:
-        // 先隱藏
         if (data.submitStatus) {
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
           setErrorMessage('');
@@ -109,6 +109,7 @@ export default function HorizontalLinearStepper({
               >
                 Back
               </Button>
+
               <Box
                 sx={{
                   flex: '1 1 auto',
@@ -119,6 +120,7 @@ export default function HorizontalLinearStepper({
               >
                 {errorMessage}
               </Box>
+
               <Button
                 form="whoFormJson"
                 onClick={handleNext}

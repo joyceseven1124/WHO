@@ -14,12 +14,14 @@ import StepperFinish from './step/StepperFinish';
 export default function CreateStepsCombine({ email }: { email?: string }) {
   const dispatch = useAppDispatch();
   const [activeStep, setActiveStep] = useState(0);
+  const [firstRender, setFirstRender] = useState(true);
   useEffect(() => {
-    if (email) {
+    if (email && firstRender) {
+      setFirstRender(false);
       dispatch(fetchBusinessCardThunkById(email));
       dispatch(fetchWhoFormThunkById(email));
     }
-  }, [dispatch, email]);
+  }, [dispatch, email, firstRender]);
 
   return (
     <>
@@ -41,12 +43,14 @@ export default function CreateStepsCombine({ email }: { email?: string }) {
           <StepperOne />
         </>
       )}
+
       {activeStep === 1 && (
         <>
           <FormTitle>填寫所選樣式的表單，填寫完點選上方NEXT</FormTitle>
           <StepperTwo />
         </>
       )}
+
       {activeStep === 2 && (
         <>
           <FormTitle>

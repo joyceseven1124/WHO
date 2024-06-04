@@ -1,6 +1,6 @@
 import CreateStepsCombine from '@/src/app/ui/createPage/CreateStepsCombine';
-import { auth } from '@/src/auth';
-import { fetchBusinessCard } from '@/src/lib/handleData/handleContentData';
+import { fetchBusinessCard } from '@/src/lib/handleData/fetchContentData';
+import { getToken } from '@/src/lib/handleData/handleAuthData';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
@@ -9,10 +9,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const session = await auth();
-  if (session && session.user && session.user.email) {
-    const checkHaveData = await fetchBusinessCard(session.user.email);
-    if (checkHaveData.success) redirect('/WhoForm/edit/' + session.user.email);
+  const tokens = await getToken();
+  if (tokens && tokens?.decodedToken.email) {
+    const userId = tokens?.decodedToken.email;
+    const checkHaveData = await fetchBusinessCard(userId);
+    if (checkHaveData.success) redirect('/WhoForm/edit/' + userId);
   }
   return <CreateStepsCombine />;
 }

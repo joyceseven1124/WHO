@@ -1,8 +1,5 @@
 'use server';
-import {
-  deleteImage,
-  saveImageBase64Crop,
-} from '@/src/lib/handleData/handleContentData';
+import { saveImageBase64Crop } from '@/src/lib/handleData/saveContentData';
 import { State } from '../definitions';
 
 const cropImageAction = async (
@@ -20,7 +17,6 @@ const cropImageAction = async (
         imageInformation
       );
       if (imageUploadValue.status) {
-        // deleteImage(imageURL);
         return {
           message: '裁切成功',
           errors: '',

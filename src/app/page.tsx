@@ -2,7 +2,7 @@ import Pagination from '@/src/app/ui/Pagination';
 import {
   fetchCountPageRootCard,
   websocketRootCard,
-} from '@/src/lib/handleData/handleContentData';
+} from '@/src/lib/handleData/fetchContentData';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
