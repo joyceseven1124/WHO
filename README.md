@@ -46,7 +46,6 @@ Website URL https://who-blond.vercel.app/
 | React Hook          | UseContext, useState, useEffect, useRef, forwardRef, useImperativeHandle |
 | Redux Toolkit       | Store, createSlice, createAsyncThunk.                                    |
 | TypeScript          | JavaScript with syntax for types.                                        |
-| Jest                | Unit test.                                                               |
 | TailwindCSS         | Can be used server-side and can also be written directly in tags.        |
 | Material UI         | Uses pre-built components.                                               |
 | CSS Modules         | Use CSS Modules to avoid class name collision.                           |
