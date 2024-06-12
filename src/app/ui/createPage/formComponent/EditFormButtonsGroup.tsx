@@ -1,4 +1,4 @@
-import AddNewComponentButton from '@/src/app/ui/createPage/formComponent/button/AddNewrComponentButton';
+import AddNewComponentButton from '@/src/app/ui/createPage/formComponent/button/AddNewComponentButton';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 export default function EditFormButtonsGroup() {
@@ -50,30 +50,6 @@ export default function EditFormButtonsGroup() {
               alt="Time Line Button"
             ></Image>
           </AddNewComponentButton>
-
-          {/* <AddNewComponentButton
-            componentType="PortfolioEditCardListSlideShow"
-            description="由圖片、敘述文字、連結組成的卡片，並且輪播，共12張"
-          >
-            <Image
-              src="/componentButton/cardSlideShow.png"
-              width={150}
-              height={150}
-              alt="Portfolio Card List Slideshow"
-            ></Image>
-          </AddNewComponentButton> */}
-
-          {/* <AddNewComponentButton
-            componentType="PortfolioEditBannerSlideShow"
-            description="由圖片、敘述文字、連結組成的Banner，並且輪播"
-          >
-            <Image
-              src="/componentButton/bannerSlideShow.png"
-              width={150}
-              height={150}
-              alt="Portfolio Banner Slideshow"
-            ></Image>
-          </AddNewComponentButton> */}
 
           <AddNewComponentButton
             componentType="ListPoints"

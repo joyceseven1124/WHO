@@ -48,6 +48,7 @@ export default function LogInForm({
         },
       });
       setSubmitStatus(true);
+      window.location.reload();
       router.push('/');
     } catch (e) {
       setSubmitStatus(false);
