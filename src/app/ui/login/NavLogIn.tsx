@@ -15,7 +15,6 @@ export default function NavLogIn({
   useEffect(() => {
     const authSubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
         setUser(true);
       } else {
         setUser(false);
