@@ -35,7 +35,7 @@ export default function TimeLine({ value }: { value: ComponentStructure }) {
                   <div>{endTimeLine}</div>
                 </TimeLineDataStyle>
               )}
-              <div>{inputText}</div>
+              <p className="whitespace-break-spaces">{inputText}</p>
             </div>
           </TimeLineWrapper>
         );

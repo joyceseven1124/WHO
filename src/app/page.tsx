@@ -1,8 +1,5 @@
 import Pagination from '@/src/app/ui/Pagination';
-import {
-  fetchCountPageRootCard,
-  websocketRootCard,
-} from '@/src/lib/handleData/fetchContentData';
+import { fetchCountPageRootCard } from '@/src/lib/handleData/fetchContentData';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -21,8 +18,6 @@ export default async function Home({
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
   const totalPagesResult = await fetchCountPageRootCard();
-  const cardDataWebsocket = await websocketRootCard(currentPage, query);
-
   let totalPages: number = 1;
   if (typeof totalPagesResult === 'number') {
     totalPages = totalPagesResult;
@@ -52,9 +47,10 @@ export default async function Home({
           </Link>
         </div>
       </div>
-      <Suspense key={query + currentPage} fallback={<CardSkeletonGroup />}>
-        <BusinessCardList data={cardDataWebsocket} />
-      </Suspense>
+
+      <BusinessCardList
+        dataParameter={{ currentPage: currentPage, query: query }}
+      />
 
       <div className="mt-20">
         <Pagination totalPages={totalPages} />

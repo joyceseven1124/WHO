@@ -14,7 +14,7 @@ export default function StringCardView({
         if (value.children && value.children[childKey]) {
           let childData = value.children[childKey];
           return (
-            <p className="py-5" key={childKey}>
+            <p className="whitespace-break-spaces py-5" key={childKey}>
               {childData.inputText}
             </p>
           );

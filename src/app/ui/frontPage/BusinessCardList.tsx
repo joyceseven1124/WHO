@@ -1,14 +1,43 @@
+'use client';
 import BusinessCardBook from '@/src/app/ui/businessCard/BusinessCardBook';
 import BusinessCardFlip from '@/src/app/ui/businessCard/BusinessCardFlip';
 import BusinessCardSlide from '@/src/app/ui/businessCard/BusinessCardSlide';
 import { BusinessCardListProp } from '@/src/lib/definitions';
+import { getRootCards } from '@/src/lib/handleData/webSocketCardData';
 import Link from 'next/link';
-
+import { useEffect, useState } from 'react';
+import { CardSkeletonGroup } from '../skeletons';
 export default function BusinessCardList({
-  data,
+  dataParameter,
 }: {
-  data: BusinessCardListProp[];
+  dataParameter: { currentPage: number; query: string };
 }) {
+  const [data, setData] = useState<BusinessCardListProp[]>([]);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    const handleData = (rootCards: BusinessCardListProp[], error?: Error) => {
+      setLoading(false);
+      if (error) {
+        setError(error);
+      } else {
+        setData(rootCards);
+      }
+    };
+
+    const unsubscribe = getRootCards(
+      dataParameter.currentPage,
+      dataParameter.query,
+      handleData
+    );
+
+    // Cleanup subscription on unmount
+    return () => {
+      if (unsubscribe && typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
+    };
+  }, [dataParameter]);
   let renderElementList;
   if (data.length > 0) {
     renderElementList = data.map((element) => {
@@ -45,8 +74,14 @@ export default function BusinessCardList({
     });
   }
   return (
-    <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 mdPlus:grid-cols-3 xl:grid-cols-4">
-      {renderElementList}
-    </div>
+    <>
+      {loading ? (
+        <CardSkeletonGroup />
+      ) : (
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 mdPlus:grid-cols-3 xl:grid-cols-4">
+          {renderElementList}
+        </div>
+      )}
+    </>
   );
 }

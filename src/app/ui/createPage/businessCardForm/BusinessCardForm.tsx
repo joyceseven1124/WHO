@@ -41,6 +41,7 @@ const CardInput = styled.div`
     font-size: 16px;
     padding: 10px;
     outline: none;
+    white-space: pre-wrap;
     &:focus {
       border: 1px solid gray;
     }
@@ -187,6 +188,7 @@ export default function BusinessCardForm() {
               editCardData({ description: e.target.value, submitStatus: false })
             )
           }
+          // value={data.description?.replace(/<br\s*\/?>/gi, '\n')}
           value={data.description}
         />
       </CardInput>

@@ -1,90 +1,16 @@
-'use server';
-import { BusinessCardListProp } from '@/src/lib/definitions';
+// 'use server';
 import { db } from '@/src/lib/firebaseConfig';
 import {
-  and,
   collection,
   doc,
   getCountFromServer,
   getDoc,
-  limit,
-  onSnapshot,
-  or,
-  orderBy,
-  query,
-  startAfter,
-  where,
 } from 'firebase/firestore';
 import { unstable_noStore as noStore } from 'next/cache';
 import { orderData } from '../utils/orderData';
 
 const rootCardPerPageCount = 12;
 const mouseReplace = process.env.NEXT_PUBLIC_MOUSE_REPLACE || '';
-
-export async function websocketRootCard(
-  page: number = 1,
-  keyWord: string | null = null
-): Promise<BusinessCardListProp[]> {
-  noStore();
-  return new Promise((resolve, reject) => {
-    try {
-      const lastVisible = (page - 1) * rootCardPerPageCount - 1;
-      let qRootCard;
-      if (!keyWord) {
-        qRootCard = query(
-          collection(db, 'blogRootList'),
-          and(where('finishAllForm', '==', true)),
-          orderBy('time'),
-          startAfter(lastVisible),
-          limit(rootCardPerPageCount)
-        );
-      } else {
-        qRootCard = query(
-          collection(db, 'blogRootList'),
-          and(
-            where('finishAllForm', '==', true),
-            or(where('work', '==', keyWord), where('userName', '==', keyWord))
-          ),
-          orderBy('time'),
-          startAfter(lastVisible),
-          limit(rootCardPerPageCount)
-        );
-      }
-
-      const unsubscribe = onSnapshot(
-        qRootCard,
-        (querySnapshot) => {
-          const rootCard: BusinessCardListProp[] = [];
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            rootCard.push({
-              id: data.id,
-              cardType: data.cardType,
-              userName: data.userName,
-              work: data.work,
-              description: data.description,
-              userPhotoUrl: data.userPhotoUrl,
-              userPhotoInformation: data.userPhotoInformation,
-              userBgPhotoUrl: data.userBgPhotoUrl || null,
-              userBgPhotoInformation: data.userBgPhotoInformation || null,
-              finishAllForm: data.finishAllForm,
-              time: data.time,
-              submitStatus: true,
-              userPhoto: null,
-              userBgPhoto: null,
-            });
-          });
-          resolve(rootCard);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
 
 export async function fetchCountPageRootCard() {
   noStore();

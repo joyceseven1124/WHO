@@ -43,7 +43,7 @@ export default function BannerCardView({
                   height={150}
                 />
               )}
-              <p>{childData.inputText}</p>
+              <p className="whitespace-break-spaces">{childData.inputText}</p>
             </BannerCardViewWrapper>
           );
         }

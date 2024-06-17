@@ -1,4 +1,4 @@
-'use server';
+// 'use server';
 import { saveImageBase64Crop } from '@/src/lib/handleData/saveContentData';
 import { State } from '../definitions';
 

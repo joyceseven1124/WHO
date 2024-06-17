@@ -37,6 +37,7 @@ const TextAreaStyle = styled.textarea<{
   line-height: normal;
   resize: none;
   color: black;
+  white-space: pre-wrap;
 `;
 export default function TextArea({
   placeholderText,
@@ -93,7 +94,8 @@ export default function TextArea({
         onBlur={checkInputValue}
         onChange={(e) => {
           if (dispatchFunction) {
-            dispatchFunction(e.target.value);
+            const text = e.target.value;
+            dispatchFunction(text);
           }
         }}
         ref={inputRef}

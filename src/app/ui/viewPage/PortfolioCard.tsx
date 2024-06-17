@@ -84,7 +84,11 @@ export default function PortfolioCard({
             ) : (
               <DefaultImageCard>尚未提供圖片</DefaultImageCard>
             )}
-            {inputValue ? <p>{inputValue}</p> : <p></p>}
+            {inputValue ? (
+              <p className="whitespace-break-spaces">{inputValue}</p>
+            ) : (
+              <p></p>
+            )}
             <LinkStyle href={linkUrl} className="block w-full justify-end">
               {linkName}
             </LinkStyle>
